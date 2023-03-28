@@ -1,0 +1,154 @@
+@import '../../../../assets/styles/variables';
+
+.button {
+  outline: none;
+  border-radius: 5px;
+  font-size: 13px;
+  line-height: 18px;
+  cursor: pointer;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border: 1px solid transparent;
+  font-weight: 600;
+
+  &.full {
+    width: 100%;
+  }
+
+  &.pdf {
+    min-width: 143.05px;
+    border-color: $color-basic-normal-grey;
+    padding-left: 41px;
+    color: $color-basic-grey;
+    font-weight: 400;
+    background: $color-basic-white url('/assets/icons/pdf.svg') no-repeat left 5px center;
+  }
+
+  &.google {
+    background: $color-basic-white url("/assets/icons/google-icon.svg") no-repeat left 20px center;
+    text-align: center;
+    color: $color-contrast-black;
+    box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
+
+    &:hover,
+    &:focus {
+      background-color: #fafafa;
+    }
+  }
+
+  &.bg-white {
+    background-color: $color-basic-white;
+  }
+
+  &.border-purple {
+    border-color: $color-basic-purple;
+    color: $color-basic-purple;
+  }
+
+  &.primary {
+    min-width: 120px;
+    border-color: $color-basic-purple;
+    color: $color-basic-white;
+    background-color: $color-basic-purple;
+  }
+
+  &.secondary {
+    border-color: $color-basic-purple;
+    color: $color-basic-purple;
+    background-color: $color-basic-white;
+  }
+
+  &.drop-down {
+    background-image: url("/assets/icons/drop-down-select-white.svg");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 40px;
+  }
+
+  &.black {
+    min-width: 120px;
+    border-color: $color-contrast-black;
+    color: $color-basic-white;
+    background-color: $color-contrast-black;
+  }
+
+  &.csv {
+    min-width: 143.05px;
+    border-color: $color-basic-normal-grey;
+    padding-left: 41px;
+    color: $color-basic-grey;
+    font-weight: 400;
+    background: $color-basic-white url('/assets/icons/csv.svg') no-repeat left 15px center;
+  }
+
+  &.add {
+    justify-content: flex-start;
+    background: transparent url('/assets/icons/add.svg') no-repeat left center;
+    color: $color-basic-purple;
+    padding-left: 30px;
+  }
+
+  &.view-transaction {
+    border-color: $color-basic-purple;
+    background: transparent url('/assets/icons/dollar-blank.svg') no-repeat left 18px center;
+    color: $color-basic-purple;
+    padding-left: 45px;
+  }
+
+  &.delete {
+    min-width: 120px;
+    background-color: $color-error-red;
+    border-color: $color-error-red;
+    color: $color-basic-white;
+
+    &.bg-white {
+      background-color: $color-basic-white;
+      color: $color-error-red;
+    }
+
+  }
+  &.paid {
+    min-width: 155px;
+    background: $color-basic-white url('/assets/icons/check-circle.svg') no-repeat left 22px center;
+    border-color: $color-success-green;
+    color: $color-success-green;
+    padding-left: 42px;
+    justify-content: flex-start;
+
+    &:hover,
+    &:focus {
+      background-color: #fafafa;
+    }
+  }
+
+  &.success {
+    background-color: $color-success-green;
+    border-color: $color-success-green;
+    color: $color-basic-white;
+  }
+
+  &[disabled] {
+    border-color: $color-basic-medium-grey;
+    color: $color-basic-medium-grey !important;
+    background-color: $color-basic-white;
+    cursor: default;
+  }
+
+}
+
+::ng-deep {
+  & .bg-white.mat-button:hover .mat-button-focus-overlay,
+  & .bg-white.mat-button:focus .mat-button-focus-overlay,
+  & .google.mat-button:hover .mat-button-focus-overlay,
+  & .google.mat-button:focus .mat-button-focus-overlay
+  {
+    opacity: 0;
+  }
+  & .mat-spinner circle {
+    stroke: rgba(#000, 30%);
+  }
+}

@@ -1,0 +1,24 @@
+<div class="page-wrapper">
+  <div class="page-title mobile-hidden">
+    <div class="skeleton-loader" *ngIf="!(dataLoaded$ | async)">
+      <ngx-skeleton-loader animation="false"></ngx-skeleton-loader>
+    </div>
+    <ng-container *ngIf="dataLoaded$ | async">
+      Asset Register
+    </ng-container>
+  </div>
+  <div class="page-content mobile-hidden">
+    <app-asset-table
+      [dataLoaded]="dataLoaded$ | async"
+      [assetItems$]="assetItems$"
+      [accounts$]="accounts$"
+      (addFromCash)="addFromTransaction('recordTransaction')"
+      (addFromBill)="addFromTransaction('receiveBill')"
+      (handleAction)="handleAction($event)"
+    ></app-asset-table>
+    <app-empty-content
+      *ngIf="(dataLoaded$ | async) && (assetItems$ | async)?.length === 0"
+      [emptyContentData]="emptyContentAssets"
+    ></app-empty-content>
+  </div>
+</div>

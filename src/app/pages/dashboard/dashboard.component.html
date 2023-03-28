@@ -1,0 +1,21 @@
+<div class="page-wrapper dashboard">
+
+  <div class="page-title mobile-hidden">
+    <ng-container>
+      Dashboard
+    </ng-container>
+  </div>
+
+  <div class="page-content dashboard-content">
+    <app-chart
+      *ngIf="expensesAndRevenueChartSettings"
+      [chartSettings]="expensesAndRevenueChartSettings"
+    ></app-chart>
+
+    <app-chart
+      *ngIf="balanceChartSettings"
+      [chartSettings]="balanceChartSettings"
+    ></app-chart>
+  </div>
+
+</div>

@@ -1,0 +1,51 @@
+<div class="page-wrapper">
+
+  <!--  Desktop-->
+  <div  class="page-title mobile-hidden" >
+    <div *ngIf="!(jobsLoaded$ | async)" class="skeleton-loader">
+      <ngx-skeleton-loader animation="false"></ngx-skeleton-loader>
+    </div>
+    <ng-container *ngIf="jobsLoaded$ | async">
+      Job
+    </ng-container>
+  </div>
+  <div class="page-content mobile-hidden job-content">
+    <div class="header">
+      <app-button
+        *ngIf="jobsLoaded$ | async"
+        buttonStyleType="primary"
+        label="Add Job"
+        (btnClick)="addJobButtonClick()"
+      ></app-button>
+      <div *ngIf="!(jobsLoaded$ | async)" >
+        <ngx-skeleton-loader count="1" [theme]="{height: '40px', width: '130px', display: 'block'}"></ngx-skeleton-loader>
+      </div>
+    </div>
+
+    <div class="job-cards" *ngIf="jobsLoaded$ | async">
+      <ng-container *ngFor="let job of (jobs$ | async)">
+        <app-job-card [jobModel]="job"></app-job-card>
+      </ng-container>
+    </div>
+
+    <app-empty-content
+      *ngIf="(jobsLoaded$ | async) && (jobs$ | async)?.length === 0"
+      [emptyContentData]="emptyContentJob"
+    ></app-empty-content>
+
+     <div class="job-cards" *ngIf="!(jobsLoaded$ | async)">
+       <ngx-skeleton-loader count="3" [theme]="{display: 'block', height: '250px', width: '200px'}"></ngx-skeleton-loader>
+       <ngx-skeleton-loader count="3" [theme]="{display: 'block', height: '250px', width: '200px'}"></ngx-skeleton-loader>
+       <ngx-skeleton-loader count="3" [theme]="{display: 'block', height: '250px', width: '200px'}"></ngx-skeleton-loader>
+       <ngx-skeleton-loader count="3" [theme]="{display: 'block', height: '250px', width: '200px'}"></ngx-skeleton-loader>
+       <ngx-skeleton-loader count="3" [theme]="{display: 'block', height: '250px', width: '200px'}"></ngx-skeleton-loader>
+       <ngx-skeleton-loader count="3" [theme]="{display: 'block', height: '250px', width: '200px'}"></ngx-skeleton-loader>
+       <ngx-skeleton-loader count="3" [theme]="{display: 'block', height: '250px', width: '200px'}"></ngx-skeleton-loader>
+       <ngx-skeleton-loader count="3" [theme]="{display: 'block', height: '250px', width: '200px'}"></ngx-skeleton-loader>
+       <ngx-skeleton-loader count="3" [theme]="{display: 'block', height: '250px', width: '200px'}"></ngx-skeleton-loader>
+       <ngx-skeleton-loader count="3" [theme]="{display: 'block', height: '250px', width: '200px'}"></ngx-skeleton-loader>
+       <ngx-skeleton-loader count="3" [theme]="{display: 'block', height: '250px', width: '200px'}"></ngx-skeleton-loader>
+       <ngx-skeleton-loader count="3" [theme]="{display: 'block', height: '250px', width: '200px'}"></ngx-skeleton-loader>
+     </div>
+   </div>
+</div>

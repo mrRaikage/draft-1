@@ -1,0 +1,51 @@
+<div
+  *ngIf="label"
+  class="form-field-label"
+  [class.disabled]="isView"
+>
+  {{ label }} {{ !notRequired && !isView ? '*' : null }}
+  <span *ngIf="notRequired && !isView" class="optional">(optional)</span>
+</div>
+
+<mat-form-field
+  appearance="fill"
+  class="select-tax-rate"
+  [class.not-required]="notRequired"
+  [class.table-field]="true"
+>
+  <mat-select
+    #select
+    disableOptionCentering
+    [placeholder]="placeholder"
+    [panelClass]="'select-tax-rate ' + panelClass"
+    [formControl]="formControl"
+    (ngModelChange)="isDirty.emit(formControl.dirty)"
+    (focus)="select.open()"
+  >
+    <mat-select-trigger>
+      <ng-container *ngIf="taxMode === 'NoTax'">
+        <span class="color-grey">-</span>
+      </ng-container>
+
+      <ng-container *ngIf="taxMode !== 'NoTax'">
+        <ng-container *ngIf="formControl.value === 0">
+          {{ 'Tax Exempt' }}
+        </ng-container>
+
+        <ng-container *ngIf="formControl.value !== 0">
+          {{ formControl.value | percent }}
+        </ng-container>
+      </ng-container>
+    </mat-select-trigger>
+
+    <ng-container *ngFor="let item of list">
+      <mat-option
+        [value]="item.value"
+        (click)="select.close()"
+      >
+        {{ item.displayName }}
+      </mat-option>
+    </ng-container>
+  </mat-select>
+</mat-form-field>
+

@@ -1,0 +1,36 @@
+@import '../../../../assets/styles/variables';
+
+.input-percent-wrapper {
+  background: #FFFFFF;
+  border: 1px solid #CFDFE8;
+  border-radius: 4px;
+  min-height: 40px;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  line-height: 18px;
+  height: 100%;
+
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+
+  input {
+    width: 100%;
+    text-align: right;
+    outline: none;
+    border: none;
+    font-size: 13px;
+    line-height: 18px;
+    color: $color-contrast-black;
+  }
+}

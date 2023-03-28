@@ -1,0 +1,71 @@
+@import '../../../../assets/styles/variables';
+
+::ng-deep .modal-info.mat-card {
+  padding: 0;
+  border-radius: 8px;
+  box-shadow: none;
+  height: 100%;
+
+  .mat-card-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 17px 16px 25px;
+    box-shadow: 0px 1px 0px rgba(132, 157, 179, 0.15);
+    height: 56px;
+
+    .mat-card-header-text {
+      margin: 0;
+    }
+
+    .mat-card-title {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 24px;
+      color: $color-contrast-black;
+      margin: 0;
+    }
+
+    .close {
+      cursor: pointer;
+    }
+  }
+
+  .mat-card-content {
+    padding: 24px 41px 34px 25px;
+    font-size: 13px;
+    line-height: 18px;
+    color: $color-basic-grey;
+    overflow-y: auto;
+    height: calc(100% - 56px);
+
+    h3 {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 24px;
+      margin: 0;
+    }
+
+    a {
+      text-decoration: none;
+      font-weight: bold;
+      color: $color-basic-grey;
+
+      &:focus,
+      &:active {
+        outline: none;
+      }
+    }
+
+    ol {
+      padding-left: 20px;
+
+      li {
+        margin-bottom: 4px;
+      }
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+  }
+}

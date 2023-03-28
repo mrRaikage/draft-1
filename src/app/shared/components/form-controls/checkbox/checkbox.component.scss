@@ -1,0 +1,5 @@
+@import '../../../../../assets/styles/variables';
+
+::ng-deep .black.mat-checkbox {
+  color: $color-contrast-black;
+}

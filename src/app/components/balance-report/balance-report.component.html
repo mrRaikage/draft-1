@@ -1,0 +1,401 @@
+<div class="page-wrapper">
+
+  <!--  Desktop-->
+  <div class="page-header">
+    <div class="page-title mobile-hidden">
+      Reports / Balance Sheet
+    </div>
+
+    <div class="header-actions" [formGroup]="form">
+
+      <div class="label">
+        Balance Sheet as at
+      </div>
+
+      <app-date-picker
+        [formControl]="form.controls['date']"
+      ></app-date-picker>
+
+      <app-button
+        [buttonStyleType]="'primary'"
+        [label]="'Update'"
+        [disabled]="balanceSheetIsLoading$ | async"
+        (btnClick)="updateButtonClick()"
+      ></app-button>
+
+      <ng-container *ngIf="balanceSheetIsLoading$ | async">
+        <ngx-skeleton-loader class="export-to-pdf" [theme]="{ width: '143px', height: '40px', marginBottom: '-7px' }"></ngx-skeleton-loader>
+      </ng-container>
+      <ng-container *ngIf="!(balanceSheetIsLoading$ | async)">
+        <app-button
+          class="export-to-pdf"
+          [buttonStyleType]="'pdf'"
+          [label]="'Export to PDF'"
+          (btnClick)="exportToPdf()"
+        ></app-button>
+      </ng-container>
+    </div>
+  </div>
+
+  <div #contentToConvert class="page-content">
+
+    <div class="header">
+      <ng-container *ngIf="balanceSheetIsLoading$ | async">
+        <ngx-skeleton-loader [theme]="{ width: '120px', height: '15px', margin: '0' }"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{ width: '150px', height: '15px', margin: '0' }"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{ width: '170px', height: '15px', margin: '0' }"></ngx-skeleton-loader>
+      </ng-container>
+      <ng-container *ngIf="!(balanceSheetIsLoading$ | async)">
+        <div class="title">{{ currentOrg }}</div>
+        <div class="subtitle">Balance Sheet</div>
+        <div class="date">as at {{ date | date }}</div>
+      </ng-container>
+    </div>
+
+    <div class="body">
+      <div class="left-side">
+        <ng-container *ngIf="balanceSheetIsLoading$ | async">
+          <ngx-skeleton-loader [theme]="{ width: '100%' }"></ngx-skeleton-loader>
+          <div style="margin-left: 20px">
+            <ngx-skeleton-loader count="7" [theme]="{ width: '100%' }"></ngx-skeleton-loader>
+          </div>
+
+          <ngx-skeleton-loader [theme]="{ width: '100%' }"></ngx-skeleton-loader>
+          <div style="margin-left: 20px">
+            <ngx-skeleton-loader count="7" [theme]="{ width: '100%' }"></ngx-skeleton-loader>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="!(balanceSheetIsLoading$ | async)">
+          <!--  Assets section-->
+          <div class="section assets">
+            <div class="section--title">
+              {{ 'Assets' | uppercase }}
+            </div>
+
+            <div class="section--body">
+              <div *ngIf="accountsReceivable" class="section-item">
+                <div class="section-item--title">
+                  Accounts Receivable
+                </div>
+                <div class="section-item--body">
+                  <ng-container *ngFor="let subItem of accountsReceivable.children">
+                    <div class="sub-item">
+                      <div class="sub-item--title">
+                        <div class="sub-item--title-name">
+                          {{ subItem.name }}
+                        </div>
+                        <div class="sub-item--title-amount">
+                          {{ subItem.amount | number: '0.2-2' }}
+                        </div>
+                      </div>
+                      <div *ngIf="subItem.children && subItem.children.length" class="sub-item--body">
+                        <ng-container *ngFor="let child of subItem.children">
+                          <div class="child">
+                            <div class="child-title">
+                              {{ child.name }}
+                            </div>
+                            <div class="child-amount">
+                              {{ child.amount | number: '0.2-2' }}
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+
+                <div class="section-item--footer">
+                  <div class="amount-text">
+                    {{ 'Total Accounts Receivable:' }}
+                  </div>
+                  <div class="total-amount">
+                    {{ accountsReceivable.amount | number: '0.2-2' }}
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="currentAssets" class="section-item">
+                <div class="section-item--title">
+                  Current Assets
+                </div>
+                <div class="section-item--body">
+                  <ng-container *ngFor="let subItem of currentAssets.children">
+                    <div class="sub-item">
+                      <div class="sub-item--title">
+                        <div class="sub-item--title-name">
+                          {{ subItem.name }}
+                        </div>
+                        <div class="sub-item--title-amount">
+                          {{ subItem.amount | number: '0.2-2' }}
+                        </div>
+                      </div>
+                      <div *ngIf="subItem.children && subItem.children.length" class="sub-item--body">
+                        <ng-container *ngFor="let child of subItem.children">
+                          <div class="child">
+                            <div class="child-title">
+                              {{ child.name }}
+                            </div>
+                            <div class="child-amount">
+                              {{ child.amount | number: '0.2-2' }}
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+
+                <div class="section-item--footer">
+                  <div class="amount-text">
+                    {{ 'Total Current Assets:' }}
+                  </div>
+                  <div class="total-amount">
+                    {{ currentAssets.amount | number: '0.2-2' }}
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="fixedAssets" class="section-item">
+                <div class="section-item--title">
+                  Fixed Assets
+                </div>
+                <div class="section-item--body">
+                  <ng-container *ngFor="let subItem of fixedAssets.children">
+                    <div class="sub-item">
+                      <div class="sub-item--title">
+                        <div class="sub-item--title-name">
+                          {{ subItem.name }}
+                        </div>
+                        <div class="sub-item--title-amount">
+                          {{ subItem.amount | number: '0.2-2' }}
+                        </div>
+                      </div>
+                      <div *ngIf="subItem.children && subItem.children.length" class="sub-item--body">
+                        <ng-container *ngFor="let child of subItem.children">
+                          <div class="child">
+                            <div class="child-title">
+                              {{ child.name }}
+                            </div>
+                            <div class="child-amount">
+                              {{ child.amount | number: '0.2-2' }}
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+
+                <div class="section-item--footer">
+                  <div class="amount-text">
+                    {{ 'Total Fixed Assets:' }}
+                  </div>
+                  <div class="total-amount">
+                    {{ fixedAssets.amount | number: '0.2-2' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section--footer">
+            <div class="footer-title">
+              {{ 'Total Assets' | uppercase }}
+            </div>
+            <div class="footer-total-amount">
+              {{ totalAssets | number: '0.2-2' }}
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="right-side">
+        <ng-container *ngIf="balanceSheetIsLoading$ | async">
+          <ngx-skeleton-loader [theme]="{ width: '100%' }"></ngx-skeleton-loader>
+          <div style="margin-left: 20px">
+            <ngx-skeleton-loader count="7" [theme]="{ width: '100%' }"></ngx-skeleton-loader>
+          </div>
+
+          <ngx-skeleton-loader [theme]="{ width: '100%' }"></ngx-skeleton-loader>
+          <div style="margin-left: 20px">
+            <ngx-skeleton-loader count="7" [theme]="{ width: '100%' }"></ngx-skeleton-loader>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="!(balanceSheetIsLoading$ | async)">
+          <!--  Liabilities section-->
+          <div class="section liabilities">
+            <div class="section--title">
+              {{ 'Liabilities' | uppercase }}
+            </div>
+
+            <div class="section--body">
+              <div *ngIf="currentLiabilities" class="section-item">
+                <div class="section-item--title">
+                  Current Liabilities
+                </div>
+                <div class="section-item--body">
+                  <ng-container *ngFor="let subItem of currentLiabilities.children">
+                    <div class="sub-item">
+                      <div class="sub-item--title">
+                        <div class="sub-item--title-name">
+                          {{ subItem.name }}
+                        </div>
+                        <div class="sub-item--title-amount">
+                          {{ subItem.amount | number: '0.2-2' }}
+                        </div>
+                      </div>
+
+                      <div *ngIf="subItem.children && subItem.children.length" class="sub-item--body">
+                        <ng-container *ngFor="let child of subItem.children">
+                          <div class="child">
+                            <div class="child-title">
+                              {{ child.name }}
+                            </div>
+                            <div class="child-amount">
+                              {{ child.amount | number: '0.2-2' }}
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+
+                <div class="section-item--footer">
+                  <div class="amount-text">
+                    {{ 'Total Current Liabilities:' }}
+                  </div>
+                  <div class="total-amount">
+                    {{ currentLiabilities.amount | number: '0.2-2' }}
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="nonCurrentLiabilities" class="section-item">
+                <div class="section-item--title">
+                  Non Current Liabilities
+                </div>
+                <div class="section-item--body">
+                  <ng-container *ngFor="let subItem of nonCurrentLiabilities.children">
+                    <div class="sub-item">
+                      <div class="sub-item--title">
+                        <div class="sub-item--title-name">
+                          {{ subItem.name }}
+                        </div>
+                        <div class="sub-item--title-amount">
+                          {{ subItem.amount | number: '0.2-2' }}
+                        </div>
+                      </div>
+
+                      <div *ngIf="subItem.children && subItem.children.length" class="sub-item--body">
+                        <ng-container *ngFor="let child of subItem.children">
+                          <div class="child">
+                            <div class="child-title">
+                              {{ child.name }}
+                            </div>
+                            <div class="child-amount">
+                              {{ child.amount | number: '0.2-2' }}
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+
+                <div class="section-item--footer">
+                  <div class="amount-text">
+                    {{ 'Total Non Current Liabilities:' }}
+                  </div>
+                  <div class="total-amount">
+                    {{ nonCurrentLiabilities.amount | number: '0.2-2' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section--footer">
+              <div class="footer-title">
+                {{ 'Total Liabilities' | uppercase }}
+              </div>
+              <div class="footer-total-amount">
+                {{ totalLiabilities | number: '0.2-2' }}
+              </div>
+            </div>
+          </div>
+
+          <!--  Equity section-->
+          <div class="section equity">
+            <div class="section--title">
+              {{ 'Equity' | uppercase }}
+            </div>
+
+            <div class="section--body">
+              <div class="section-item">
+                <div class="section-item--body">
+
+                  <!-- Owners Equity -->
+                  <div *ngIf="ownersEquity" class="sub-item">
+                    <div class="sub-item--title">
+                      <div class="sub-item--title-name">
+                        {{ ownersEquity.name }}
+                      </div>
+                      <div class="sub-item--title-amount">
+                        {{ ownersEquity.amount | number: '0.2-2' }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Less: Drawings -->
+                  <div *ngIf="lessDrawings" class="sub-item">
+                    <div class="sub-item--title">
+                      <div class="sub-item--title-name">
+                        {{ lessDrawings.name }}
+                      </div>
+                      <div class="sub-item--title-amount">
+                        {{ lessDrawings.amount | number: '0.2-2' }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Net Profit -->
+                  <div *ngIf="netProfit" class="sub-item">
+                    <div class="sub-item--title">
+                      <div class="sub-item--title-name">
+                        {{ netProfit.name }}
+                      </div>
+                      <div class="sub-item--title-amount">
+                        {{ netProfit.amount | number: '0.2-2' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section--footer">
+              <div class="footer-title">
+                {{ 'Equity' | uppercase }}
+              </div>
+              <div class="footer-total-amount">
+                {{ equityAmount | number: '0.2-2' }}
+              </div>
+            </div>
+
+            <div class="section--footer" style="margin-top: 15px">
+              <div class="footer-title">
+                {{ 'Total Liabilities + Equity' | uppercase }}
+              </div>
+              <div class="footer-total-amount">
+                {{ totalLiabilitiesEquity | number: '0.2-2' }}
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+</div>

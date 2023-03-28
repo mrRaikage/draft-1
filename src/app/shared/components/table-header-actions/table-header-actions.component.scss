@@ -1,0 +1,61 @@
+@import '../../../../assets/styles/variables';
+@import '../../../../assets/styles/global';
+@import '../../../../assets/styles/skeleton-loader';
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  &--filter {
+    width: 280px;
+
+    ::ng-deep .skeleton-loader {
+      height: 40px;
+      width: 280px;
+
+      .loader {
+        height: 40px;
+        border-radius: 32px
+      }
+    }
+  }
+
+  &--actions {
+    display: flex;
+
+    ::ng-deep .skeleton-loader {
+      height: 40px;
+
+      .loader {
+        height: 40px;
+        width: 155px;
+        margin-left: 15px;
+        border-radius: 32px;
+      }
+
+      .loader.progress:nth-child(1) {
+        &:before {
+          animation: 2s ease-in-out 0.6s infinite progress;
+
+        }
+      }
+      .loader.progress:nth-child(2) {
+        &:before {
+          animation: 2s ease-in-out 0.7s infinite progress;
+        }
+      }
+    }
+
+    app-button + app-button {
+      margin-left: 15px;
+    }
+
+    app-button-drop-down {
+      margin-left: 15px;
+    }
+  }
+}
+
+

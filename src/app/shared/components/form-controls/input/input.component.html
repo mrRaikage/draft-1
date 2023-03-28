@@ -1,0 +1,61 @@
+<ng-container *ngIf="typeList()">
+  <div
+    *ngIf="label"
+    class="form-field-label"
+    [class.disabled]="isView"
+    [class.text-right]="isTextRight"
+  >
+    {{ label }} {{ !notRequired && !isView ? '*' : null }}
+    <span *ngIf="notRequired && !isView" class="optional">(optional)</span>
+  </div>
+
+  <ng-container *ngIf="isView">
+    <p
+      class="input-text"
+      [innerText]="formControl.value"
+      [ngStyle]="isTableField ? {'padding-left': '10px'} : null"
+      appEllipsisTooltip
+    ></p>
+  </ng-container>
+
+  <ng-container *ngIf="!isView">
+    <mat-form-field
+      class="input-form-field"
+      appearance="fill"
+      [class.not-required]="notRequired"
+      [class.border-only-on-focus]="borderOnlyOnFocus"
+      [class.space-for-hint]="hintError || hintSuccess"
+      [class.table-field]="isTableField"
+      [class.text-right]="isTextRight"
+      [class.transparent-background]="transparentBackground"
+    >
+      <input
+        matInput
+        [appAutoFocus]="appAutoFocus"
+        [maxlength]="maxLength"
+        [formControl]="formControl"
+        [type]="type === 'password' ? (isView ? 'text' : 'password') : type"
+        [placeholder]="placeholder"
+        (ngModelChange)="isDirty.emit(formControl.dirty)"
+      >
+
+      <img
+        *ngIf="type === 'password'"
+        class="view-icon"
+        (click)="isView=!isView"
+        [src]="isView ? 'assets/icons/view-active.svg' : 'assets/icons/view.svg'"
+      >
+
+      <mat-hint *ngIf="hintError || hintSuccess" class="validator-hint">
+        <span class="validator-hint--success">{{ hintSuccess }}</span>
+        <span class="validator-hint--error">{{ hintError }}</span>
+      </mat-hint>
+    </mat-form-field>
+  </ng-container>
+</ng-container>
+
+<ng-container *ngIf="type === 'chip'">
+  <app-chip
+    [label]="formControl.value"
+  ></app-chip>
+</ng-container>

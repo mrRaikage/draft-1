@@ -1,0 +1,24 @@
+<mat-card class="import-transaction">
+  <app-close-btn class="close" (btnClick)="dialogRef.close()"></app-close-btn>
+
+  <mat-card-header>
+    <div class="title">Import Transaction</div>
+  </mat-card-header>
+  <mat-card-content>
+
+    <app-button
+      label="Upload csv file"
+      buttonStyleType="primary"
+      [spinner]="importSpinner$ | async"
+      (click)=fileInput.click()
+    ></app-button>
+    <input
+        #fileInput
+        type="file"
+        name="file-input"
+        multiple
+        style="display: none"
+        (change)="handleFileInput($event)"
+    />
+  </mat-card-content>
+</mat-card>

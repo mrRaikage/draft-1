@@ -1,0 +1,23 @@
+@import '../../../../assets/styles/variables';
+
+.warning {
+  padding: 5px 8px;
+  border: 1px solid $color-warning-orange;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+
+  img {
+    margin-right: 5px;
+    position: relative;
+    bottom: 1px;
+  }
+
+  span {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    color: $color-warning-orange;
+  }
+
+}

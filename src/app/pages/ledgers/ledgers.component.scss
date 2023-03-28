@@ -1,0 +1,48 @@
+@import '../../../assets/styles/variables';
+@import '../../../assets/styles/content-page';
+
+.ledgers-container {
+  padding: 30px 50px 40px;
+  height: 100%;
+
+  .mt-gap {
+    margin-top: 10px;
+    display: block;
+  }
+
+  .ledgers-body--form {
+    height: 20%;
+    margin-bottom: 20px;
+
+    .form {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+
+      .form-items-container {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+
+        .form-items-right-side {
+          .form-item {
+            width: 350px;
+            margin-bottom: 10px;
+          }
+        }
+
+        .form-items-left-side {
+          .form-item {
+            width: 350px;
+            margin-bottom: 10px;
+          }
+        }
+      }
+
+      .form-button {
+        align-self: end;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}

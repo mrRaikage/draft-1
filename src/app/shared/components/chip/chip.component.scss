@@ -1,0 +1,39 @@
+@import '../../../../assets/styles/variables';
+
+.chip-wrapper {
+  border-radius: 16px;
+  padding: 3px 15px;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 23px;
+
+  & span {
+    display: inline-block;
+  }
+
+  img {
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+
+  &.grey {
+    color: $color-basic-dark-grey;
+    background-color: rgba($color-basic-dark-grey, 0.1);
+  }
+  &.green {
+    color: $color-success-green;
+    background-color: rgba($color-success-green, 0.1);
+  }
+  &.purple {
+    color: $color-basic-purple;
+    background-color: rgba($color-basic-purple, 0.1);
+  }
+  &.blue {
+    color: $color-info-blue;
+    background-color: rgba($color-info-blue, 0.1);
+  }
+  &.orange {
+    color: $color-warning-orange;
+    background-color: rgba($color-warning-orange, 0.1);
+  }
+}

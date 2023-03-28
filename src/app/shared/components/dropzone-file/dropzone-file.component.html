@@ -1,0 +1,17 @@
+<div
+  class="dropzone"
+  [class.drop-area]="dropAreaClass"
+>
+
+  <input type="file"
+   #file
+   accept=".qif"
+   [multiple]="false"
+   style="display: none"
+  />
+
+  <div>
+    {{label}}
+  </div>
+
+</div>

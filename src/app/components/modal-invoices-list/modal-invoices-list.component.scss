@@ -1,0 +1,134 @@
+@import '../../../assets/styles/variables';
+
+::ng-deep .modal-transaction-list.mat-card {
+
+  .mat-card-header-text {
+    margin: 0;
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.mat-card {
+  height: 100%;
+  box-shadow: none;
+  padding: 0;
+}
+
+.mat-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 55px;
+  border-bottom: 1px solid $color-basic-normal-grey;
+  padding: 15px 20px 15px 25px;
+
+  .mat-card-title {
+    margin: 0;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 22px;
+    color: $color-contrast-black;
+  }
+
+  .close {
+    cursor: pointer;
+    width: 24px;
+  }
+}
+
+.mat-card-content {
+  padding: 20px 25px;
+}
+
+.table-container {
+
+}
+
+.invoice-table {
+  width: 100%;
+}
+
+tr.mat-header-row {
+  height: 50.5px;
+
+  th.mat-header-cell {
+    border-bottom: 0;
+    padding: 0;
+
+    .th-container {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      background: $color-basic-light-grey;
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 19px;
+      color: $color-basic-dark-grey;
+      margin-bottom: 2.5px;
+    }
+
+    &:first-of-type {
+      .th-container {
+        padding-left: 25px;
+        border-radius: 3px 0 0 3px
+      }
+    }
+
+    &:last-of-type {
+      .th-container {
+        border-radius: 0 3px 3px 0;
+      }
+    }
+  }
+}
+
+tr.mat-row {
+  height: 53px;
+
+  td.mat-cell {
+    border: none;
+    padding: 0;
+
+    &.mat-column-number {
+      .td-container {
+        color: $color-basic-purple;
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 19px;
+      }
+    }
+
+    .td-container {
+      display: flex;
+      align-items: center;
+      height: 48px;
+      border-top: 1.5px solid $color-basic-light-grey;
+      border-bottom: 1.5px solid $color-basic-light-grey;
+      color: $color-contrast-black;
+      font-size: 13px;
+      line-height: 18px;
+    }
+
+    &:first-of-type {
+      .td-container {
+        padding-left: 25px;
+        border-radius: 3px 0 0 3px;
+        border-left: 1.5px solid $color-basic-light-grey;
+      }
+
+    }
+
+    &:last-of-type {
+      .td-container {
+        border-radius: 0 3px 3px 0;
+        border-right: 1.5px solid $color-basic-light-grey;
+      }
+
+    }
+  }
+}
+
+

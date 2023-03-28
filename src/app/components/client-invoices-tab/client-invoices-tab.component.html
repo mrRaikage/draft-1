@@ -1,0 +1,65 @@
+<mat-card class="invoices-tab">
+  <ng-container *ngIf="!(invoicesIsLoading$ | async) && editableTable.formArrayRows.length">
+    <mat-card-header class="invoices-tab-header">
+      <div class="invoices-tab-title">
+        Invoices
+      </div>
+    </mat-card-header>
+  </ng-container>
+
+  <mat-card-content>
+    <div
+      [class.table-wrapper]="
+          !(invoicesIsLoading$ | async) &&
+          (editableTable.formArrayRows.length || modalMode !== 'View')
+      "
+    >
+      <div class="table-container">
+        <app-editable-table
+          #editableTable
+          [columns]="columns"
+          [requiredColumns]="columns"
+          [formGroupRows$]="tableFormGroupRows$"
+          [isLoading]="invoicesIsLoading$ | async"
+          [modalType]="modalMode"
+          [rowsIsClickable]="true"
+          [hasEmptyPageComponent]="true"
+          [emptyContentData]="emptyContentClientInvoice"
+          [skeletonColumnsCount]="5"
+          (handleRowClick)="clickOnRow($event)"
+        ></app-editable-table>
+
+        <ng-container *ngIf="!(invoicesIsLoading$ | async) && editableTable.formArrayRows.length">
+          <div class="under-table-row">
+            <div class="button-field">
+              <app-button
+                *ngIf="modalMode !== 'View'"
+                label="Add"
+                buttonStyleType="add"
+                (btnClick)="editableTable.addPriceBookRow()"
+              ></app-button>
+            </div>
+
+            <div class="amount-column">
+              <div class="amount-field amount-field--total">
+                <div class="label">Total</div>
+                <div class="value-area"> ${{ total | number: '0.2-2' }} </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <ng-container *ngIf="!(invoicesIsLoading$ | async)">
+      <app-button
+        class="button-right"
+        [label]="'Close'"
+        [buttonStyleType]="'black'"
+        (btnClick)="cancelButtonClick()"
+      ></app-button>
+    </ng-container>
+  </mat-card-actions>
+</mat-card>

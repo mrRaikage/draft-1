@@ -1,0 +1,183 @@
+<mat-card class="job-tab">
+  <mat-card-content>
+    <div class="form-fields-area" [formGroup]="form">
+      <div class="left-column">
+        <div class="form-field-wrapper">
+          <app-select-opt-group-quick-add
+            #quickAddClientComp
+            [cursorPointer]="modalMode === 'View'"
+            [label]="'Client'"
+            [formControl]="form.controls['client']"
+            [setList]="clientsSelectList"
+            [placeholder]="'Select client'"
+            [panelWidth]="340"
+            [requiredValidator]="true"
+            [selectObjectValidator]="true"
+            [quickAddComponent]="'client'"
+            (setError)="setError(form.controls['client'], $event)"
+            [disableState]="modalMode === 'View'"
+            (click)="modalMode === 'View' ? openClient() : null"
+          >
+            <ng-template
+              #quickAddForm
+              let-panelOpened='panelOpened'
+              let-autoGroup='autoGroup'
+            >
+              <app-quick-add-client
+                (quickAddClient)="quickAddClient($event)"
+                [panelIsOpened]="panelOpened"
+                [autoGroup]="autoGroup"
+              ></app-quick-add-client>
+            </ng-template>
+          </app-select-opt-group-quick-add>
+        </div>
+
+        <div class="form-field-wrapper">
+          <app-input
+            #formField
+            requiredValidator="true"
+            [maxLength]="'80'"
+            label="Name"
+            type="text"
+            placeholder="Name"
+            [formControl]="form.controls['name']"
+            [disableState]="modalMode === 'View'"
+          ></app-input>
+        </div>
+
+        <ng-container *ngIf="modalMode !== 'View' || !(modalMode === 'View' && !form.controls['billTo'].value)">
+          <div class="form-field-wrapper">
+            <app-textarea
+              #formField
+              [formControl]="form.controls['billTo']"
+              [maxLength]="'240'"
+              label="Bill To"
+              class="text-area-field"
+              [style]="{'height': '80px'}"
+              [placeholder]="'Bill to'"
+              [disableState]="modalMode === 'View'"
+            ></app-textarea>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="modalMode !== 'View' || !(modalMode === 'View' && !form.controls['details'].value)">
+          <div class="form-field-wrapper">
+            <app-textarea
+              #formField
+              [formControl]="form.controls['details']"
+              [maxLength]="'240'"
+              [label]="'Details'"
+              [style]="{'height': '80px'}"
+              [placeholder]="'Details'"
+              [disableState]="modalMode === 'View'"
+            ></app-textarea>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="right-column">
+
+        <ng-container>
+          <div class="form-field-wrapper">
+            <app-select-opt
+              #formField
+              class="form-field"
+              label="Status"
+              requiredValidator="true"
+              [formControl]="form.controls['status']"
+              [list]="statusListValue"
+              [disableState]="modalMode === 'View'"
+              [isTextRight]="modalMode === 'View'"
+            ></app-select-opt>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="modalMode !== 'View' || !(modalMode === 'View' && !form.controls['startDate'].value)">
+          <div class="form-field-wrapper">
+            <app-date-picker
+              #formField
+              [label]="'Start Date'"
+              [formControl]="form.controls['startDate']"
+              [disableState]="modalMode === 'View'"
+              [isTextRight]="modalMode === 'View'"
+            ></app-date-picker>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="modalMode !== 'View' || !(modalMode === 'View' && !form.controls['endDate'].value)">
+          <div class="form-field-wrapper">
+            <app-date-picker
+              #formField
+              [label]="'End Date'"
+              [formControl]="form.controls['endDate']"
+              [disableState]="modalMode === 'View'"
+              [isTextRight]="modalMode === 'View'"
+            ></app-date-picker>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="modalMode !== 'View' || !(modalMode === 'View' && !form.controls['reference'].value)">
+          <div class="form-field-wrapper">
+            <app-input
+              #formField
+              [formControl]="form.controls['reference']"
+              [maxLength]="'80'"
+              [label]="'Reference'"
+              [type]="'text'"
+              [placeholder]="'Reference'"
+              [disableState]="modalMode === 'View'"
+              [isTextRight]="modalMode === 'View'"
+            ></app-input>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <div class="left-side">
+      <ng-container *ngIf="modalMode === 'Edit'">
+        <app-button
+          label="Delete"
+          buttonStyleType="delete bg-white"
+          (click)="deleteButtonClick()"
+        ></app-button>
+      </ng-container>
+    </div>
+
+    <div class="right-side">
+      <ng-container *ngIf="modalMode !== 'View'">
+        <app-button
+          class="action-button"
+          label="Save"
+          buttonStyleType="primary"
+          (btnClick)="saveButtonClick()"
+          [spinner]="spinnerStarted$ | async"
+          [disabled]="this.form.invalid"
+        ></app-button>
+        <app-button
+          class="action-button"
+          label="Cancel"
+          buttonStyleType="black"
+          (btnClick)="cancelButtonClick()"
+        ></app-button>
+      </ng-container>
+
+      <ng-container *ngIf="modalMode === 'View'">
+        <app-button
+          class="action-button"
+          label="Edit"
+          buttonStyleType="primary"
+          (btnClick)="editButtonClick()"
+        ></app-button>
+
+        <app-button
+          class="action-button"
+          label="Close"
+          buttonStyleType="black"
+          (btnClick)="cancelButtonClick()"
+        ></app-button>
+      </ng-container>
+    </div>
+  </mat-card-actions>
+</mat-card>

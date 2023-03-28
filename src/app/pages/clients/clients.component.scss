@@ -1,0 +1,23 @@
+@import '../../../assets/styles/content-page';
+@import '../../../assets/styles/global';
+@import '../../../assets/styles/variables';
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 25px;
+}
+.page-content.client-content {
+  display: flex;
+  flex-direction: column;
+  background: none;
+  margin: 0 auto;
+}
+
+.client-cards {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 45px;
+  column-gap: 45px;
+  width: 100%;
+}

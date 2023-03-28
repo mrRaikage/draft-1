@@ -1,0 +1,35 @@
+@import '../../../../assets/styles/variables';
+
+::ng-deep .mat-menu-panel.add-transaction {
+  width: 225px;
+  padding: 13px 0 13px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
+  border-radius: 5px;
+  margin-top: 14px;
+
+  .mat-menu-content {
+    padding: 0;
+  }
+
+  .label {
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 19px;
+    padding: 0 15px;
+  }
+
+  .mat-menu-item {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
+    font-size: 13px;
+    line-height: 18px;
+
+    &:hover {
+      background: $color-basic-purple;
+      font-weight: 600;
+      color: $color-basic-white;
+    }
+  }
+}

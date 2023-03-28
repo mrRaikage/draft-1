@@ -1,0 +1,70 @@
+<mat-card class="card-wrapper">
+  <mat-card-content [formGroup]="formUserName">
+    <div class="form-field">
+      <app-input
+        #formField
+        formControlName="userName"
+        [label]="'What do we call you?'"
+        [type]="'text'"
+        [placeholder]="'User Name'"
+        (ngModelChange)="unsavedChanges = true"
+      ></app-input>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions class="actions">
+    <app-button
+      *ngIf="!lSService.getUserData().logInWithGoogle"
+      [buttonStyleType]="'bg-white border-purple'"
+      [label]="'Change Password'"
+      (btnClick)="showPasswordForm()"
+    ></app-button>
+
+    <app-button
+      [buttonStyleType]="'primary'"
+      [label]="'Save Changes'"
+      [disabled]="formUserName.pristine"
+      [spinner]="userNameSpinnerStarted$ | async"
+      (btnClick)="saveUserName()"
+    ></app-button>
+  </mat-card-actions>
+
+  <ng-container *ngIf="isPasswordFormDisplayed">
+    <mat-card-content class="password-area" [formGroup]="formPassword">
+      <div class="form-field">
+        <app-input
+          label="Password"
+          placeholder="Must be at least 8 characters"
+          [formControl]="formPassword.controls['password']"
+          [type]="'password'"
+          minLengthValidator="8"
+          [hintSuccess]="'Your password is great. Nice work!'"
+          [hintError]="'This value is required.'"
+        ></app-input>
+      </div>
+
+      <div class="form-field">
+        <app-input
+          label="Confirm Password"
+          placeholder="Both password must match"
+          [formControl]="formPassword.controls['confirmPassword']"
+          [type]="'password'"
+          [mustMatchValidator]="formPassword.controls['password']"
+          [hintSuccess]="'Nice work! Passwords are matched'"
+          [hintError]="'Both password must match'"
+        ></app-input>
+      </div>
+
+      <mat-card-actions class="actions">
+        <app-button
+          [buttonStyleType]="'primary'"
+          [label]="'Save'"
+          [disabled]="formPassword.invalid"
+          [spinner]="passwordSpinnerStarted$ | async"
+          (btnClick)="savePassword()"
+        ></app-button>
+      </mat-card-actions>
+    </mat-card-content>
+  </ng-container>
+</mat-card>
+

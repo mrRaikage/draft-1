@@ -1,0 +1,11 @@
+<div class="image" mat-button [matMenuTriggerFor]="more" (click)="$event.stopPropagation()">
+  <img class="image-more" src="../../../../assets/icons/more.svg" alt="more">
+</div>
+<mat-menu class="table-actions-panel" #more="matMenu" xPosition="before">
+  <ng-container *ngFor="let action of actions">
+    <button mat-menu-item (click)="handleAction.emit(action.key)">
+      <img class="icon" src="assets/icons/{{ action.icon }}.svg" [alt]="action.icon">
+      <span>{{ action.name }}</span>
+    </button>
+  </ng-container>
+</mat-menu>

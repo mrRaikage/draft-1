@@ -1,0 +1,19 @@
+@import 'variables';
+
+::ng-deep .toast-container {
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  .toast-error {
+    box-shadow: none;
+    width: 100%;
+    border-radius: 0;
+    background: $color-error-red;
+    text-align: center;
+
+    &:hover {
+      box-shadow: none;
+    }
+  }
+}

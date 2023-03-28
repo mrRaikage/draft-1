@@ -1,0 +1,88 @@
+@import "../../../../../../../assets/styles/variables";
+
+.mat-option.add {
+  padding: 5px 20px;
+  cursor: pointer;
+
+  & .quick-add-button {
+    display: flex;
+    align-items: center;
+
+    color: $color-basic-purple;
+
+    & img {
+      margin-right: 5px;
+    }
+
+  }
+
+  &:hover {
+
+    & .quick-add-button {
+      color: $color-basic-white;
+    }
+
+    & img {
+      filter: saturate(0) invert(1) contrast(100);
+    }
+  }
+}
+
+.quick-add {
+
+  padding-top: 10px;
+
+  border-top: 1px solid $color-basic-normal-grey;
+
+  & .content {
+    padding: 0 15px;
+    margin-bottom: 20px;
+  }
+
+  & .form {
+    padding: 0 10px;
+    margin-bottom: 20px;
+
+    .form-control + .form-control {
+      margin-top: 20px;
+    }
+
+    .form-control.tax {
+      max-width: 140px;
+      font-size: 13px;
+    }
+
+    & app-input {
+      max-width: 220px;
+    }
+
+    & app-select-opt {
+      max-width: 300px;
+    }
+  }
+
+  & .actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    padding: 0 25px 20px 25px;
+
+    & app-button + app-button {
+      margin-left: 20px;
+    }
+  }
+
+  & .label {
+    font: 500 14px/24px Roboto, "Helvetica Neue", sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 19px;
+    color: $color-contrast-black;
+    padding: 6px 0;
+    height: 30px;
+    display: flex;
+    align-items: center;
+  }
+
+}

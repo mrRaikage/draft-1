@@ -1,0 +1,45 @@
+<div
+  *ngIf="label"
+  class="form-field-label"
+  [class.text-right]="isTextRight"
+  [class.disabled]="isView"
+>
+  {{ label }} {{ !notRequired && !isView ? '*' : null }}
+  <span *ngIf="notRequired && !isView" class="optional">(optional)</span>
+</div>
+<ng-container *ngIf="isView">
+  <div
+    class="date-view"
+    [class.table-field]="isTableField"
+    [class.text-right]="isTextRight"
+  >
+    {{ formControl.value | date: 'd MMM, yyyy' }}
+  </div>
+</ng-container>
+<ng-container *ngIf="!isView">
+  <mat-form-field
+    class="input-form-field date-picker"
+    appearance="fill"
+    [ngClass]="class"
+    [class.not-required]="notRequired"
+    [class.border-only-on-focus]="borderOnlyOnFocus"
+    [class.space-for-hint]="hintError || hintSuccess"
+  >
+    <input
+      matInput
+      [placeholder]="placeholder"
+      [formControl]="formControl"
+      [matDatepicker]="picker"
+      (ngModelChange)="isDirty.emit(formControl.dirty)"
+    >
+    <mat-datepicker #picker></mat-datepicker>
+
+    <img class="trigger" mat-raised-button (click)="picker.open()" src="../../../../../assets/icons/calendar.svg" alt="close">
+
+    <mat-hint *ngIf="hintError || hintSuccess" class="validator-hint">
+      <span class="validator-hint--success">{{ hintSuccess }}</span>
+      <span class="validator-hint--error">{{ hintError }}</span>
+    </mat-hint>
+  </mat-form-field>
+</ng-container>
+

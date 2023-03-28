@@ -1,0 +1,107 @@
+<mat-card class="client-tab" [formGroup]="form">
+  <mat-card-content>
+    <div class="form-fields-area">
+      <div class="left-column">
+        <div class="form-field-wrapper">
+          <app-input
+            #formField
+            [maxLength]="'80'"
+            [requiredValidator]="'true'"
+            [formControl]="form.controls['name']"
+            [label]="'Name'"
+            [type]="'text'"
+            [placeholder]="'Name'"
+            [disableState]="modalMode === 'View'"
+          ></app-input>
+        </div>
+
+        <ng-container *ngIf="modalMode !== 'View' || !(modalMode === 'View' && !form.controls['email'].value)">
+          <div class="form-field-wrapper">
+            <app-input
+              #formField
+              [maxLength]="'240'"
+              [label]="'Email'"
+              [type]="'email'"
+              [formControl]="form.controls['email']"
+              [placeholder]="'Email'"
+              [disableState]="modalMode === 'View'"
+            ></app-input>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="modalMode !== 'View' || !(modalMode === 'View' && !form.controls['address'].value)">
+          <div class="form-field-wrapper">
+            <app-textarea
+              #formField
+              [maxLength]="'240'"
+              [style]="{'height': '100px'}"
+              [formControl]="form.controls['address']"
+              [label]="'Address'"
+              [placeholder]="'Address'"
+              [disableState]="modalMode === 'View'"
+            ></app-textarea>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="right-column">
+        <ng-container *ngIf="modalMode !== 'View' || !(modalMode === 'View' && !form.controls['phone'].value)">
+          <app-input
+            #formField
+            [label]="'Phone'"
+            [maxLength]="'80'"
+            [formControl]="form.controls['phone']"
+            [type]="'text'"
+            [placeholder]="'Phone'"
+            [disableState]="modalMode === 'View'"
+          ></app-input>
+        </ng-container>
+      </div>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <div class="left-side">
+      <ng-container *ngIf="modalMode === 'Edit'">
+        <app-button
+        [buttonStyleType]="'delete bg-white'"
+        [label]="'Delete'"
+        (btnClick)="deleteButtonClick()"
+        ></app-button>
+      </ng-container>
+    </div>
+    <div class="right-side">
+      <ng-container *ngIf="modalMode !== 'View'">
+        <app-button
+          class="action-button"
+          [label]="'Save'"
+          [buttonStyleType]="'primary'"
+          (btnClick)="saveButtonClick()"
+          [spinner]="spinnerStarted$ | async"
+          [disabled]="this.form.invalid"
+        ></app-button>
+        <app-button
+          class="action-button"
+          [label]="'Cancel'"
+          [buttonStyleType]="'black'"
+          (btnClick)="cancelButtonClick()"
+        ></app-button>
+      </ng-container>
+
+      <ng-container *ngIf="modalMode === 'View'">
+        <app-button
+          class="action-button"
+          [label]="'Edit'"
+          [buttonStyleType]="'primary'"
+          (btnClick)="editButtonClick()"
+        ></app-button>
+        <app-button
+          class="action-button"
+          [label]="'Close'"
+          [buttonStyleType]="'black'"
+          (btnClick)="cancelButtonClick()"
+        ></app-button>
+      </ng-container>
+    </div>
+  </mat-card-actions>
+</mat-card>

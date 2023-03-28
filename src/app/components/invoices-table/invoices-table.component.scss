@@ -1,0 +1,125 @@
+@import '../../../assets/styles/variables';
+
+/** Skeleton styles */
+.skeleton-table-row {
+  height: 50px;
+  border: 1px solid $color-basic-light-grey;
+  border-radius: 5px;
+  padding-left: 30px;
+  padding-right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/** Table styles */
+table {
+  width: 100%;
+}
+
+/* Disable Material styles */
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+  border-bottom: none;
+}
+
+th.mat-column-paidDate{
+  text-align: right;
+}
+
+td.mat-column-paidDate {
+  div {
+    float: right;
+  }
+}
+
+::ng-deep .paidDate-column .mat-sort-header-container {
+  flex-direction: row-reverse;
+
+  .mat-sort-header-arrow {
+    margin: 0 6px 0 0;
+  }
+}
+
+/** Table header styles */
+tr.mat-header-row {
+  background-color: $color-basic-light-grey;
+  height: 48px;
+
+  &.hidden {
+    display: none;
+  }
+
+  th.mat-header-cell {
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 19px;
+    color: $color-basic-dark-grey;
+    padding-left: 30px;
+
+    &:first-child {
+      border-radius: 5px 0 0 5px;
+    }
+
+    &:last-child {
+      border-radius: 0 5px 5px 0;
+    }
+
+  }
+
+}
+
+/** Table body styles */
+tr.mat-row {
+
+  td.mat-cell {
+    font-size: 13px;
+    line-height: 18px;
+    color: $color-contrast-black;
+    padding: 0;
+
+    .td-container {
+      margin-top: 10px;
+      padding-left: 30px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      border-top: 1px solid $color-basic-light-grey;
+      border-bottom: 1px solid $color-basic-light-grey;
+      cursor: pointer;
+
+      p {
+        max-width: 235px;
+      }
+    }
+
+    &:first-of-type {
+      .td-container {
+        border-left: 1px solid $color-basic-light-grey;
+        border-radius: 5px 0 0 5px;
+      }
+    }
+
+    &:last-of-type {
+      .td-container {
+        justify-content: flex-end;
+        padding-left: 0;
+        padding-right: 20px;
+        border-right: 1px solid $color-basic-light-grey;
+        border-radius: 0 5px 5px 0;
+
+      }
+    }
+  }
+
+  td.mat-column-more {
+    width: 64px;
+    cursor: pointer;
+  }
+
+}
+
+/** Pagination styles */
+.mat-paginator.hidden {
+  visibility: hidden;
+}

@@ -1,0 +1,15 @@
+<div class="files-container">
+  <app-button
+    [label]="label"
+    [buttonStyleType]="buttonStyleType"
+    (btnClick)=fileInput.click()
+  ></app-button>
+  <input
+    #fileInput
+    type="file"
+    name="file-input"
+    multiple
+    style="display: none"
+    (change)="handleFileInput($event)"
+  />
+</div>

@@ -1,0 +1,53 @@
+@import '../../../assets/styles/variables';
+
+.list-item {
+  padding: 17px 20px;
+  background: $color-basic-white;
+  border-bottom: 1px solid $color-basic-light-grey;
+
+  .date {
+    font-size: 11px;
+    line-height: 16px;
+    color: $color-basic-dark-grey;
+  }
+
+  .main-info {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+
+    .left-side {
+      .party {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+        color: $color-contrast-black;
+        margin-bottom: 2px;
+      }
+
+      .details {
+        font-size: 13px;
+        line-height: 18px;
+        color: $color-contrast-black;
+      }
+    }
+
+    .right-side {
+      text-align: right;
+
+      .amount {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+        color: $color-contrast-black;
+        margin-bottom: 4px;
+      }
+
+      .type {
+        font-size: 11px;
+        line-height: 16px;
+        color: $color-basic-dark-grey;
+      }
+    }
+  }
+}

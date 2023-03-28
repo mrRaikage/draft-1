@@ -1,0 +1,22 @@
+<div class="job-card">
+  <div class="job-card-content">
+    <div class="job-client-name-container">
+      <div class="job-client-name">
+        {{ clientName }}
+      </div>
+    </div>
+
+    <div class="job-name">
+      {{ jobName }}
+    </div>
+  </div>
+
+  <div class="job-card-actions">
+    <app-button
+      class="action-button"
+      label="View"
+      buttonStyleType="primary"
+      (btnClick)="viewJobButtonClick()"
+    ></app-button>
+  </div>
+</div>

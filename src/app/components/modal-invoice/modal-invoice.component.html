@@ -1,0 +1,44 @@
+<div class="modal-invoice">
+  <app-close-btn class="close" (btnClick)="dialogRef.close()"></app-close-btn>
+
+  <mat-tab-group class="invoice-tab-group" animationDuration="0ms" disableRipple (selectedTabChange)="tabChanged($event)">
+    <mat-tab
+      [label]="invoiceType"
+      [disabled]="activeTab !== 0 && modalMode !== 'View'"
+    >
+      <app-invoice-tab></app-invoice-tab>
+    </mat-tab>
+
+    <ng-container *ngIf="invoiceType === 'Invoice' && invoiceStatus !== 'Draft'">
+      <mat-tab
+        label="Client Invoice"
+        [disabled]="(activeTab !== 1 && modalMode !== 'View') || pdfGenerationStatus !== 'Complete'"
+      >
+        <ng-template mat-tab-label>
+          <span>Client Invoice</span>
+          <ng-container *ngIf="pdfGenerationStatus === 'Generating' && modalMode !== 'Add'">
+            <app-spinner
+              [ngStyle]="{marginLeft: '10px'}"
+              diameter="20"
+              spinnerColor="grey"
+            ></app-spinner>
+          </ng-container>
+        </ng-template>
+
+        <ng-container *ngIf="activeTab === 1">
+          <app-invoice-pdf-tab></app-invoice-pdf-tab>
+        </ng-container>
+      </mat-tab>
+    </ng-container>
+
+    <mat-tab
+      label="Ledger Entries"
+      [disabled]="(activeTab !== 2 && modalMode !== 'View') || invoiceStatus === 'Draft'">
+      <ng-container *ngIf="(activeTab === 2 && invoiceType === 'Invoice') || (activeTab === 1 && invoiceType === 'Bill')">
+        <app-invoice-ledger-items-tab
+          (closeModal)="dialogRef.close()"
+        ></app-invoice-ledger-items-tab>
+      </ng-container>
+    </mat-tab>
+  </mat-tab-group>
+</div>

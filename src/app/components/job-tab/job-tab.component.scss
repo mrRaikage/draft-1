@@ -1,0 +1,91 @@
+@import '../../../assets/styles/variables';
+@import '../../../assets/styles/form-field';
+
+.mat-card.job-tab {
+  box-shadow: none;
+  padding: 0;
+
+  /** Job Tab Content */
+  .mat-card-content {
+    margin: 0;
+    padding: 0;
+
+    .form-fields-area {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+
+      .left-column {
+        flex: auto;
+        max-width: 595px;
+      }
+
+      .right-column {
+        text-align: right;
+        max-width: 180px;
+        margin-left: 15px;
+      }
+
+      .form-field-wrapper + .form-field-wrapper {
+        margin-top: 15px;
+      }
+    }
+  }
+}
+
+/** Modal Actions */
+.mat-card-actions {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  height: 42px;
+
+  .left-side,
+  .right-side {
+    display: flex;
+
+    app-button + app-button {
+      margin-left: 12px;
+    }
+
+    app-button {
+      margin-top: 30px;
+    }
+  }
+
+  .left-side {
+    flex: auto;
+  }
+}
+
+.quick-add {
+
+  padding-top: 10px;
+  margin-bottom: 20px;
+
+  border-top: 1px solid $color-basic-normal-grey;
+
+  & .label {
+    font: 500 14px/24px Roboto, "Helvetica Neue", sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 19px;
+    color: $color-contrast-black;
+    padding: 6px 15px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+  }
+
+  & .name-input {
+    padding: 0 25px;
+  }
+
+}
+
+.pointer {
+  cursor: pointer;
+}
+

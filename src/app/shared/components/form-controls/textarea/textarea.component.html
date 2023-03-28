@@ -1,0 +1,41 @@
+<div class="text-area-wrapper">
+  <ng-container *ngIf="label">
+    <div class="form-field-label">
+      {{ label }} {{ !notRequired && !isView ? '*' : null }}
+      <span *ngIf="notRequired && !isView" class="optional">(optional)</span>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="isView">
+    <p class="textarea-text" [innerText]="formControl.value" appEllipsisTooltip></p>
+  </ng-container>
+
+  <ng-container *ngIf="!isView">
+    <mat-form-field
+      class="input-form-field textarea"
+      appearance="fill"
+      [ngStyle]="style"
+      [class.not-required]="notRequired"
+      [class.border-only-on-focus]="borderOnlyOnFocus"
+      [class.space-for-hint]="requiredValidator && (hintError || hintSuccess)"
+    >
+    <textarea
+      matInput
+      [maxlength]="maxLength"
+      [formControl]="formControl"
+      [placeholder]="placeholder"
+      (ngModelChange)="isDirty.emit(formControl.dirty)"
+    ></textarea>
+
+      <mat-hint *ngIf="hintError || hintSuccess" class="validator-hint">
+        <span class="validator-hint--success">{{ hintSuccess }}</span>
+        <span class="validator-hint--error">{{ hintError }}</span>
+      </mat-hint>
+    </mat-form-field>
+    <ng-container *ngIf="maxLength">
+      <div class="length-counter">
+        {{ (formControl.value ? formControl.value.length : 0) + '/' + maxLength }}
+      </div>
+    </ng-container>
+  </ng-container>
+</div>

@@ -1,0 +1,59 @@
+<ng-container *ngIf="label">
+  <div class="form-field-label" [class.disabled]="isView">
+    {{ label }} {{ !notRequired && !isView ? '*' : null }}
+    <span *ngIf="notRequired && !isView" class="optional">(optional)</span>
+  </div>
+</ng-container>
+
+ <ng-container *ngIf="isView && type !== 'chip'">
+   <p
+     class="select-text"
+     [innerText]="formControl.value.displayName"
+     appEllipsisTooltip
+     [ngStyle]="isTableField ? {'padding-left': '10px'} : null"
+   ></p>
+ </ng-container>
+
+<ng-container *ngIf="!isView && type !== 'chip'">
+  <mat-form-field
+    appearance="fill"
+    class="select-autocomplete"
+    [class.table-field]="isTableField"
+    [class.not-required]="notRequired"
+    [class.transparent-background]="transparentBackground"
+    (keydown.tab)="pressTabButton()"
+  >
+    <input
+      type="text"
+      matInput
+      [placeholder]="placeholder"
+      [formControl]="formControl"
+      [matAutocomplete]="autoGroup"
+      #trigger="matAutocompleteTrigger"
+      #triggerOnFocus
+      (ngModelChange)="isDirty.emit(formControl.dirty); checkValidControl(formControl)"
+      (blur)="checkCorrectValue(formControl, $event)"
+    >
+    <img *ngIf="!formControl.value " class="trigger" src="../../../../../assets/icons/drop-down-select.svg" alt="trigger">
+    <app-close-btn *ngIf="formControl.value" (btnClick)="onClear(triggerOnFocus, trigger, $event)" class="reset"></app-close-btn>
+    <mat-autocomplete
+      class="option-list"
+      #autoGroup="matAutocomplete"
+      [displayWith]="displayProperty"
+      [panelWidth]="panelWidth"
+      [autoActiveFirstOption]="true"
+    >
+      <mat-option *ngFor="let item of stateGroupOptions | async" [value]="item">
+        <div class="account-item">
+          <p>{{ item.displayName }}</p>
+        </div>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</ng-container>
+
+<ng-container *ngIf="type === 'chip'">
+  <app-chip
+    [label]="formControl.value.displayName"
+  ></app-chip>
+</ng-container>

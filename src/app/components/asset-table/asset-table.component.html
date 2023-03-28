@@ -1,0 +1,132 @@
+<div class="table mobile-hidden">
+
+  <app-table-header-actions
+    [assetHeader]="true"
+    [dataLoaded]="dataLoaded"
+    [filterValue]="filterValue"
+    (applyFilter)="applyFilter($event)"
+    (addFromBill)="addFromBill.emit()"
+    (addFromCash)="addFromCash.emit()"
+  ></app-table-header-actions>
+
+  <div class="table-content asset-table-wrapper">
+
+    <ng-container *ngIf="!dataLoaded">
+      <ngx-skeleton-loader [theme]="{height: '50px', borderRadius: '5px'}"></ngx-skeleton-loader>
+      <div class="skeleton-table-row" *ngFor="let item of skeletonRows">
+        <ngx-skeleton-loader [theme]="{height: '16px', width: '16px', borderRadius: '200px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{height: '16px', width: '76px', borderRadius: '200px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{height: '16px', width: '76px', borderRadius: '200px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{height: '16px', width: '76px', borderRadius: '200px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{height: '16px', width: '136px', borderRadius: '200px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{height: '16px', width: '160 px', borderRadius: '200px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{height: '16px', width: '76px', borderRadius: '200px'}"></ngx-skeleton-loader>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="dataSource.data.length">
+      <table
+        mat-table
+        matSort
+        matSortActive="dateAcquired"
+        matSortDirection="desc"
+        [dataSource]="dataSource"
+      >
+
+        <!--      Category Column       -->
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ 'Category' }}
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="td-container">
+              <p>
+                {{ getCategoryNameById(row.categoryAccountId) }}
+              </p>
+            </div>
+          </td>
+        </ng-container>
+
+        <!--      Name Column       -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ 'Name' }}
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="td-container">
+              <p>
+                {{ row.name }}
+              </p>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ 'Status' }}
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="td-container">
+              <ng-container *ngIf="row.status">
+                <app-chip [label]="row.status"></app-chip>
+              </ng-container>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Identifier Column -->
+        <ng-container matColumnDef="identifier">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ 'identifier' }}
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="td-container">
+              <p>
+                {{ row.identifier }}
+              </p>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Date Acquired Column -->
+        <ng-container matColumnDef="dateAcquired">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ 'Date' }}
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="td-container">
+              <p>
+                {{ row.dateAcquired | date: 'd MMM, y'}}
+              </p>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Book Value Column -->
+        <ng-container matColumnDef="bookValue">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ 'Book Value' }}
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="td-container">
+              <p>
+                ${{ row.bookValue }}
+              </p>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns" [class.hidden]="!dataLoaded"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns;" (click)="handleAction.emit([row, 'view'])"></tr>
+
+      </table>
+
+      <mat-paginator
+        [class.hidden]="!dataSource || (dataSource && dataSource.data.length <= pageSize)"
+        [pageSize]="pageSize"
+      ></mat-paginator>
+    </ng-container>
+  </div>
+
+</div>

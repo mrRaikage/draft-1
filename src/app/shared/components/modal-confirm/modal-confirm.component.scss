@@ -1,0 +1,52 @@
+@import '../../../../assets/styles/variables';
+
+.modal-wrapper {
+  position: relative;
+}
+
+.top-line {
+  height: 4px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  &.delete {
+    background-color: $color-error-red;
+  }
+
+  &.success {
+    background-color: $color-success-green;
+  }
+}
+
+.modal-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px;
+
+  .modal-image {
+    margin-bottom: 20px;
+  }
+
+  .modal-text {
+    font-size: 18px;
+    line-height: 26px;
+    letter-spacing: -0.2px;
+    color: $color-contrast-black;
+    margin-bottom: 40px;
+    max-width: 280px;
+    text-align: center;
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: center;
+
+    app-button:not(:first-child) {
+      margin-left: 15px;
+    }
+  }
+}

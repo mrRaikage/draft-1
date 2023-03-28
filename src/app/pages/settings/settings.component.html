@@ -1,0 +1,13 @@
+<div class="page-wrapper">
+
+  <nav mat-tab-nav-bar class="settings-tabs">
+    <a *ngFor="let link of links"
+       mat-tab-link
+       [routerLink]="link.url"
+       [active]="isActiveTab(link.url)"
+    > {{ link.title }} </a>
+  </nav>
+
+  <router-outlet></router-outlet>
+
+</div>

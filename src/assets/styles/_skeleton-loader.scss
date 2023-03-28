@@ -1,0 +1,16 @@
+@import 'variables';
+
+::ng-deep ngx-skeleton-loader .loader {
+  margin-bottom: 0 !important;
+  background: no-repeat $color-basic-light-grey !important;
+}
+
+::ng-deep .skeleton-header-loader {
+  height: 50px;
+
+  .loader {
+    height: 50px !important;
+    border-radius: 5px !important;
+
+  }
+}

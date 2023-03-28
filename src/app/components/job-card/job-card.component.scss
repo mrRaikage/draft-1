@@ -1,0 +1,55 @@
+@import '../../../assets/styles/variables';
+
+.job-card {
+  width: 200px;
+  height: 250px;
+  color: $color-contrast-black;
+  padding: 38px 20px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  background-color: $color-basic-white;
+  border-radius: 5px;
+
+  .job-card-content {
+    flex: 1;
+  }
+
+  .job-card-actions {
+    padding-top: 8px;
+  }
+
+
+  .job-client-name-container {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .job-client-name {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.2px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    overflow-wrap: break-word;
+  }
+
+  .job-name {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 26px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    overflow-wrap: break-word;
+  }
+
+}

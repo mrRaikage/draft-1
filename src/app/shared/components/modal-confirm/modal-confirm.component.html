@@ -1,0 +1,32 @@
+<div class="modal-wrapper">
+  <div class="top-line" [ngClass]="data.type"></div>
+  <div class="modal-content">
+
+    <ng-container *ngIf="data.type === 'delete'">
+      <img class="modal-image" src="../../../../assets/images/remove.svg">
+    </ng-container>
+
+    <ng-container *ngIf="data.type === 'success'">
+      <img class="modal-image" src="../../../../assets/images/success.svg">
+    </ng-container>
+
+    <div class="modal-text">{{ data.text }}</div>
+    <div class="modal-actions">
+
+      <ng-container *ngIf="data.type === 'delete'">
+        <app-button label="Cancel" buttonStyleType="black" (btnClick)="dialogRef.close(false)"></app-button>
+        <app-button
+          [label]="data.submitName"
+          [spinner]="data.spinner$ | async"
+          buttonStyleType="primary"
+          (btnClick)="submit()"
+        ></app-button>
+      </ng-container>
+
+      <ng-container *ngIf="data.type === 'success'">
+        <app-button [label]="data.submitName" buttonStyleType="success" (btnClick)="dialogRef.close(true)"></app-button>
+      </ng-container>
+
+    </div>
+  </div>
+</div>

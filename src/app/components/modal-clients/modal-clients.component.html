@@ -1,0 +1,33 @@
+<div class="modal-client">
+  <app-close-btn class="close" (btnClick)="dialogRef.close()"></app-close-btn>
+
+  <mat-tab-group class="clients-tab-group" animationDuration="0ms" disableRipple (selectedTabChange)="currentTabIndex = $event.index">
+    <mat-tab label="Client" [disabled]="currentTabIndex !== 0 && modalModeService.getModalMode() !== 'View'">
+      <app-clients-tab></app-clients-tab>
+    </mat-tab>
+
+    <mat-tab label="Jobs" [disabled]="currentTabIndex !== 1 && modalModeService.getModalMode() !== 'View'">
+      <ng-container *ngIf="currentTabIndex === 1">
+        <app-jobs-tab
+          (closeModal)="dialogRef.close()"
+        ></app-jobs-tab>
+      </ng-container>
+    </mat-tab>
+
+    <mat-tab label="Invoices" [disabled]="currentTabIndex !== 2 && modalModeService.getModalMode() !== 'View'">
+      <ng-container *ngIf="currentTabIndex === 2">
+        <app-invoices-tab
+          (closeModal)="dialogRef.close()"
+        ></app-invoices-tab>
+      </ng-container>
+    </mat-tab>
+
+    <mat-tab label="Price Book" [disabled]="currentTabIndex !== 3 && modalModeService.getModalMode() !== 'View'">
+      <ng-container *ngIf="currentTabIndex === 3">
+        <app-price-book-tab
+          (closeModal)="dialogRef.close()"
+        ></app-price-book-tab>
+      </ng-container>
+    </mat-tab>
+  </mat-tab-group>
+</div>

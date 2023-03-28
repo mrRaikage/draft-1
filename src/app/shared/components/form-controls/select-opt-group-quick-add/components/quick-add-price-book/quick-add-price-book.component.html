@@ -1,0 +1,79 @@
+<div #el>
+  <ng-container *ngIf="!isAddState">
+    <mat-option
+      class="mat-option add"
+      (click)="quickAddButtonClick($event)"
+      [disabled]="true"
+    >
+      <div class="quick-add-button">
+        <img src="../../../../../../../assets/icons/add.svg" alt="+">
+        <p>Quick add</p>
+      </div>
+    </mat-option>
+  </ng-container>
+  <ng-container *ngIf="isAddState">
+    <div class="quick-add" (keydown.enter)="addButtonClick()">
+      <div class="content">
+        <div class="label">Quick Add a {{groupName?.slice(0, -1)}}</div>
+        <div class="form" [formGroup]="form">
+          <app-input
+            [formControl]="form.controls['unit']"
+            [appAutoFocus]="true"
+            placeholder="Enter units"
+            type="text"
+            requiredValidator="true"
+          ></app-input>
+
+          <app-input-amount
+            [formControl]="form.controls['rate']"
+            placeholder="$0.00"
+            maxDigits="9"
+            [inputWidth]="'130px'"
+            requiredValidator="true"
+          ></app-input-amount>
+
+          <app-select-opt-group-quick-add
+            #quickAddAccountComponent
+            placeholder="Select category"
+            [formControl]="form.controls['account']"
+            selectObjectValidator="true"
+            [requiredValidator]="true"
+            [panelWidth]="385"
+            [setList]="groupedAccounts"
+            (setError)="setError(form.controls['account'], $event)"
+          >
+            <ng-template
+              #quickAddForm
+              let-groupName='groupName'
+              let-panelOpened='panelOpened'
+              let-autoGroup='autoGroup'
+            >
+              <app-quick-add-account
+                (click)="$event.stopPropagation()"
+                (quickAddAccount)="quickAddRevenueAccount($event, quickAddAccountComponent)"
+                [groupName]="groupName"
+                [panelIsOpened]="panelOpened"
+                [autoGroup]="autoGroup"
+              ></app-quick-add-account>
+            </ng-template>
+          </app-select-opt-group-quick-add>
+        </div>
+      </div>
+      <div class="actions">
+        <app-button
+          label="Add"
+          buttonStyleType="primary full"
+          [spinner]="spinner$ | async"
+          [disabled]="!form.valid"
+          (mouseup)="addButtonClick()"
+        ></app-button>
+        <app-button
+          label="Cancel"
+          buttonStyleType="black"
+          (mouseup)="resetState()"
+        ></app-button>
+      </div>
+    </div>
+  </ng-container>
+
+</div>

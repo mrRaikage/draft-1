@@ -1,0 +1,21 @@
+@import "../../../../assets/styles/variables";
+
+.dropzone {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 50px;
+  min-width: 120px;
+  padding: 0 14px;
+  border: 1px solid $color-basic-purple;
+
+  font-size: 13px;
+  border-radius: 5px;
+
+  &.drop-area {
+    border: 1px dashed $color-basic-purple;
+  }
+
+}

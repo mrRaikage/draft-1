@@ -1,0 +1,288 @@
+@import '../../../assets/styles/variables';
+@import '../../../assets/styles/skeleton-loader';
+
+@mixin skeletonPath ($delay) {
+  ::ng-deep .loader.progress:before {
+    animation: 2s ease-in-out $delay infinite progress
+  }
+}
+
+table {
+  width: 100%;
+}
+
+.skeleton-table-row {
+  height: 50px;
+  border: 1px solid $color-basic-light-grey;
+  border-radius: 5px;
+  padding-left: 20px;
+  padding-right: 110px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+table.mat-table thead:after {
+  content: '';
+  display: block;
+  height: 10px;
+}
+
+.mat-paginator.hidden {
+  visibility: hidden;
+}
+
+::ng-deep table.transaction-table tbody:before {
+  content: '';
+  display: block;
+  height: 10px;
+}
+
+tr:before {
+  content: '';
+  display: block;
+  height: 10px;
+}
+
+td.mat-column-dropDown {
+  width: 60px;
+  padding: 0 20px;
+
+  .image {
+    width: 20px;
+    height: 20px;
+    background: url('/assets/icons/drop-down.svg') no-repeat;
+  }
+
+}
+
+td.mat-column-more {
+  width: 64px;
+  padding: 0 20px;
+  cursor: pointer;
+
+  .image {
+    display: flex;
+  }
+}
+
+td.mat-column-date {
+  width: 100px;
+  padding-right: 15px;
+}
+
+td.mat-column-type {
+  width: 100px;
+  padding-right: 15px;
+  p {
+    width: 100px;
+  }
+}
+
+td.mat-column-direction {
+  width: 120px;
+  padding-right: 15px;
+
+  p {
+    width: 120px;
+  }
+}
+
+td.mat-column-details {
+  padding-right: 15px;
+  max-width: 320px;
+  p {
+    max-width: 320px;
+  }
+}
+
+td.mat-column-party {
+  max-width: 170px;
+  padding-right: 15px;
+
+  p {
+    max-width: 170px;
+  }
+}
+
+th.mat-column-amount,
+td.mat-column-amount {
+  text-align: right;
+}
+
+::ng-deep .amount-column .mat-sort-header-container {
+  flex-direction: row-reverse
+}
+
+td.mat-cell {
+  font-size: 13px;
+  line-height: 18px;
+  color: $color-contrast-black;
+}
+
+.expanded-row {
+
+  td.mat-cell {
+    border-bottom-color: transparent;
+
+    &:first-child {
+      border-radius: 5px 0 0 0;
+    }
+
+    &:last-child {
+      border-radius: 0 5px 0 0;
+    }
+  }
+
+  td.mat-column-dropDown {
+    .image {
+      background: url('/assets/icons/drop-down-active.svg') no-repeat;
+    }
+
+  }
+
+}
+
+tr.detail-row {
+  height: 0;
+
+  td {
+    padding: 0;
+
+    &.expanded {
+
+      &:after {
+        content: '';
+        display: block;
+        height: 10px;
+      }
+    }
+  }
+}
+
+tr.mat-row:not(.detail-row) {
+  height: 50px;
+
+  &.border-hidden {
+    td.mat-cell {
+      border: none;
+      cursor: default;
+    }
+  }
+}
+
+td.mat-cell {
+
+  &:nth-child(1) {
+    @include skeletonPath(0.1s)
+  }
+
+  &:nth-child(2) {
+    @include skeletonPath(0.2s)
+  }
+
+  &:nth-child(3) {
+    @include skeletonPath(0.3s)
+  }
+
+  &:nth-child(4) {
+    @include skeletonPath(0.4s)
+  }
+
+  &:nth-child(5) {
+    @include skeletonPath(0.5s)
+  }
+
+  &:nth-child(6) {
+    @include skeletonPath(0.6s)
+  }
+
+  &:nth-child(7) {
+    @include skeletonPath(0.7s)
+  }
+
+  &:nth-child(8) {
+    @include skeletonPath(0.8s)
+  }
+
+}
+
+tr.mat-header-row {
+  background: $color-basic-light-grey;
+  height: 50px;
+
+  &.hidden {
+    display: none;
+  }
+
+  th.mat-header-cell {
+    color: $color-basic-dark-grey;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 19px;
+    border: none;
+
+    &:first-child {
+      border-radius: 5px 0 0 5px;
+    }
+
+    &:last-child {
+      border-radius: 0 5px 5px 0;
+    }
+  }
+}
+
+td.mat-cell:not(.mat-column-expandedDetail) {
+  border-top: 1px solid $color-basic-light-grey;
+  border-bottom: 1px solid $color-basic-light-grey;
+
+  ::ng-deep .skeleton-loader {
+    padding: 0 15px;
+
+    .loader {
+      height: 18px;
+      border-radius: 200px;
+      vertical-align: middle;
+    }
+  }
+
+  &:first-child {
+    border-left: 1px solid $color-basic-light-grey;
+    border-radius: 5px 0 0 5px;
+
+    .skeleton-loader {
+      padding: 0;
+    }
+  }
+
+  &:last-child {
+    border-right: 1px solid $color-basic-light-grey;
+    border-radius: 0 5px 5px 0;
+
+    .skeleton-loader {
+      padding: 0;
+    }
+  }
+}
+
+td.mat-column-expandedDetail {
+  border: none;
+}
+
+::ng-deep .mat-menu-item {
+  display: flex !important;
+  align-items: center;
+}
+
+.nested-table-wrapper {
+  overflow: hidden;
+  display: flex;
+  width: 100%;
+  border-radius: 0 0 5px 5px;
+
+  .nested-table {
+    width: 100%;
+  }
+}
+

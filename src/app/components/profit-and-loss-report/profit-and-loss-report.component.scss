@@ -1,0 +1,207 @@
+@import '../../../assets/styles/content-page';
+@import '../../../assets/styles/global';
+@import '../../../assets/styles/variables';
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+
+  .page-title {
+    height: 40px;
+    display: flex;
+    align-items: center;
+  }
+
+  .header-actions {
+    display: flex;
+    margin-bottom: 22px;
+
+    .form-field-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+
+      .form-field-wrap + .form-field-wrap {
+        margin-top: 10px;
+      }
+
+      .form-field-wrap {
+        display: flex;
+        align-items: center;
+
+        .label {
+          font-weight: 600;
+          font-size: 13px;
+          line-height: 19px;
+          color: $color-contrast-black;
+          margin-right: 20px;
+        }
+
+        .form-field {
+          max-width: 180px;
+        }
+      }
+    }
+
+    .update-button {
+      margin-left: 50px;
+    }
+
+    .export-to-pdf {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      margin-right: 20px;
+      margin-bottom: -60px;
+    }
+
+    .date-picker-container {
+      margin-left: 15px;
+
+      app-date-picker {
+        margin-left: 15px;
+      }
+    }
+  }
+}
+
+.page-content {
+
+  .header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+
+  .body {
+
+    .section + .section {
+      margin-top: 20px;
+    }
+
+    .section {
+
+      .full-total{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 50px;
+
+        .total-name {
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 26px;
+        }
+
+        .total-amount {
+          font-size: 13px;
+          text-align: right;
+          width: 80px;
+          font-weight: 700;
+          border-top: 2px solid $color-contrast-black;
+          border-bottom: 2px solid $color-contrast-black;
+        }
+      }
+
+      .child-container {
+        padding: 0px 30px 20px 50px;
+        margin-right: 80px;
+        font-size: 13px;
+
+        .child-title {
+          padding-bottom: 2px;
+          border-bottom: 1px solid $color-basic-normal-grey;
+          display: flex;
+          justify-content: space-between;
+
+          .child-amount {
+            width: 80px;
+            text-align: right;
+          }
+
+          .child-name {
+          }
+        }
+      }
+
+      &--title {
+        padding-bottom: 2px;
+        border-bottom: 2px solid $color-contrast-black;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 26px;
+      }
+
+      .sub-item {
+        padding: 20px 0px 20px 20px;
+        font-size: 14px;
+        line-height: 22px;
+
+        &--title {
+          padding-bottom: 2px;
+          border-bottom: 1px solid $color-contrast-black;
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+
+      .total-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
+        font-size: 13px;
+        padding-bottom: 20px;
+
+        .total-sub-name {
+          font-weight: bold;
+          padding: 2px 40px 2px 0;
+        }
+
+        .total-sub-amount {
+          width: 80px;
+          padding: 2px 0;
+          text-align: right;
+          border-top: 1px solid $color-contrast-black;
+        }
+      }
+
+      &--footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 13px;
+
+        .footer-title {
+
+        }
+
+        .footer-total-amount {
+          text-align: right;
+          width: 80px;
+          font-weight: bold;
+          border-top: 2px solid $color-contrast-black;
+          border-bottom: 2px solid $color-contrast-black;
+        }
+      }
+    }
+  }
+
+  .net-profit-container {
+    border-top: 2px solid $color-contrast-black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+    font-size: 16px;
+
+    .item-name {
+      font-weight: 500;
+    }
+
+    .item-amount {
+      font-weight: 700;
+    }
+  }
+}

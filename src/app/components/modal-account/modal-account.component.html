@@ -1,0 +1,201 @@
+<mat-card class="modal-account">
+  <mat-card-header>
+    <mat-card-title>{{ modalMode + ' Account' }}</mat-card-title>
+    <app-close-btn (btnClick)="dialogRef.close()"></app-close-btn>
+  </mat-card-header>
+
+  <mat-card-content [formGroup]="form">
+    <div class="row">
+      <ng-container *ngIf="modalMode !== 'View'">
+        <app-input
+          [formControl]="form.controls['name']"
+          label="Name"
+          placeholder="Enter display name"
+          type="text"
+          requiredValidator="true"
+          [disableState]="modalMode === 'View'"
+        ></app-input>
+      </ng-container>
+
+      <ng-container *ngIf="modalMode === 'View'">
+        <div class="account-name--view-mode">
+          <div class="label">Name</div>
+          <div class="field">
+            <span
+              appEllipsisTooltip
+              [ngClass]="{'ellipsis-text': modalMode === 'View'}"
+            >
+              {{ form.controls['name'].value }}
+            </span>
+            <ng-container *ngIf="currentAccount.isSystem">
+              <app-chip label="System Account" icon="lock"></app-chip>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="row" [class.items-wrapper]="selectedAccountType?.lookup === 'ASSET_CURRENT'">
+      <app-select-opt-group-autocomplete
+        [formControl]="form.controls['accountType']"
+        label="Account Type"
+        placeholder="Select account type"
+        requiredValidator="true"
+        selectObjectValidator="true"
+        [setList]="groupedAccountTypes"
+        [disableState]="modalMode === 'View'"
+        (ngModelChange)="setDefaultTaxRate($event)"
+      ></app-select-opt-group-autocomplete>
+      <ng-container *ngIf="selectedAccountType?.lookup === 'ASSET_CURRENT'">
+        <div class="checkbox">
+          <app-checkbox
+            label="Cash Account"
+            labelPosition="before"
+            [disableState]="modalMode === 'View'"
+            [formControl]="form.controls['isCash']"
+          ></app-checkbox>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="row items-wrapper">
+      <div class="code" *ngIf="modalMode !== 'Add'">
+        <app-input
+          [formControl]="form.controls['code']"
+          label="Code"
+          placeholder="Enter code"
+          type="number"
+          requiredValidator="true"
+          [disableState]="modalMode === 'View'"
+        ></app-input>
+      </div>
+
+      <div class="tax">
+        <app-select-opt
+          #formField
+          class="form-field"
+          label="Default for Tax"
+          requiredValidator="true"
+          [formControl]="form.controls['taxMode']"
+          [list]="taxModeList"
+          [disableState]="modalMode === 'View'"
+          [isTextRight]="modalMode === 'View'"
+        ></app-select-opt>
+      </div>
+    </div>
+
+    <div class="row">
+      <app-textarea
+        [formControl]="form.controls['description']"
+        label="Description"
+        placeholder="Write your description here..."
+        [style]="{ 'height': '100px' }"
+        [disableState]="modalMode === 'View'"
+      ></app-textarea>
+    </div>
+
+    <ng-container *ngIf="modalMode === 'Edit' && !hasOpeningBalance">
+      <div class="row">
+        <ng-container>
+          <app-button
+            label="Set Opening Balance"
+            [buttonStyleType]="'border-purple bg-white'"
+            (btnClick)="setOpeningBalance(true)"
+          ></app-button>
+        </ng-container>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="hasOpeningBalance">
+      <div class="row">
+        <p class="form-field-label">Opening balance</p>
+        <div class="opening-balance">
+          <div class="icon-wrapper" *ngIf="modalMode !== 'View'">
+            <img src="../../../assets/icons/remove.svg" (click)="resetOpeningBalance()"/>
+          </div>
+          <app-date-picker
+            validation="true"
+            placeholder="dd/mm/yyyy"
+            borderOnlyOnFocus="true"
+            label="Date"
+            requiredValidator="true"
+            [disableState]="modalMode === 'View'"
+            [formControl]="form.controls['openingBalanceDate']"
+          ></app-date-picker>
+          <app-input-amount
+            placeholder="$0.00"
+            maxDigits="9"
+            borderOnlyOnFocus="true"
+            label="Opening balance"
+            requiredValidator="true"
+            [inputWidth]="'130px'"
+            [isTableField]="true"
+            [disableState]="modalMode === 'View'"
+            [formControl]="form.controls['openingBalanceAmount']"
+          ></app-input-amount>
+        </div>
+      </div>
+    </ng-container>
+  </mat-card-content>
+
+  <div class="card-actions">
+    <ng-container *ngIf="modalMode === 'Add' && !hasOpeningBalance">
+      <app-button
+        label="Set Opening Balance"
+        [buttonStyleType]="'border-purple bg-white'"
+        (btnClick)="setOpeningBalance(true)"
+      ></app-button>
+    </ng-container>
+
+    <ng-container *ngIf="modalMode === 'View' && !hasOpeningBalance">
+      <app-button
+        label="Set Opening Balance"
+        [disabled]="currentAccount.isSystem"
+        [buttonStyleType]="'border-purple bg-white'"
+        (btnClick)="editButtonClick(); setOpeningBalance(true)"
+      ></app-button>
+    </ng-container>
+
+    <ng-container *ngIf="modalMode === 'Edit'">
+      <app-button
+        label="Delete"
+        [buttonStyleType]="'delete bg-white'"
+        (btnClick)="deleteButtonClick()"
+      ></app-button>
+    </ng-container>
+
+    <ng-container *ngIf="modalMode === 'View'">
+      <app-button
+        label="Edit"
+        [disabled]="currentAccount.isSystem"
+        [buttonStyleType]="'primary'"
+        (btnClick)="editButtonClick()"
+      ></app-button>
+    </ng-container>
+
+    <ng-container *ngIf="modalMode !== 'View'">
+      <app-button
+        label="Save"
+        [buttonStyleType]="'primary'"
+        [disabled]="form.invalid"
+        [spinner]="spinner$ | async"
+        (btnClick)="saveButtonClick()"
+      ></app-button>
+
+      <app-button
+        label="Cancel"
+        [buttonStyleType]="'black'"
+        (btnClick)="cancelButtonClick()"
+      ></app-button>
+    </ng-container>
+
+    <ng-container *ngIf="modalMode === 'View'">
+      <app-button
+        *ngIf="modalMode === 'View'"
+        label="Close"
+        [buttonStyleType]="'black'"
+        (btnClick)="cancelButtonClick()"
+      ></app-button>
+    </ng-container>
+  </div>
+</mat-card>

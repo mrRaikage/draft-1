@@ -1,0 +1,40 @@
+<div class="on-boarding-wrapper">
+  <div class="card-wrapper">
+    <div class="card" [formGroup]="form" (keydown.enter)="sendForm()">
+      <div class="title">Welcome to <span>Norder!</span></div>
+      <div class="subtitle">Nice to have your here! Tell us more about you.</div>
+
+      <div class="form-field-wrapper">
+        <app-input
+          label="Name"
+          placeholder="What should we call you?"
+          formControlName="displayName"
+          type="text"
+          requiredValidator="true"
+          hintError="Field is Required!"
+        ></app-input>
+      </div>
+
+      <div class="form-field-wrapper">
+        <app-input
+          label="Organization"
+          placeholder="Enter your organization name"
+          formControlName="orgName"
+          type="text"
+          requiredValidator="true"
+          hintError="Field is Required!"
+        ></app-input>
+      </div>
+
+      <app-button
+        label="Let’s get started"
+        buttonStyleType="primary full"
+        [spinner]="spinnerStarted$ | async"
+        (btnClick)="sendForm()"
+      ></app-button>
+    </div>
+  </div>
+
+  <div class="image-wrapper"></div>
+
+</div>

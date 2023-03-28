@@ -1,0 +1,27 @@
+<div class="user-panel">
+  <div class="user" mat-button [matMenuTriggerFor]="menu">
+    <div class="user-name">
+      <img
+        class="user-icon"
+        src="https://eu.ui-avatars.com/api/?name={{ userData?.displayName }}&background={{ userData?.bgColor }}&color={{ userData?.textColor }}"
+        alt="ava"
+      >
+      <span class="mobile-hidden" appEllipsisTooltip>{{ userData?.displayName }}</span>
+    </div>
+    <img class="mobile-hidden" src="../../../../assets/icons/arrow-drop-down.svg" alt="down">
+  </div>
+
+  <mat-menu class="user-actions" #menu="matMenu" xPosition="before">
+
+    <div class="menu-item" (click)="settings()">
+      <img src="../../../../assets/icons/cogg.svg" alt="ico">
+      <span>Settings</span>
+    </div>
+
+    <div class="menu-item" (click)="logout()">
+      <img src="../../../../assets/icons/logout-purple.svg" alt="ico">
+      <span>Logout</span>
+    </div>
+
+  </mat-menu>
+</div>

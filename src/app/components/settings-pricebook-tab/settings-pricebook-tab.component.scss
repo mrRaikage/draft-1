@@ -1,0 +1,22 @@
+@import '../../../assets/styles/variables';
+
+.mat-card {
+  box-shadow: none;
+  padding: 25px;
+
+  .price-book-tab-header {
+    display: flex;
+    justify-content: space-between;
+
+    .price-book-tab-title {
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 19px;
+      margin-right: auto;
+    }
+
+    .price-book-checkbox {
+      color: $color-contrast-black;
+    }
+  }
+}

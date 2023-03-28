@@ -1,0 +1,17 @@
+<app-button
+  mat-button
+  buttonStyleType="primary drop-down"
+  [matMenuTriggerFor]="menu"
+  [label]="label"
+></app-button>
+
+<mat-menu class="add-transaction" #menu="matMenu">
+  <ng-container *ngFor="let group of groups">
+    <div class="group">
+      <div class="label">{{ group.displayName }}</div>
+      <ng-container *ngFor="let option of group.children">
+        <button mat-menu-item (click)="handleAction.emit(option.key)">{{ option.displayName }}</button>
+      </ng-container>
+    </div>
+  </ng-container>
+</mat-menu>

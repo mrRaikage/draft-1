@@ -1,0 +1,15 @@
+<mat-card class="client-card">
+  <div class="card-header">
+    <span appEllipsisTooltip>{{ clientModel.name }}</span>
+  </div>
+
+  <mat-card-actions>
+    <app-button
+      class="action-button"
+      label="View"
+      buttonStyleType="primary"
+      (btnClick)="viewClientButtonClick()"
+    ></app-button>
+  </mat-card-actions>
+</mat-card>
+

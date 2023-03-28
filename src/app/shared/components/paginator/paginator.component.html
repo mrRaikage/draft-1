@@ -1,0 +1,26 @@
+<div class="paginator-container">
+  <div
+    class="trigger-container"
+    (click)="prev.emit()"
+  >
+    <button
+      class="trigger"
+      [disabled]="disablePrevButton"
+      mat-icon-button aria-label="previous page trigger"
+    >
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+  </div>
+
+  <div
+    class="trigger-container"
+    (click)="next.emit()">
+      <button
+        class="trigger"
+        [disabled]="disableNextButton"
+        mat-icon-button aria-label="next page trigger"
+      >
+        <mat-icon>keyboard_arrow_right</mat-icon>
+      </button>
+  </div>
+</div>

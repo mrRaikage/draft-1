@@ -1,0 +1,123 @@
+@import '../../../../../assets/styles/variables';
+
+::ng-deep .select-opt.mat-form-field {
+  border: 1px solid $color-basic-normal-grey;
+  border-radius: 4px;
+  height: 40px;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+
+  &.text-right {
+    text-align: right;
+  }
+
+  &.table-field {
+    padding: 0 10px;
+    height: 30px;
+    border-color: transparent;
+  }
+
+  &.mat-form-field-disabled {
+    height: auto;
+    padding: 0;
+    border-color: transparent;
+
+    .mat-select-value-text {
+      padding: 1px 0;
+      color: $color-contrast-black;
+    }
+
+    .mat-select-arrow-wrapper {
+      opacity: 0;
+    }
+
+    .mat-select-value {
+      display: inline;
+    }
+
+    .mat-select-arrow {
+      display: none;
+    }
+  }
+
+  &.mat-focused {
+    border-color: $color-basic-purple;
+
+    &.ng-valid:not(.not-required) {
+      border-color: $color-success-green;
+    }
+  }
+
+  &.ng-touched.ng-invalid:not(.not-required) {
+    border-color: $color-error-red;
+  }
+
+  .mat-form-field-wrapper {
+    padding: 0;
+    width: 100%;
+
+    .mat-form-field-flex {
+      padding: 0;
+      background: $color-basic-white;
+
+      .mat-form-field-infix {
+        padding: 0;
+        border: 0;
+        width: auto;
+      }
+    }
+
+    .mat-form-field-underline {
+      display: none;
+    }
+
+    .mat-form-field-label-wrapper {
+      display: none;
+    }
+
+    .mat-select-placeholder {
+      font-size: 13px;
+      color: $color-basic-medium-grey;
+      -webkit-text-fill-color: $color-basic-medium-grey;
+    }
+
+    .mat-select-arrow-wrapper {
+      transform: translateY(0);
+      background: url("/assets/icons/drop-down-select.svg") no-repeat center;
+
+      .mat-select-arrow {
+        border-color: transparent;
+      }
+    }
+  }
+}
+
+::ng-deep .mat-select-panel.select-opt {
+  box-shadow: 0px 4px 10px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  margin-top: 32px;
+
+  .mat-option {
+    padding: 5px 25px;
+    font-size: 13px;
+    line-height: 18px;
+    height: 30px;
+    color: $color-contrast-black;
+
+    &.mat-selected {
+      background: transparent;
+      color: $color-contrast-black;
+    }
+
+    &.mat-active,
+    &:hover {
+      background-color: $color-basic-purple;
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 19px;
+      color: $color-basic-white;
+
+    }
+  }
+}

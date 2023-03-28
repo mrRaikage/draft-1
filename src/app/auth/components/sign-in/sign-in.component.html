@@ -1,0 +1,75 @@
+<div class="auth-form">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        Welcome back!
+      </mat-card-title>
+      <mat-card-subtitle>
+        Sign in to continue to Norder.
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content [formGroup]="form" (keydown.enter)="sendForm()">
+
+      <div class="form-field-wrapper">
+        <app-input
+          id="email"
+          label="Email address"
+          placeholder="Enter your email address"
+          formControlName="username"
+          emailValidator="true"
+          [type]="'email'"
+          [hintError]="'Please provide a valid email address.'"
+        ></app-input>
+      </div>
+
+      <div class="form-field-wrapper">
+        <app-input
+          id="password"
+          label="Password"
+          placeholder="Enter your password"
+          formControlName="password"
+          minLengthValidator="8"
+          [type]="'password'"
+          [hintError]="'This value is required.'"
+        ></app-input>
+      </div>
+
+      <div class="form-field-wrapper form-row">
+        <span class="link" [routerLink]="['/auth/forgot-password']">Forgot your password?</span>
+      </div>
+
+      <app-button
+        id="signIn"
+        label="Sign In"
+        buttonStyleType="primary full"
+        [spinner]="spinnerStarted$ | async"
+        (btnClick)="sendForm()"
+      ></app-button>
+
+      <span class="text-or">OR</span>
+
+      <div class="form-field-wrapper sign-in-google">
+        <app-button
+          label="Continue with Google"
+          [buttonStyleType]="'full google'"
+          [spinner]="googleSpinnerStarted$ | async"
+          [spinnerColor]="'purple'"
+          (btnClick)="signInWithGoogle()"
+        ></app-button>
+      </div>
+
+      <div class="card-bottom-text">Don’t have an account?
+        <mat-label class="nav" [routerLink]="['/auth/sign-up']">Sign up now.</mat-label>
+      </div>
+
+    </mat-card-content>
+
+  </mat-card>
+
+  <div class="under-card-text mobile-hidden">
+    <mat-label class="nav thin" (click)="openModalInfo('termsOfService')">Terms of Service</mat-label>
+    <span class="nav thin">·</span>
+    <mat-label class="nav thin" (click)="openModalInfo('privacyPolicy')">Privacy Policy</mat-label>
+  </div>
+</div>

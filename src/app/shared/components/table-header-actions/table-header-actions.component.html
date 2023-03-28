@@ -1,0 +1,67 @@
+<div class="table-header">
+  <div class="table-header--filter">
+    <ng-container *ngIf="hasSearchFilter">
+      <div *ngIf="!dataLoaded" class="skeleton-loader">
+        <ngx-skeleton-loader></ngx-skeleton-loader>
+      </div>
+      <app-search-field
+        *ngIf="dataLoaded"
+        [placeholder]="'Quick Find'"
+        [filterValue]="filterValue"
+        (applyFilter)="applyFilter.emit($event)"
+      ></app-search-field>
+    </ng-container>
+  </div>
+
+  <div class="table-header--actions mobile-hidden">
+    <div *ngIf="!dataLoaded" class="skeleton-loader">
+      <ngx-skeleton-loader [count]="exportToCsvButton ? 2 : 1"></ngx-skeleton-loader>
+    </div>
+    <ng-container *ngIf="dataLoaded">
+      <app-button
+        *ngIf="importTransaction"
+        buttonStyleType="csv"
+        label="Import Transaction"
+        (btnClick)="handleImportTransaction.emit()"
+      ></app-button>
+
+      <app-button
+        *ngIf="exportToCsvButton"
+        buttonStyleType="csv"
+        label="Export to CSV"
+        [spinner]="spinner"
+        spinnerColor="green"
+        (btnClick)="exportToCsv.emit()"
+      ></app-button>
+
+      <ng-container *ngIf="addButtonType === 'drop-down'">
+        <app-button-drop-down
+          [label]="addButtonName"
+          [groups]="actionGroupedList"
+          (handleAction)="handleAction.emit($event)"
+        ></app-button-drop-down>
+      </ng-container>
+      <ng-container *ngIf="addButtonType && addButtonType !== 'drop-down'">
+        <app-button
+          [buttonStyleType]="addButtonType"
+          [label]="addButtonName"
+          (btnClick)="handleAction.emit()"
+        ></app-button>
+      </ng-container>
+
+      <ng-container *ngIf="assetHeader">
+        <app-button
+          [buttonStyleType]="'primary'"
+          [label]="'Add from Bill'"
+          (btnClick)="addFromBill.emit()"
+        ></app-button>
+        <app-button
+          [buttonStyleType]="'primary'"
+          [label]="'Add from Cash Transaction'"
+          (btnClick)="addFromCash.emit()"
+        ></app-button>
+      </ng-container>
+
+    </ng-container>
+  </div>
+</div>

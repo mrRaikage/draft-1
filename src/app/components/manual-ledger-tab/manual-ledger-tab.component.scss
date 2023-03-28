@@ -1,0 +1,168 @@
+@import '../../../assets/styles/variables';
+
+.mat-card.ledger-tab {
+  box-shadow: none;
+  padding: 0;
+
+  .mat-card-content {
+    margin: 0;
+    padding: 0;
+
+    .form-fields-area {
+      display: flex;
+      justify-content: space-between;
+
+      .left-column {
+        flex: auto;
+        max-width: 595px;
+      }
+
+      .right-column {
+        text-align: right;
+        max-width: 180px;
+      }
+
+      .form-field + .form-field {
+        margin-top: 15px;
+      }
+
+      .form-field.party {
+
+        .party-wrapper-is-view {
+          display: flex;
+          align-items: center;
+
+          .label {
+            font-weight: 600;
+            font-size: 13px;
+            line-height: 18px;
+            color: $color-contrast-black;
+            margin-bottom: 1px;
+          }
+
+          app-chip {
+            margin-left: 30px;
+          }
+        }
+      }
+    }
+
+    .table-loading-wrapper {
+      margin-top: 10px;
+    }
+
+    .table-wrapper {
+      margin-top: 10px;
+      background: $color-basic-light-grey;
+      border-radius: 5px;
+      padding: 0 15px 25px;
+
+      .under-table-row {
+        margin-top: 12px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .amount-field {
+        display: flex;
+        justify-content: flex-end;
+
+        .label {
+          padding-top: 10px;
+          color: $color-contrast-black;
+          margin-right: 15px;
+          font-weight: 600;
+          font-size: 13px;
+          line-height: 19px;
+        }
+
+        .value-area {
+          width: 300px;
+
+          .amount-area {
+            display: flex;
+            align-items: center;
+            background-color: $color-basic-white;
+            border-radius: 3px;
+            height: 40px;
+
+            .debit-field,
+            .credit-field {
+              width: 150px;
+              text-align: right;
+              font-weight: 600;
+              font-size: 13px;
+              line-height: 19px;
+              padding-right: 20px;
+              color: $color-basic-purple
+            }
+          }
+
+          .hint-message {
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            font-size: 13px;
+            line-height: 19px;
+            color: $color-error-red;
+
+            img {
+              margin-right: 8px;
+            }
+          }
+        }
+
+        .amount-area {
+          border-radius: 3px;
+          background-color: $color-basic-white;
+          color: $color-basic-purple;
+          font-weight: 600;
+          font-size: 13px;
+          line-height: 18px;
+        }
+      }
+    }
+
+  }
+
+  /** Modal Actions */
+  .mat-card-actions {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    .left-side,
+    .right-side {
+      display: flex;
+
+      app-button + app-button {
+        margin-left: 12px;
+      }
+
+      app-button {
+        margin-top: 30px;
+      }
+    }
+
+    .left-side {
+      flex: auto;
+
+      .form-field + .form-field {
+        margin-left: 15px;
+      }
+
+      .form-field {
+        &.date {
+          max-width: 180px;
+        }
+
+        &.accounts {
+          max-width: 360px;
+        }
+      }
+    }
+  }
+
+}

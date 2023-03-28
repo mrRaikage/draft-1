@@ -1,0 +1,84 @@
+<div class="auth-form">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        Create your account
+      </mat-card-title>
+      <mat-card-subtitle>
+        Let's get your finances in Norder.
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class="sign-up" [formGroup]="form" (keydown.enter)="sendForm()">
+
+      <div class="form-field-wrapper">
+        <app-input
+          label="Email address"
+          placeholder="Example@email.com"
+          formControlName="username"
+          emailValidator="true"
+          [type]="'email'"
+          [hintSuccess]="'Your email looks good!'"
+          [hintError]="'Please provide a valid email address.'"
+        ></app-input>
+      </div>
+
+      <div class="form-field-wrapper">
+        <app-input
+          label="Password"
+          placeholder="Must be at least 8 characters"
+          formControlName="password"
+          minLengthValidator="8"
+          [type]="'password'"
+          [hintSuccess]="'Your password is great. Nice work!'"
+          [hintError]="'This value is required.'"
+        ></app-input>
+      </div>
+
+      <div class="form-field-wrapper confirm-password">
+        <app-input
+          label="Confirm Password"
+          placeholder="Both password must match"
+          formControlName="confirmPassword"
+          [mustMatchValidator]="form.get('password')"
+          [type]="'password'"
+          [hintSuccess]="'Nice work! Passwords are matched'"
+          [hintError]="'Both password must match'"
+        ></app-input>
+      </div>
+
+      <app-button
+        label="Sign Up"
+        buttonStyleType="primary full"
+        [spinner]="spinnerStarted$ | async"
+        (btnClick)="sendForm()"
+      ></app-button>
+
+      <span class="text-or">OR</span>
+
+      <div class="form-field-wrapper sign-in-google">
+        <app-button
+          label="Continue with Google"
+          [spinner]="googleSpinnerStarted$ | async"
+          [spinnerColor]="'purple'"
+          [buttonStyleType]="'full google'"
+          (btnClick)="continueWithGoogle()"
+        ></app-button>
+      </div>
+
+      <div class="card-bottom-text">Already have an account?
+        <mat-label class="nav" [routerLink]="['/auth/sign-in']">Sign in</mat-label>
+      </div>
+
+    </mat-card-content>
+
+  </mat-card>
+
+  <div class="under-card-text mobile-hidden">
+    <div class="links">
+      <mat-label class="nav thin" (click)="openModalInfo('termsOfService')">Terms of Service</mat-label>
+      <span class="nav thin">·</span>
+      <mat-label class="nav thin" (click)="openModalInfo('privacyPolicy')">Privacy Policy</mat-label>
+    </div>
+  </div>
+</div>

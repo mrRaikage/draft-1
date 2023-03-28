@@ -1,0 +1,79 @@
+@import '../../../assets/styles/variables';
+
+.card-wrapper.mat-card {
+  padding: 20px;
+  height: 100%;
+  box-shadow: none;
+
+  .title {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 19px;
+    color: $color-contrast-black;
+    margin-bottom: 12px;
+  }
+
+  .mat-card-content {
+    margin: 0;
+    max-width: 800px;
+
+    .table-wrapper {
+      padding: 0 15px 25px;
+      background-color: $color-basic-light-grey;
+    }
+
+    table {
+      width: 100%;
+      background-color: $color-basic-light-grey;
+      margin-bottom: 20px;
+      border-spacing: 0 8px;
+
+      tr.mat-header-row {
+        height: 42px;
+      }
+
+      tr.mat-row {
+        height: 40px;
+
+        &.new-row {
+          height: 58px;
+        }
+      }
+
+      th.mat-header-cell {
+        border: none;
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 19px;
+        color: $color-basic-dark-grey;
+        padding: 0 10px;
+      }
+
+      td.mat-cell {
+        border: none;
+        background-color: $color-basic-white;
+        padding: 0 10px;
+
+        &:first-of-type {
+          border-radius: 3px 0 0 3px;
+        }
+
+        &:last-of-type {
+          border-radius: 0 3px 3px 0;
+        }
+      }
+
+      .mat-column-actions {
+
+        .actions {
+          display: flex;
+
+          app-button + app-button {
+            margin-left: 10px;
+          }
+        }
+      }
+
+    }
+  }
+}

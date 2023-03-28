@@ -1,0 +1,20 @@
+<div class="transactions-wrapper">
+  <ng-container *ngFor="let item of (transactions$ | async)">
+    <div class="list-item">
+      <div class="date"> {{ item.date | date: 'd MMM, y' }} </div>
+      <div class="main-info">
+        <div class="left-side">
+          <div class="party"> {{ item.party }} </div>
+          <div class="details"> {{ item.details }} </div>
+        </div>
+        <div class="right-side">
+          <div class="amount"> ${{ item.amount | number: '0.2-2' }} </div>
+          <div class="type"> {{ item.type }} </div>
+        </div>
+      </div>
+      <div class="direction">
+        <app-chip [label]="item.direction" mobile="true"></app-chip>
+      </div>
+    </div>
+  </ng-container>
+</div>

@@ -1,0 +1,735 @@
+<div [ngClass]="class" class="table-container" [ngStyle]="tableContainerStyle" [formGroup]="form">
+
+  <ng-container *ngIf="isLoading">
+    <div class="table-loading-wrapper">
+      <ngx-skeleton-loader [ngStyle]="{'display': 'flex', 'margin-bottom': '20px'}" [theme]="{margin: '0 15px 20px 15px'}"></ngx-skeleton-loader>
+      <ng-container *ngFor="let i of [].constructor(skeletonRowCount)">
+        <ngx-skeleton-loader [count]="skeletonColumnsCount" [ngStyle]="{'display': 'flex', 'margin-bottom': '20px'}" [theme]="{margin: '0 15px 15px'}"></ngx-skeleton-loader>
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <!-- Empty page component for hidden rows -->
+  <ng-container *ngIf="!isLoading && onlyHidden">
+    <app-empty-content
+      [emptyContentData]="hiddenRowData"
+      (showHiddenButtonClick)="showHidden$.next(true); viewHiddenItemsClick.emit()"
+      (addLineButtonClick)="showHidden$.next(true);  viewHiddenItemsClick.emit(); addLine.emit()"
+    ></app-empty-content>
+  </ng-container>
+
+  <ng-container *ngIf="!isLoading && !onlyHidden">
+
+    <!-- Empty page component for empty list -->
+    <ng-container *ngIf="!formArrayRows.length && hasEmptyPageComponent && modalType === 'View'">
+      <app-empty-content
+        [emptyContentData]="emptyContentData"
+        (addLineButtonClick)="showAddLineButton ? addLine.emit() : null"
+      ></app-empty-content>
+    </ng-container>
+
+    <ng-container *ngIf="formArrayRows.length || !hasEmptyPageComponent">
+      <table mat-table [dataSource]="dataSource" formArrayName="rows" class="edit-table" [ngClass]="tableClass">
+
+        <!-- Column Remove -->
+        <ng-container matColumnDef="remove">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row; let index = index">
+            <ng-container *ngIf="row.value?.status !== 'Invoiced'">
+              <div class="icon-wrapper">
+                <img
+                  *ngIf="modalType !== 'View'"
+                  (click)="removeRow(index);
+                  checkIsTableDirty(true)"
+                  src="../../../../assets/icons/remove.svg"
+                />
+              </div>
+            </ng-container>
+            <ng-container *ngIf="row.value?.status === 'Invoiced'">
+              <div class="icon-wrapper lock">
+                <img
+                  [matTooltip]="'Once a charge is invoiced it cannot be edited or invoiced again'"
+                  matTooltipClass="lock-tooltip"
+                  src="../../../../assets/icons/lock.svg"
+                />
+              </div>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <app-checkbox
+              [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()"
+              [ariaLabel]="checkboxLabel()"
+              (checkboxChange)="$event ? masterToggle() : null"
+            ></app-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <ng-container *ngIf="row.value?.status !== 'Invoiced'">
+              <app-checkbox
+                [checked]="selection.isSelected(row)"
+                [ariaLabel]="checkboxLabel(row)"
+                (checkboxChange)="$event ? selection.toggle(row) : null"
+                (click)="$event.stopPropagation()"
+              ></app-checkbox>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <!--  Status Column  -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Status </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-input
+              formControlName="status"
+              type="chip"
+              [isTableField]="true"
+              [disableState]="true"
+              (isDirty)="checkIsTableDirty($event)"
+            ></app-input>
+          </td>
+        </ng-container>
+
+        <!-- Editable Status Column -->
+        <ng-container matColumnDef="editableStatus">
+          <th mat-header-cell *matHeaderCellDef>
+            Status
+            {{ getAsterix('editableStatus') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-select-opt
+              #formField
+              placeholder="Status"
+              formControlName="editableStatus"
+              [requiredValidator]="requiredColumns.indexOf('editableStatus') !== -1"
+              isTableField="true"
+              [mode]="modalType === 'View' ? 'viewStatus' : null"
+              [list]="selectStatusList"
+              [disableState]="modalType === 'View'"
+              (isDirty)="checkIsTableDirty($event)"
+            ></app-select-opt>
+          </td>
+        </ng-container>
+
+        <!-- Date Column -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>
+            Date
+            {{ getAsterix('date') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-date-picker
+              #formField
+              formControlName="date"
+              validation="true"
+              placeholder="dd/mm/yyyy"
+              borderOnlyOnFocus="true"
+              [isTableField]="true"
+              [requiredValidator]="requiredColumns.indexOf('date') !== -1"
+              [class]="'table-field'"
+              [disableState]="modalType === 'View' || row.value?.status === 'Invoiced'"
+              (isDirty)="checkIsTableDirty($event)"
+            ></app-date-picker>
+          </td>
+        </ng-container>
+
+        <!--  Ledger Date Column  -->
+        <ng-container matColumnDef="ledgerDate">
+          <th mat-header-cell *matHeaderCellDef>
+            Date
+          </th>
+          <td mat-cell *matCellDef="let row">
+            {{ ledgerDate | date: 'd MMM, y'}}
+          </td>
+        </ng-container>
+
+        <!-- Start Date Column -->
+        <ng-container matColumnDef="startDate">
+          <th mat-header-cell *matHeaderCellDef>
+            Start Date
+            {{ getAsterix('startDate') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-date-picker
+              #formField
+              formControlName="startDate"
+              validation="true"
+              placeholder="dd/mm/yyyy"
+              borderOnlyOnFocus="true"
+              [isTableField]="true"
+              [requiredValidator]="requiredColumns.indexOf('startDate') !== -1"
+              [class]="'table-field'"
+              [disableState]="modalType === 'View'"
+              (isDirty)="checkIsTableDirty($event)"
+            ></app-date-picker>
+          </td>
+        </ng-container>
+
+        <!-- End Date Column -->
+        <ng-container matColumnDef="endDate">
+          <th mat-header-cell *matHeaderCellDef>
+            End Date
+            {{ getAsterix('endDate') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-date-picker
+              #formField
+              formControlName="endDate"
+              validation="true"
+              placeholder="dd/mm/yyyy"
+              borderOnlyOnFocus="true"
+              [isTableField]="true"
+              [requiredValidator]="requiredColumns.indexOf('endDate') !== -1"
+              [class]="'table-field'"
+              [disableState]="modalType === 'View'"
+              (isDirty)="checkIsTableDirty($event)"
+            ></app-date-picker>
+          </td>
+        </ng-container>
+
+        <!-- Effective From Column -->
+        <ng-container matColumnDef="effectiveFrom">
+          <th mat-header-cell *matHeaderCellDef>
+            Effective From
+            {{ getAsterix('effectiveFrom') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-date-picker
+              #formField
+              formControlName="effectiveFrom"
+              validation="true"
+              placeholder="dd/mm/yyyy"
+              borderOnlyOnFocus="true"
+              [class]="'table-field'"
+              [isTableField]="true"
+              [requiredValidator]="requiredColumns.indexOf('effectiveFrom') !== -1"
+              [disableState]="modalType === 'View'"
+              (isDirty)="checkIsTableDirty($event)"
+            ></app-date-picker>
+          </td>
+        </ng-container>
+
+        <!-- Effective To Column -->
+        <ng-container matColumnDef="effectiveTo">
+          <th mat-header-cell *matHeaderCellDef>
+            Effective To
+            {{ getAsterix('effectiveTo') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-date-picker
+              #formField
+              formControlName="effectiveTo"
+              validation="true"
+              placeholder="dd/mm/yyyy"
+              borderOnlyOnFocus="true"
+              [isTableField]="true"
+              [class]="'table-field'"
+              [requiredValidator]="requiredColumns.indexOf('effectiveTo') !== -1"
+              [disableState]="modalType === 'View'"
+              (isDirty)="checkIsTableDirty($event)"
+            ></app-date-picker>
+          </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>
+            Name
+            {{ getAsterix('name') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-input
+              #formField
+              formControlName="name"
+              [type]="'text'"
+              [borderOnlyOnFocus]="true"
+              [placeholder]="'Name'"
+              [isTableField]="true"
+              [requiredValidator]="requiredColumns.indexOf('name') !== -1"
+              (isDirty)="checkIsTableDirty($event)"
+              [disableState]="modalType === 'View'"
+            ></app-input>
+          </td>
+        </ng-container>
+
+        <!-- Reference Column -->
+        <ng-container matColumnDef="reference">
+          <th mat-header-cell *matHeaderCellDef>
+            Reference
+            {{ getAsterix('reference') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-input
+              #formField
+              formControlName="reference"
+              [type]="'text'"
+              [borderOnlyOnFocus]="true"
+              [placeholder]="'Reference'"
+              [isTableField]="true"
+              [requiredValidator]="requiredColumns.indexOf('reference') !== -1"
+              (isDirty)="checkIsTableDirty($event)"
+              [disableState]="modalType === 'View'"
+            ></app-input>
+          </td>
+        </ng-container>
+
+        <!-- Description Column -->
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>
+            Description
+            {{ getAsterix('description') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-input
+              #formField
+              type="text"
+              formControlName="description"
+              placeholder="Write your description here..."
+              borderOnlyOnFocus="true"
+              [isTableField]="true"
+              (isDirty)="checkIsTableDirty($event)"
+              [requiredValidator]="requiredColumns.indexOf('description') !== -1"
+              [disableState]="modalType === 'View' || row.value?.status === 'Invoiced'"
+            ></app-input>
+          </td>
+        </ng-container>
+
+        <!-- Details Column -->
+        <ng-container matColumnDef="details">
+          <th mat-header-cell *matHeaderCellDef>
+            Details
+            {{ getAsterix('details') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-input
+              #formField
+              type="text"
+              formControlName="details"
+              placeholder="Details..."
+              borderOnlyOnFocus="true"
+              [isTableField]="true"
+              (isDirty)="checkIsTableDirty($event)"
+              [requiredValidator]="requiredColumns.indexOf('details') !== -1"
+              [disableState]="modalType === 'View'"
+            ></app-input>
+          </td>
+        </ng-container>
+
+        <!-- InvoiceN Column -->
+        <ng-container matColumnDef="invoiceN">
+          <th mat-header-cell *matHeaderCellDef>
+            Invoice No.
+            {{ getAsterix('invoiceN') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-input
+              #formField
+              type="text"
+              formControlName="invoiceN"
+              placeholder="Invoice No."
+              borderOnlyOnFocus="true"
+              [requiredValidator]="requiredColumns.indexOf('invoiceN') !== -1"
+              [isTableField]="true"
+              (isDirty)="checkIsTableDirty($event)"
+              [disableState]="modalType === 'View'"
+            ></app-input>
+          </td>
+        </ng-container>
+
+        <!-- Units String Column -->
+        <ng-container matColumnDef="unitsString">
+          <th mat-header-cell *matHeaderCellDef>
+            Units
+            {{ getAsterix('unitsString') }}
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let row; let index = index"
+            [formGroupName]="index"
+          >
+            <app-select-opt-group-quick-add
+              #quickAddPriceBookComp
+              formControlName="unitsString"
+              placeholder="Select price book"
+              [requiredValidator]="requiredColumns.indexOf('unitsString') !== -1"
+              [setList]="groupedPriceBookItems"
+              [isTableField]="true"
+              (isDirty)="checkIsTableDirty($event)"
+              [panelWidth]="595"
+              (ngModelChange)="unitsStringChanged($event, index)"
+              [disableState]="modalType === 'View' || disableUnitsField || row.value?.status === 'Invoiced'"
+            >
+              <ng-template
+                #quickAddForm
+                let-groupChildren='groupChildren'
+                let-groupName='groupName'
+                let-panelOpened='panelOpened'
+                let-autoGroup='autoGroup'
+                let-groupIndex='groupIndex'
+              >
+                <app-quick-add-price-book
+                  [groupChildren]="groupChildren"
+                  [groupName]="groupName"
+                  [panelIsOpened]="panelOpened"
+                  [autoGroup]="autoGroup"
+                  [groupIndex]="groupIndex"
+                  (quickAddPriceBook)="quickAddPriceBook($event, index, groupName, quickAddPriceBookComp)"
+                ></app-quick-add-price-book>
+              </ng-template>
+            </app-select-opt-group-quick-add>
+          </td>
+        </ng-container>
+
+        <!-- Account Column -->
+        <ng-container matColumnDef="account">
+          <th mat-header-cell *matHeaderCellDef>
+            Account
+            {{ getAsterix('account') }}
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let row; let index = index"
+            [formGroupName]="index"
+          >
+            <app-select-opt-group-quick-add
+              #quickAddAccountComponent
+              placeholder="Select account"
+              formControlName="account"
+              selectObjectValidator="true"
+              [requiredValidator]="requiredColumns.indexOf('account') !== -1"
+              [isTableField]="true"
+              [setList]="groupedAccounts"
+              (isDirty)="checkIsTableDirty($event)"
+              (setError)="setError(index, 'account', $event)"
+              [disableState]="modalType === 'View'"
+              (focusout)="handleAccountChanged(index)"
+              [panelWidth]="385"
+            >
+              <ng-template
+                  #quickAddForm
+                  let-groupName='groupName'
+                  let-panelOpened='panelOpened'
+                  let-autoGroup='autoGroup'
+                  let-groupIndex='groupIndex'
+              >
+                <app-quick-add-account
+                  (quickAddAccount)="quickAddAccount($event, index, quickAddAccountComponent, 'account')"
+                  [groupName]="groupName"
+                  [panelIsOpened]="panelOpened"
+                  [autoGroup]="autoGroup"
+                  [groupIndex]="groupIndex"
+                ></app-quick-add-account>
+              </ng-template>
+            </app-select-opt-group-quick-add>
+          </td>
+        </ng-container>
+
+        <!-- Revenue Accounts Column -->
+        <ng-container matColumnDef="revenueAccounts">
+          <th mat-header-cell *matHeaderCellDef>
+            Revenue Category
+            {{ getAsterix('revenueAccounts') }}
+          </th>
+          <td
+            mat-cell *matCellDef="let row; let index = index"
+            [formGroupName]="index"
+          >
+            <app-select-opt-group-quick-add
+              #quickAddAccountComponent
+              placeholder="Select category"
+              formControlName="revenueAccounts"
+              selectObjectValidator="true"
+              [requiredValidator]="requiredColumns.indexOf('revenueAccounts') !== -1"
+              [panelWidth]="385"
+              [isTableField]="true"
+              [setList]="groupedAccounts"
+              (isDirty)="checkIsTableDirty($event)"
+              (setError)="setError(index, 'revenueAccounts', $event)"
+              [disableState]="modalType === 'View'"
+              (focusout)="handleAccountChanged(index)"
+            >
+              <ng-template
+                #quickAddForm
+                let-groupName='groupName'
+                let-panelOpened='panelOpened'
+                let-autoGroup='autoGroup'
+              >
+                <app-quick-add-account
+                  (quickAddAccount)="quickAddAccount($event, index, quickAddAccountComponent, 'revenueAccounts')"
+                  [groupName]="groupName"
+                  [panelIsOpened]="panelOpened"
+                  [autoGroup]="autoGroup"
+                ></app-quick-add-account>
+              </ng-template>
+            </app-select-opt-group-quick-add>
+          </td>
+        </ng-container>
+
+        <!-- Expense Category Column -->
+        <ng-container matColumnDef="expenseCategory">
+          <th mat-header-cell *matHeaderCellDef>
+            Expense Category
+            {{ getAsterix('expenseCategory') }}
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let row; let index = index"
+            [formGroupName]="index"
+          >
+            <app-select-opt-group-quick-add
+              #quickAddAccountComponent
+              placeholder="Select account"
+              formControlName="expenseCategory"
+              selectObjectValidator="true"
+              [requiredValidator]="requiredColumns.indexOf('expenseCategory') !== -1"
+              [panelWidth]="385"
+              [isTableField]="true"
+              [setList]="groupedAccounts"
+              (isDirty)="checkIsTableDirty($event)"
+              (setError)="setError(index, 'expenseCategory', $event)"
+              [disableState]="modalType === 'View'"
+              (focusout)="handleAccountChanged(index)"
+            >
+              <ng-template
+                #quickAddForm
+                let-groupName='groupName'
+                let-panelOpened='panelOpened'
+                let-autoGroup='autoGroup'
+              >
+                  <app-quick-add-account
+                    (quickAddAccount)="quickAddAccount($event, index, quickAddAccountComponent, 'expenseCategory')"
+                    [groupName]="groupName"
+                    [panelIsOpened]="panelOpened"
+                    [autoGroup]="autoGroup"
+                  ></app-quick-add-account>
+              </ng-template>
+            </app-select-opt-group-quick-add>
+          </td>
+        </ng-container>
+
+        <!-- Unit Column -->
+        <ng-container matColumnDef="unit">
+          <th mat-header-cell *matHeaderCellDef>
+            Unit
+            {{ getAsterix('unit') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-input
+              #formField
+              formControlName="unit"
+              [type]="'text'"
+              [placeholder]="'Hours'"
+              [isTableField]="true"
+              [requiredValidator]="requiredColumns.indexOf('unit') !== -1"
+              (isDirty)="checkIsTableDirty($event)"
+              [disableState]="modalType === 'View'"
+            ></app-input>
+          </td>
+        </ng-container>
+
+        <!-- Units Column -->
+        <ng-container matColumnDef="units">
+          <th mat-header-cell *matHeaderCellDef>
+            Units
+            {{ getAsterix('units') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-input
+              #formField
+              formControlName="units"
+              [type]="'number'"
+              [borderOnlyOnFocus]="true"
+              [placeholder]="'0'"
+              [isTableField]="true"
+              [requiredValidator]="requiredColumns.indexOf('units') !== -1"
+              (isDirty)="checkIsTableDirty($event)"
+              [disableState]="modalType === 'View'"
+            ></app-input>
+          </td>
+        </ng-container>
+
+        <!-- Rate Column -->
+        <ng-container matColumnDef="rate">
+          <th mat-header-cell *matHeaderCellDef>
+            Rate
+            {{ getAsterix('rate') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-input-amount
+              #formField
+              placeholder="$0.00"
+              formControlName="rate"
+              maxDigits="9"
+              borderOnlyOnFocus="true"
+              [inputWidth]="'100%'"
+              [isTableField]="true"
+              (isDirty)="checkIsTableDirty($event)"
+              [disableState]="modalType === 'View' || row.value?.status === 'Invoiced'"
+              [requiredValidator]="requiredColumns.indexOf('rate') !== -1"
+            ></app-input-amount>
+          </td>
+        </ng-container>
+
+        <!-- Total Charges Column -->
+        <ng-container matColumnDef="totalCharges">
+          <th mat-header-cell *matHeaderCellDef>
+            Total Charges
+            {{ getAsterix('totalCharges') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-input-amount
+              #formField
+              formControlName="totalCharges"
+              [borderOnlyOnFocus]="true"
+              [isTableField]="true"
+              [placeholder]="'$0.00'"
+              [requiredValidator]="requiredColumns.indexOf('totalCharges') !== -1"
+              (isDirty)="checkIsTableDirty($event)"
+              [disableState]="modalType === 'View'"
+            ></app-input-amount>
+          </td>
+        </ng-container>
+
+        <!-- Quantity Column -->
+        <ng-container matColumnDef="quantity">
+          <th mat-header-cell *matHeaderCellDef>
+            Qty
+            {{ getAsterix('quantity') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-input
+              #formField
+              formControlName="quantity"
+              [type]="'number'"
+              [borderOnlyOnFocus]="true"
+              [isTableField]="true"
+              [placeholder]="'0'"
+              [requiredValidator]="requiredColumns.indexOf('quantity') !== -1"
+              (isDirty)="checkIsTableDirty($event)"
+              [disableState]="modalType === 'View' || row.value?.status === 'Invoiced'"
+              [isTextRight]="true"
+            ></app-input>
+          </td>
+        </ng-container>
+
+        <!-- Tax Rate Column -->
+        <ng-container matColumnDef="taxRate">
+          <th mat-header-cell *matHeaderCellDef [class.disabled]="taxMode === 'NoTax'">
+            Tax Rate
+            {{ getAsterix('taxRate') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-select-tax-rate
+              #formField
+              formControlName="taxRate"
+              [placeholder]="taxMode === 'NoTax' ? '-' : 'Select rate'"
+              [requiredValidator]="requiredColumns.indexOf('taxRate') !== -1"
+              [setTaxMode]="taxMode"
+              (isDirty)="checkIsTableDirty($event)"
+              [disableState]="modalType === 'View' || taxMode === 'NoTax'"
+            >
+            </app-select-tax-rate>
+          </td>
+        </ng-container>
+
+        <!-- Invoice Amount Column -->
+        <ng-container matColumnDef="invoiceAmount">
+          <th mat-header-cell *matHeaderCellDef>
+            Amount
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <span [class.empty-value]="getInvoiceAmount(index) === 0">
+              ${{ getInvoiceAmount(index) | number: '0.2-2' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Amount Column -->
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>
+            Amount
+            {{ getAsterix('amount') }}
+          </th>
+          <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+            <app-input-amount
+              #formField
+              placeholder="$0.00"
+              formControlName="amount"
+              maxDigits="9"
+              borderOnlyOnFocus="true"
+              [requiredValidator]="requiredColumns.indexOf('amount') !== -1"
+              [inputWidth]="'130px'"
+              [isTableField]="true"
+              (isDirty)="checkIsTableDirty($event)"
+              [disableState]="modalType === 'View' || row.value?.status === 'Invoiced'"
+            ></app-input-amount>
+          </td>
+        </ng-container>
+
+        <!-- Debit Column -->
+        <ng-container matColumnDef="debit">
+          <th mat-header-cell *matHeaderCellDef>
+            Debit
+            {{ getAsterix('debit') }}
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let row; let index = index"
+            [formGroupName]="index"
+          >
+            <app-input-amount
+              #formField
+              formControlName="debit"
+              maxDigits="9"
+              borderOnlyOnFocus="true"
+              [requiredValidator]="requiredColumns.indexOf('debit') !== -1"
+              [hiddenZeroValue]="modalType === 'View'"
+              [inputWidth]="'130px'"
+              [isTableField]="true"
+              [disableState]="modalType === 'View'"
+              (isDirty)="checkIsTableDirty($event)"
+            ></app-input-amount>
+          </td>
+        </ng-container>
+
+        <!-- Credit Column -->
+        <ng-container matColumnDef="credit">
+          <th mat-header-cell *matHeaderCellDef>
+            Credit
+            {{ getAsterix('credit') }}
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let row; let index = index"
+            [formGroupName]="index"
+          >
+            <app-input-amount
+              #formField
+              formControlName="credit"
+              maxDigits="9"
+              borderOnlyOnFocus="true"
+              [requiredValidator]="requiredColumns.indexOf('credit') !== -1"
+              [hiddenZeroValue]="modalType === 'View'"
+              [inputWidth]="'130px'"
+              [isTableField]="true"
+              [disableState]="modalType === 'View'"
+              (isDirty)="checkIsTableDirty($event)"
+            ></app-input-amount>
+          </td>
+        </ng-container>
+
+        <!-- Row definitions -->
+        <tr mat-header-row *matHeaderRowDef="columns; sticky: true"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; let i = index; columns: columns;"
+          [class.pointer]="rowsIsClickable"
+          (click)="rowsIsClickable ? handleRowClick.emit(row) : null"
+        ></tr>
+      </table>
+    </ng-container>
+  </ng-container>
+</div>

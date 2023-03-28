@@ -1,0 +1,71 @@
+<div #el>
+  <ng-container *ngIf="!isAddState">
+    <mat-option
+      class="mat-option add"
+      (click)="quickAddButtonClick($event)"
+      [disabled]="true"
+    >
+      <div class="quick-add-button">
+        <img src="../../../../../../../assets/icons/add.svg" alt="+">
+        <p>Quick add</p>
+      </div>
+    </mat-option>
+  </ng-container>
+  <ng-container *ngIf="isAddState">
+    <div class="quick-add" (keydown.enter)="addButtonClick()">
+      <div class="content">
+        <div class="label">Quick Add an Account</div>
+        <div class="form" [formGroup]="form">
+          <div class="form-control">
+            <app-input
+              [formControl]="form.controls['name']"
+              [appAutoFocus]="true"
+              label="Name"
+              placeholder="Name"
+              type="text"
+              requiredValidator="true"
+            ></app-input>
+          </div>
+          <div class="form-control">
+            <app-select-opt-group-autocomplete
+              [formControl]="form.controls['account']"
+              [setList]="groupedAccountsTypes$ | async"
+              label="Account Type"
+              placeholder="Select account type"
+              requiredValidator="true"
+              selectObjectValidator="true"
+              (ngModelChange)="setDefaultTaxRate($event)"
+              (setError)="setError(form.controls['account'], $event)"
+            ></app-select-opt-group-autocomplete>
+          </div>
+          <div class="form-control tax">
+            <app-select-opt-group-autocomplete
+              #formField
+              label="Default for Tax"
+              placeholder="Select tax rate"
+              requiredValidator="true"
+              selectObjectValidator="true"
+              [formControl]="form.controls['taxMode']"
+              [setList]="taxModeList"
+              (setError)="setError(form.controls['taxMode'], $event)"
+            ></app-select-opt-group-autocomplete>
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <app-button
+          label="Add"
+          buttonStyleType="primary full"
+          [spinner]="spinner$ | async"
+          [disabled]="!form.valid"
+          (mouseup)="addButtonClick()"
+        ></app-button>
+        <app-button
+          label="Cancel"
+          buttonStyleType="black"
+          (mouseup)="resetState()"
+        ></app-button>
+      </div>
+    </div>
+  </ng-container>
+</div>

@@ -1,0 +1,66 @@
+<ng-container *ngIf="label">
+  <div class="form-field-label" [class.disabled]="isView">
+    {{ label }} {{ !notRequired && !isView ? '*' : null }}
+    <span *ngIf="notRequired && !isView" class="optional">(optional)</span>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="selectData?.length > 0">
+  <div class="select-list-wrapper">
+    <ng-container *ngFor="let select of selectData">
+      <p class="select-item" (click)="toggleSelection(select)">
+        <span appEllipsisTooltip class="item-name">{{ select.name}}</span>
+        <mat-icon >cancel</mat-icon>
+      </p>
+    </ng-container>
+  </div>
+</ng-container>
+
+<mat-form-field
+  class="full-width select-multi-input"
+  appearance="fill"
+  [class.border-green]="formControl.value?.length"
+  [class.border-error]="!formControl.value?.length"
+>
+  <input
+    matInput type="text"
+    [placeholder]="placeholder"
+    [matAutocomplete]="auto"
+    [formControl]="selectControl"
+  ><div class="icon-wrapper">
+      <img class="trigger" src="../../../../../assets/icons/drop-down-select.svg" alt="trigger">
+    </div>
+</mat-form-field>
+
+<mat-autocomplete class="select-multi-opt" #auto="matAutocomplete" [displayWith]="displayFn">
+  <ng-container *ngIf="list && list.length">
+    <mat-option (click)="toggleSelectAll()">
+      <mat-checkbox
+        [checked]="!!selectData.length && isAllSelected()"
+        [indeterminate]="!!selectData.length && !isAllSelected()"
+      >
+        Select All
+      </mat-checkbox>
+    </mat-option>
+    <mat-optgroup
+      *ngFor="let group of (stateGroupOptions | async)"
+      [label]="group.displayName"
+      (click)="$event.stopPropagation()"
+    >
+      <mat-option *ngFor="let item of group.children" [value]="item">
+        <div (click)="optionClicked($event, item)">
+          <mat-checkbox
+            [checked]="isChecked(item)"
+            (change)="toggleSelection(item)"
+            (click)="$event.stopPropagation()"
+          >
+            {{ item.name }}
+          </mat-checkbox>
+        </div>
+      </mat-option>
+    </mat-optgroup>
+  </ng-container>
+</mat-autocomplete>
+
+
+

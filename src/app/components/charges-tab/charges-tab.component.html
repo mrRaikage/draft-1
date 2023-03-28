@@ -1,0 +1,150 @@
+<mat-card class="charges-tab">
+
+  <ng-container *ngIf="!(isChargesLoading$ | async) && (editableTable.formArrayRows.length || modalMode !== 'View')">
+    <mat-card-header class="charges-tab-header">
+      <div class="charges-tab-title" >
+        Charges
+      </div>
+
+      <app-checkbox
+        label="Show Invoiced Items"
+        labelPosition="before"
+        [formControl]="checkboxControl"
+        [disableState]="modalMode !== 'View'"
+        [blackLabel]="true"
+        (ngModelChange)="setShowInvoiced($event)"
+      ></app-checkbox>
+    </mat-card-header>
+  </ng-container>
+
+  <mat-card-content>
+    <div
+      [class.table-wrapper]="
+        !(isChargesLoading$ | async) &&
+        (editableTable.formArrayRows.length || modalMode !== 'View')
+      "
+    >
+      <app-editable-table
+        #editableTable
+        [columns]="tableColumns"
+        [groupedPriceBookItems]="groupedPriceBookItems$ | async"
+        [requiredColumns]="tableColumns"
+        [formGroupRows$]="tableFormGroupRows$"
+        [isLoading]="isChargesLoading$ | async"
+        [modalType]="modalMode"
+        [hasEmptyPageComponent]="true"
+        [showHidden$]="showInvoiced$"
+        [hiddenRowsParam]="{key: 'status', value: 'Invoiced'}"
+        [emptyContentData]="emptyContentCharges"
+        [hiddenRowData]="hiddenRowCharges"
+        [skeletonColumnsCount]="5"
+        (addLine)="createNewChargeButtonClick(editableTable)"
+        (changedLines)="setLines($event)"
+        (linesIsValid)="setLinesErrors($event)"
+        (viewHiddenItemsClick)="checkboxControl.setValue(true)"
+      ></app-editable-table>
+
+      <ng-container *ngIf="!(isChargesLoading$ | async)">
+        <div class="under-table-row">
+          <div class="left-side-container">
+            <ng-container *ngIf="modalMode !== 'View'">
+              <app-button
+                label="Add"
+                buttonStyleType="add"
+                (btnClick)="editableTable.addChargeLineRow(); linesIsTouched = true"
+              ></app-button>
+            </ng-container>
+          </div>
+
+          <ng-container *ngIf="editableTable.formArrayRows.length">
+            <div class="amount-column">
+              <div class="amount-field amount-field--total">
+                <div class="label">Total</div>
+                <div class="value-area"> ${{ total | number: '0.2-2' }} </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </mat-card-content>
+
+    <mat-card-actions class="action-buttons">
+      <div class="left-side">
+        <ng-container *ngIf="
+          !(isChargesLoading$ | async) &&
+          editableTable.formArrayRows.length &&
+          modalMode === 'View' &&
+          !isSelection$.value"
+        >
+          <app-button
+            [label]="'Select Charges'"
+            [buttonStyleType]="'border-purple bg-white'"
+            (btnClick)="selectChargesButtonClick()"
+          ></app-button>
+        </ng-container>
+      </div>
+
+      <div class="right-side">
+        <ng-container *ngIf="!(isChargesLoading$ | async)">
+          <ng-container *ngIf="editableTable.formArrayRows.length || modalMode !== 'View'">
+
+            <ng-container *ngIf="modalMode === 'Edit'">
+              <app-button
+                [label]="'Save'"
+                [buttonStyleType]="'primary'"
+                [disabled]="formControl.invalid"
+                [spinner]="spinnerStarted$ | async"
+                (btnClick)="saveButtonClick()"
+              ></app-button>
+
+              <app-button
+                [label]="'Cancel'"
+                [buttonStyleType]="'black'"
+                (btnClick)="cancelButtonClick()"
+              ></app-button>
+            </ng-container>
+
+            <ng-container *ngIf="modalMode === 'View'">
+              <ng-container *ngIf="currentChargeList && currentChargeList.length && editableTable">
+                <ng-container *ngIf="editableTable.selection.selected.length">
+                  <div class="form-field charge-groups">
+                    <app-select-opt
+                      label="Group charges by"
+                      [(ngModel)]="chargeGroupValue"
+                      [list]="chargeGroups"
+                    ></app-select-opt>
+                  </div>
+                </ng-container>
+                <app-button
+                  [label]="'Create Invoice'"
+                  [buttonStyleType]="'border-purple bg-white'"
+                  [disabled]="!editableTable.selection.selected.length"
+                  [spinner]="spinnerStarted$ | async"
+                  [spinnerColor]="'purple'"
+                  [style]="{ minWidth: '127px' }"
+                  (btnClick)="createInvoiceButtonClick(editableTable.selection.selected)"
+                ></app-button>
+              </ng-container>
+
+              <ng-container *ngIf="!isSelection$.value">
+                <app-button
+                  [label]="'Edit'"
+                  [buttonStyleType]="'primary'"
+                  (btnClick)="editButtonClick()"
+                ></app-button>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+
+          <ng-container *ngIf="modalMode === 'View'">
+            <app-button
+              [label]="isSelection$.value ? 'Cancel' : 'Close'"
+              [buttonStyleType]="'black'"
+              (btnClick)="cancelButtonClick()"
+            ></app-button>
+          </ng-container>
+        </ng-container>
+      </div>
+    </mat-card-actions>
+</mat-card>

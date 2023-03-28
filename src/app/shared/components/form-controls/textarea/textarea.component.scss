@@ -1,0 +1,19 @@
+@import '../../../../../assets/styles/variables';
+
+.text-area-wrapper {
+  position: relative;
+
+  .length-counter {
+    position: absolute;
+    bottom: -16px;
+    right: 0;
+    margin-right: 10px;
+    font-size: 10px;
+    line-height: 15px;
+    color: $color-contrast-black
+  }
+
+  .textarea-text {
+    margin: 0;
+  }
+}

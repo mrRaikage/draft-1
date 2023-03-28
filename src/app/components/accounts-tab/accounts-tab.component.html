@@ -1,0 +1,59 @@
+<div class="accounts-wrapper">
+
+  <div class="title mobile-hidden">
+    <div *ngIf="!(dataLoaded$ | async)" class="skeleton-loader">
+      <ngx-skeleton-loader></ngx-skeleton-loader>
+    </div>
+    <ng-container *ngIf="dataLoaded$ | async">
+      Account list
+    </ng-container>
+  </div>
+
+  <div class="content">
+    <app-table-header-actions
+      [addButtonName]="'Add Account'"
+      [addButtonType]="'primary'"
+      [dataLoaded]="dataLoaded$ | async"
+      [hasSearchFilter]="false"
+      (handleAction)="addChartOfAccount()"
+    ></app-table-header-actions>
+
+    <mat-accordion class="example-headers-align" hideToggle>
+
+      <ng-container *ngIf="!(dataLoaded$ | async)">
+        <ng-container *ngFor="let item of skeletonItems">
+          <div class="skeleton-list-loader">
+            <ngx-skeleton-loader [theme]="{ height: '60px' }"></ngx-skeleton-loader>
+          </div>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="dataLoaded$ | async">
+        <ng-container *ngFor="let group of accountGroupList">
+          <mat-expansion-panel
+            class="account-group"
+            (opened)="panelOpenState = true"
+            (closed)="panelOpenState = false"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <div class="skeleton-loader">
+                  <ngx-skeleton-loader></ngx-skeleton-loader>
+                </div>
+                <ng-container *ngIf="dataLoaded$ | async">
+                  <div class="image"></div>
+                  {{ accountGroups[group].displayName }}
+                </ng-container>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-accounts-table
+              [data]="accountGroups[group].children"
+              [columnsData]="columnsData"
+              [actions]="actions"
+            ></app-accounts-table>
+          </mat-expansion-panel>
+        </ng-container>
+      </ng-container>
+    </mat-accordion>
+  </div>
+</div>

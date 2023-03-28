@@ -1,0 +1,108 @@
+@import '../../../assets/styles/variables';
+
+::ng-deep .ledger-card.mat-card {
+
+  .mat-card-actions {
+    margin: 0;
+    padding: 20px;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+
+    .button-right {
+      margin-left: 12px;
+    }
+  }
+}
+
+.mat-card {
+  box-shadow: none;
+  padding: 0;
+  height: 100%;
+}
+
+.mat-card-content {
+  margin: 0;
+  padding: 20px 20px 0;
+
+  .table-wrapper {
+    background: $color-basic-light-grey;
+    border-radius: 5px;
+    padding: 0 15px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .warning-wrapper {
+      margin-top: 10px;
+    }
+
+    .under-table-row {
+      margin-top: 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .amount-field {
+      display: flex;
+      justify-content: flex-end;
+
+      .label {
+        padding-top: 10px;
+        color: $color-contrast-black;
+        margin-right: 15px;
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 19px;
+      }
+
+      .value-area {
+        width: 300px;
+
+        .amount-area {
+          display: flex;
+          align-items: center;
+          background-color: $color-basic-white;
+          border-radius: 3px;
+          height: 40px;
+
+          .debit-field,
+          .credit-field {
+            width: 150px;
+            text-align: right;
+            font-weight: 600;
+            font-size: 13px;
+            line-height: 19px;
+            padding-right: 20px;
+            color: $color-basic-purple
+          }
+        }
+
+        .hint-message {
+          margin-top: 10px;
+          display: inline-flex;
+          align-items: center;
+          font-size: 13px;
+          line-height: 19px;
+          color: $color-error-red;
+
+          img {
+            margin-right: 8px;
+          }
+        }
+      }
+
+      .amount-area {
+        border-radius: 3px;
+        background-color: $color-basic-white;
+        color: $color-basic-purple;
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 18px;
+      }
+    }
+
+  }
+}
+

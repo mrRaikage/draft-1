@@ -1,0 +1,20 @@
+<div class="content-page">
+
+  <app-side-bar class="side-bar" [isOpened]="isToggle"></app-side-bar>
+
+  <div #content class="content">
+    <div class="body">
+      <app-header class="header mobile-hidden" (toggleSideBar)="toggle()"></app-header>
+      <app-mobile-header class="mobile-visible" (toggleSideBar)="toggle()"></app-mobile-header>
+      <div class="page" [class.mobile-toggle]="isToggle">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    <app-footer class="footer mobile-hidden"></app-footer>
+  </div>
+
+</div>
+
+<div class="feedback mobile-hidden" (click)="openDialog()">
+  <span>{{ 'Feedback' }}</span>
+</div>

@@ -1,0 +1,51 @@
+@import '../../../assets/styles/variables';
+@import '../../../assets/styles/global';
+
+.on-boarding-wrapper {
+  height: 100%;
+  position: relative;
+  display: flex;
+
+  .image-wrapper {
+    flex: 1;
+    height: 100%;
+    background: #FFFFFF url('/assets/images/bg-onboarding.svg') no-repeat;
+    background-size: cover;
+  }
+
+  .card-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .card {
+      margin: 0 30px 80px 30px;
+      flex: 1;
+      color: $color-primary-variant;
+      max-width: 410px;
+      position: relative;
+      z-index: 1;
+
+      .title {
+        font-weight: 600;
+        font-size: 28px;
+        line-height: 32px;
+        margin-bottom: 15px;
+
+        span {
+          color: $color-basic-purple;
+        }
+      }
+
+      .subtitle {
+        font-size: 16px;
+        line-height: 22px;
+        margin-bottom: 46px;
+      }
+
+    }
+
+  }
+}
+

@@ -1,0 +1,94 @@
+@import '../../../assets/styles/variables';
+
+.text-right {
+  text-align: right;
+}
+
+.mat-card.asset-tab {
+  box-shadow: none;
+  padding: 0;
+
+  /** Asset Tab Content */
+  .mat-card-content {
+    margin: 0;
+    padding: 0;
+
+    .label {
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 18px;
+      color: $color-contrast-black;
+      margin-bottom: 1px;
+    }
+
+    .form-fields-wrapper {
+      border-radius: 5px;
+      padding: 10px 15px;
+      background-color: $color-basic-light-grey;
+
+      display: flex;
+      justify-content: space-between;
+
+      & .right {
+        display: flex;
+        justify-content: space-between;
+        max-width: 350px;
+        width: 100%;
+      }
+    }
+
+    .form-fields-row + .form-fields-row {
+      margin-top: 30px;
+    }
+
+    .form-fields-area {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+
+      .left-column {
+        flex: auto;
+        max-width: 595px;
+      }
+
+      .right-column {
+        max-width: 250px;
+
+        text-align: right;
+      }
+
+      .form-field + .form-field {
+        margin-top: 15px;
+      }
+    }
+
+  }
+
+
+  /** Modal Actions */
+  .mat-card-actions {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    .left-side,
+    .right-side {
+      display: flex;
+
+      app-button + app-button {
+        margin-left: 12px;
+      }
+
+      app-button {
+        margin-top: 30px;
+      }
+    }
+
+    .left-side {
+      flex: auto;
+    }
+  }
+
+}

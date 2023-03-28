@@ -1,0 +1,17 @@
+<div class="modal-ledger">
+  <app-close-btn class="close" (btnClick)="dialogRef.close()"></app-close-btn>
+
+  <mat-tab-group
+    class="ledger-tab-group"
+    animationDuration="0ms"
+    disableRipple
+    (selectedTabChange)="tabChanged($event)"
+  >
+    <mat-tab
+      [label]="'Manual Ledger'"
+      [disabled]="(activeTab !== 0 && modalModeService.getModalMode() !== 'View')"
+    >
+      <app-manual-ledger-tab></app-manual-ledger-tab>
+    </mat-tab>
+  </mat-tab-group>
+</div>

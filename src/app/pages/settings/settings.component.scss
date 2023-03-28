@@ -1,0 +1,42 @@
+@import "../../../assets/styles/content-page";
+@import "../../../assets/styles/variables";
+
+::ng-deep .settings-tabs {
+  height: 100%;
+
+  .mat-tab-header {
+    border-radius: 5px 5px 0 0;
+  }
+
+  .mat-tab-body-wrapper {
+    border-radius: 0 0 5px 5px;
+  }
+
+  .mat-tab-links {
+    background-color: $color-basic-white;
+  }
+
+  .mat-tab-link {
+    min-width: 200px;
+    font-family: Poppins, "sans-serif";
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 22px;
+    color: $color-contrast-black;
+
+    &-active {
+      color: $color-basic-purple;
+      opacity: 1;
+    }
+  }
+
+  .mat-tab-body-wrapper {
+    height: 100%;
+    min-height: 500px;
+  }
+
+  .mat-ink-bar {
+    height: 2px;
+    background-color: $color-basic-purple;
+  }
+}

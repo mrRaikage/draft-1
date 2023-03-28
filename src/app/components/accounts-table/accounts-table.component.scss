@@ -1,0 +1,77 @@
+@import '../../../assets/styles/variables';
+
+$border-spacing: 6px;
+
+table.mat-table {
+  width: 100%;
+  background: $color-basic-light-grey;
+  padding: 0 20px calc(20px - #{$border-spacing});
+  border-spacing: 0 $border-spacing;
+}
+
+tr.mat-header-row {
+  height: calc(50px - #{$border-spacing * 2});
+
+  th.mat-header-cell {
+    color: $color-basic-dark-grey;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 19px;
+    border: none;
+    padding-top: 10px;
+
+    &:first-of-type {
+      padding-left: 40px;
+    }
+
+    &:last-of-type {
+      padding-right: 20px;
+      width: 44px;
+    }
+
+  }
+}
+
+tr.mat-row {
+  background: $color-basic-white;
+  cursor: pointer;
+
+  td.mat-cell {
+    font-size: 13px;
+    line-height: 18px;
+    color: $color-contrast-black;
+    border: none;
+    padding: 10px 20px 10px 0;
+
+    img {
+      vertical-align: middle;
+      margin-left: 10px;
+    }
+
+    &:first-of-type {
+      padding-left: 40px;
+    }
+
+    &:last-of-type {
+      padding-right: 20px;
+      width: 44px;
+    }
+
+    &.mat-column-accountType {
+      min-width: 150px;
+      max-width: 250px;
+    }
+
+    &.mat-column-name {
+      min-width: 300px;
+      max-width: 350px;
+    }
+
+    &.mat-column-description {
+      max-width: 250px;
+    }
+  }
+}
+
+
+

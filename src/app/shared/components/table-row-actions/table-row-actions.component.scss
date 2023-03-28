@@ -1,0 +1,38 @@
+@import '../../../../assets/styles/variables';
+
+.image {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+::ng-deep .mat-menu-panel.table-actions-panel {
+  background: $color-basic-white;
+  box-shadow: 0px 2px 12px 6px rgba(0, 0, 0, 0.03);
+  border-radius: 3px;
+  min-width: 120px;
+
+  .mat-menu-content {
+    padding: 11px 0;
+
+    .mat-menu-item + .mat-menu-item {
+      margin-top: 9px;
+    }
+    .mat-menu-item {
+      padding: 0 11px;
+      font-size: 13px;
+      line-height: 18px;
+      height: auto;
+      display: flex;
+
+      &:hover {
+        background: $color-basic-white;
+      }
+
+      .icon {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+

@@ -1,0 +1,71 @@
+<ng-container *ngIf="label">
+  <div class="form-field-label" [class.disabled]="isView">
+    {{ label }} {{ !notRequired && !isView ? '*' : null }}
+    <span *ngIf="notRequired && !isView" class="optional">(optional)</span>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="isView">
+  <p
+    class="item-text"
+    [innerText]="formControl.value.name || formControl.value"
+    appEllipsisTooltip
+    [ngStyle]="isTableField ? {'padding-left': '10px'} : null"
+  ></p>
+</ng-container>
+
+<ng-container  *ngIf="!isView">
+  <mat-form-field
+    appearance="fill"
+    class="select-group-autocomplete"
+    [class.table-field]="isTableField"
+    [class.not-required]="notRequired"
+    (keydown.tab)="pressTabButton()"
+  >
+    <input
+      type="text"
+      matInput
+      [placeholder]="placeholder"
+      [formControl]="formControl"
+      [matAutocomplete]="autoGroup"
+      #trigger="matAutocompleteTrigger"
+      #triggerOnFocus
+      (focus)="trigger.openPanel()"
+      (ngModelChange)="isDirty.emit(formControl.dirty); checkValidControl(formControl)"
+      (blur)="checkCorrectValue(formControl, $event)"
+    >
+    <ng-container *ngIf="list && list.length && list[0].children.length">
+      <div class="icon-wrapper">
+        <img *ngIf="!formControl.value" class="trigger" src="../../../../../assets/icons/drop-down-select.svg" alt="trigger">
+        <app-close-btn
+          *ngIf="formControl.value"
+          (btnClick)="onClear(triggerOnFocus, trigger, $event)"
+          class="reset"
+        ></app-close-btn>
+      </div>
+    </ng-container>
+
+    <mat-autocomplete
+      class="grouped-list"
+      #autoGroup="matAutocomplete"
+      [displayWith]="displayProperty"
+      [panelWidth]="335"
+      [autoActiveFirstOption]="true"
+    >
+      <ng-container *ngIf="list && list.length">
+        <mat-optgroup
+          *ngFor="let group of (stateGroupOptions | async)"
+          [label]="group.displayName"
+          (click)="$event.stopPropagation()"
+        >
+          <mat-option *ngFor="let item of group.children" [value]="item" (click)="$event.stopPropagation()">
+            <div class="account-item">
+              <p appEllipsisTooltip>{{ item.name }}</p>
+            </div>
+          </mat-option>
+        </mat-optgroup>
+      </ng-container>
+    </mat-autocomplete>
+  </mat-form-field>
+</ng-container>
+

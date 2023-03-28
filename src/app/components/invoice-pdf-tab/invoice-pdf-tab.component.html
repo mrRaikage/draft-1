@@ -1,0 +1,41 @@
+<mat-card class="invoice-pdf">
+
+  <!--  Content  -->
+  <mat-card-content>
+    <ng-container *ngIf="isPdfDataLoading$ | async">
+      <div>
+        <ngx-skeleton-loader [ngStyle]="{'display': 'flex', 'margin-top': '0px'}" [theme]="{width: '200px', height: '20px', margin: '0 0 0 15px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [ngStyle]="{'display': 'flex', 'margin-top': '40px'}" [theme]="{width: '200px', height: '20px', margin: '0 auto'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [ngStyle]="{'display': 'flex', 'margin-bottom': '20px'}" [theme]="{margin: '20px 20px 15px 15px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader count="2" [ngStyle]="{'display': 'flex', 'margin-bottom': '20px'}" [theme]="{margin: '0 15px 15px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader count="2" [ngStyle]="{'display': 'flex', 'margin': '0 0 20px 50%'}" [theme]="{width: '50%', margin: '0 15px 15px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader count="2" [ngStyle]="{'display': 'flex', 'margin': '0 0 20px 50%'}" [theme]="{width: '50%', margin: '0 15px 15px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader count="2" [ngStyle]="{'display': 'flex', 'margin': '80px 0px 20px 0px'}" [theme]="{margin: '0 15px 15px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader count="2" [ngStyle]="{'display': 'flex', 'margin': '0 0 20px 50%'}" [theme]="{width: '50%', margin: '0 15px 15px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader count="2" [ngStyle]="{'display': 'flex', 'margin': '0 0 20px 50%'}" [theme]="{width: '50%', margin: '0 15px 15px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader count="1" [ngStyle]="{'display': 'flex', 'margin': '80px 80% 20px 0'}" [theme]="{height: '40px', margin: '0 0px 15px'}"></ngx-skeleton-loader>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!(isPdfDataLoading$ | async)">
+      <pdf-viewer class="pdf-container" [src]="url" original-size="true"></pdf-viewer>
+    </ng-container>
+  </mat-card-content>
+
+  <!--  Actions  -->
+  <mat-card-actions>
+    <ng-container *ngIf="!(isPdfDataLoading$ | async)">
+      <app-button
+        label="Export to PDF"
+        buttonStyleType="pdf"
+        (btnClick)="downloadButtonClick()"
+      ></app-button>
+
+      <app-button
+        [label]="'Close'"
+        [buttonStyleType]="'black'"
+        (btnClick)="cancelButtonClick()"
+      ></app-button>
+    </ng-container>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,76 @@
+@import '../../../assets/styles/variables';
+
+::ng-deep .black.mat-checkbox {
+  color: $color-contrast-black;
+}
+
+.card-wrapper.mat-card {
+  padding: 20px;
+  height: 100%;
+  box-shadow: none;
+
+  .mat-card-content {
+    display: flex;
+
+    .left-side {
+      flex: auto;
+
+      .form-field.amounts-are {
+        max-width: 186px;
+      }
+
+      .form-field + .form-field {
+        margin-top: 15px;
+      }
+
+      .form-field.org-name {
+        max-width: 350px;
+      }
+    }
+
+    .right-side {
+      width: 100%;
+      max-width: 400px;
+      margin-left: 40px;
+
+      .image-area {
+        background: $color-basic-light-grey;
+        overflow: hidden;
+        border-radius: 5px;
+        padding: 30px;
+        height: 180px;
+        display: flex;
+        align-items: center;
+
+        .text-wrapper {
+
+          p {
+            margin: 0;
+            font-size: 13px;
+            line-height: 18px;
+            text-align: center;
+            color: $color-contrast-black;
+          }
+
+          p + p {
+            margin-top: 20px;
+          }
+        }
+      }
+
+      .upload-button-wrapper {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+
+  .mat-card-actions {
+    padding: 0;
+    margin: 40px 0 0 0;
+    max-width: 500px;
+    display: flex;
+    justify-content: space-between;
+  }
+}

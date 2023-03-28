@@ -1,0 +1,50 @@
+<mat-card class="job-invoices-tab">
+  <ng-container *ngIf="editableTable.formArrayRows.length">
+    <mat-card-header class="job-invoices-tab-header">
+      <div class="job-invoices-tab-title">
+        Invoices
+      </div>
+    </mat-card-header>
+  </ng-container>
+  <mat-card-content>
+
+    <div [class.table-wrapper]="editableTable.formArrayRows.length || modalMode !== 'View'">
+      <div class="table-container">
+        <app-editable-table
+          #editableTable
+          [columns]="columns"
+          [requiredColumns]="columns"
+          [formGroupRows$]="tableFormGroupRows$"
+          [modalType]="modalMode"
+          [rowsIsClickable]="true"
+          [hasEmptyPageComponent]="true"
+          [emptyContentData]="emptyContentInvoice"
+          [skeletonColumnsCount]="5"
+          (handleRowClick)="clickOnRow($event)"
+        ></app-editable-table>
+
+        <ng-container *ngIf="editableTable.formArrayRows.length">
+          <div class="under-table-row">
+            <div class="amount-column">
+              <div class="amount-field amount-field--total">
+                <div class="label">Total</div>
+                <div class="value-area"> ${{ total | number: '0.2-2' }} </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+
+  </mat-card-content>
+
+  <mat-card-actions>
+    <app-button
+      class="button-right"
+      buttonStyleType="black"
+      label="Close"
+      (btnClick)="cancelButtonClick()"
+    ></app-button>
+  </mat-card-actions>
+</mat-card>

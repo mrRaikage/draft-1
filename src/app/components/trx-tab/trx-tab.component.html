@@ -1,0 +1,244 @@
+<mat-card>
+  <mat-card-content class="form" [formGroup]="form">
+
+    <div class="form-field-area">
+
+      <div class="left-side">
+        <div class="row row-first">
+          <ng-container *ngIf="modalMode !== 'View'">
+            <div class="form-field-wrapper cash-account">
+              <app-select-opt-autocomplete
+                #formField
+                class="form-field"
+                label="Cash Account"
+                selectObjectValidator="true"
+                requiredValidator="true"
+                [formControl]="form.controls['cashAccount']"
+                [list]="cashAccounts"
+                [placeholder]="'Select cash account'"
+                [panelWidth]="320"
+                (setError)="setError(form.get('cashAccount'), $event)"
+                [disableState]="modalMode === 'View'"
+              ></app-select-opt-autocomplete>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="modalMode === 'View'">
+            <div>
+              <div class="form-field-label">Cash Account</div>
+              <div class="cash-account-view" appEllipsisTooltip>{{ form.get('cashAccount').value ? form.get('cashAccount').value.displayName : '' }}</div>
+            </div>
+          </ng-container>
+
+            <div class="form-field-wrapper direction">
+              <div class="label"></div>
+              <mat-radio-group
+                *ngIf="modalMode !== 'View'"
+                class="radio-button"
+                [formControl]="form.controls['direction']"
+                aria-label="Select an option"
+              >
+                <mat-radio-button value="Sent" [checked]="form.get('direction').value === 'Sent'">Sent</mat-radio-button>
+                <mat-radio-button value="Received" [checked]="form.get('direction').value === 'Received'">Received</mat-radio-button>
+              </mat-radio-group>
+              <ng-container *ngIf="modalMode === 'View'">
+                <app-chip
+                  [label]="this.form.get('direction').value"
+                ></app-chip>
+              </ng-container>
+            </div>
+          </div>
+
+        <div class="row">
+          <div class="form-field-wrapper party">
+            <app-input
+              #formField
+              class="form-field"
+              label="Other Party"
+              type="text"
+              placeholder="johndoe@email.com"
+              [formControl]="form.controls['party']"
+              requiredValidator="true"
+              [disableState]="modalMode === 'View'"
+            ></app-input>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-field-wrapper">
+            <app-textarea
+              #formField
+              class="form-field"
+              label="Details"
+              placeholder="Write the details here..."
+              [formControl]="form.controls['details']"
+              requiredValidator="true"
+              [style]="modalMode === 'View' ? null : { 'height': '60px'}"
+              [disableState]="modalMode === 'View'"
+            ></app-textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-field-wrapper amounts-are">
+            <app-select-opt
+              #formField
+              class="form-field"
+              label="Amounts are"
+              requiredValidator="true"
+              [formControl]="form.controls['taxMode']"
+              [list]="taxModeList"
+              (isDirty)="linesIsTouched = $event"
+              [disableState]="modalMode === 'View'"
+            ></app-select-opt>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-side">
+        <div class="row">
+          <div class="form-field-wrapper">
+            <app-date-picker
+              #formField
+              class="form-field"
+              label="Date"
+              [formControl]="form.controls['date']"
+              placeholder="dd/mm/yyyy"
+              [isTextRight]="modalMode === 'View'"
+              requiredValidator="true"
+              [disableState]="modalMode === 'View'"
+            ></app-date-picker>
+          </div>
+        </div>
+        <div class="row">
+          <ng-container *ngIf="modalMode !== 'View' || !(modalMode === 'View' && !form.controls['ref'].value)">
+            <div class="form-field-wrapper">
+              <app-input
+                #formField
+                class="form-field"
+                label="Reference"
+                [formControl]="form.controls['ref']"
+                type="text"
+                [isTextRight]="modalMode === 'View'"
+                [disableState]="modalMode === 'View'"
+              ></app-input>
+            </div>
+          </ng-container>
+        </div>
+        <div class="row"></div>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <app-editable-table
+        #editableTable
+        [columns]="tableColumns"
+        [requiredColumns]="requiredColumns"
+        [groupedAccounts]="groupedAccounts"
+        [modalType]="modalMode"
+        [class]="'line-table'"
+        [formGroupRows$]="tableFormGroupRows$"
+        [taxMode]="form.get('taxMode').value"
+        (changedLines)="setTransactionLines($event)"
+        (isDirty)="linesIsTouched = $event"
+        (linesIsValid)="editableTableIsValid = $event"
+      ></app-editable-table>
+
+      <div class="under-table-row">
+        <div class="left-side-container">
+          <app-button
+            *ngIf="modalMode !== 'View'"
+            label="Add"
+            buttonStyleType="add"
+            (btnClick)="editableTable.addTransactionLineRow(); linesIsTouched = true"
+          ></app-button>
+
+          <ng-container *ngIf="currentTransaction.hasManualLedger">
+            <app-warning [text]="warningText"></app-warning>
+          </ng-container>
+        </div>
+
+        <div class="amount-column">
+          <ng-container *ngIf="getCurrentTaxMode() == 'Exclusive'">
+            <div class="amount-field">
+              <div class="label">Subtotal</div>
+              <div class="value-area">${{ subtotal | number: '0.2-2' }}</div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="getCurrentTaxMode() == 'Exclusive'">
+            <div class="amount-field">
+              <div class="label">Tax</div>
+              <div class="value-area">
+                ${{ tax | number: '0.2-2' }}
+              </div>
+            </div>
+          </ng-container>
+          <ng-container>
+            <div class="amount-field amount-field--total">
+              <div class="label">Total</div>
+              <div class="value-area"> ${{ total | number: '0.2-2' }} </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="getCurrentTaxMode() === 'Inclusive'">
+            <div class="amount-text">
+              <span>Total includes tax of ${{ tax | number: '0.2-2' }}</span>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions class="action-buttons">
+    <div class="action-buttons--left">
+      <ng-container *ngIf="modalMode === 'Edit'">
+        <app-button
+          class="action-button"
+          buttonStyleType="delete bg-white"
+          [label]="'Delete'"
+          (btnClick)="delete()"
+        ></app-button>
+      </ng-container>
+
+      <ng-container *ngIf="modalMode === 'View' && currentTransaction.invoice.status === 'Paid'">
+        <div class="paid-label">Paid</div>
+      </ng-container>
+    </div>
+
+    <div class="action-buttons--right">
+      <ng-container *ngIf="modalMode === 'View'">
+        <app-button
+          class="action-button"
+          buttonStyleType="primary"
+          [label]="'Edit'"
+          (btnClick)="isEditable()"
+        ></app-button>
+
+        <app-button
+          class="action-button"
+          buttonStyleType="black"
+          label="Close"
+          (btnClick)="cancel()"
+        ></app-button>
+      </ng-container>
+
+      <ng-container *ngIf="modalMode !== 'View'">
+        <app-button
+          class="action-button"
+          buttonStyleType="primary"
+          label="Save"
+          [spinner]="(spinner$ | async) && !(isDeleting$ | async)"
+          [disabled]="!isFormValid()"
+          (btnClick)="save()"
+        ></app-button>
+
+        <app-button
+          class="action-button"
+          buttonStyleType="black"
+          label="Cancel"
+          (btnClick)="cancel()"
+        ></app-button>
+      </ng-container>
+    </div>
+  </mat-card-actions>
+</mat-card>

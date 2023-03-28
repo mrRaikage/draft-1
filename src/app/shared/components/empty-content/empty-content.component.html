@@ -1,0 +1,16 @@
+<div class="wrapper">
+  <img src="../../../../assets/images/empty.svg" alt="empty">
+  <div class="title">{{ data.title }}</div>
+  <div class="subtitle">{{ data.subtitle }}</div>
+
+  <div class="btn-container">
+    <ng-container *ngFor="let btn of data.buttonTitle">
+      <app-button
+        (btnClick)="onClick(btn)"
+        [label]="btn"
+        [buttonStyleType]="'primary'"
+        class="add-button"
+      ></app-button>
+    </ng-container>
+  </div>
+</div>

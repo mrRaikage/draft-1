@@ -1,0 +1,13 @@
+<button
+  mat-button
+  class="button"
+  [ngClass]="buttonStyleType"
+  [disabled]="disabled"
+  [ngStyle]="style"
+  (click)="btnClick.emit()"
+>
+  <ng-container *ngIf="!spinner">
+    {{ label }}
+  </ng-container>
+  <app-spinner *ngIf="spinner" [spinnerColor]="spinnerColor" [diameter]="20"></app-spinner>
+</button>

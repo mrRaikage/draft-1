@@ -1,0 +1,10 @@
+<div
+  *ngIf="label"
+  class="form-field-label"
+>
+  {{ label }}
+</div>
+<div class="input-percent-wrapper">
+  <input #input type="number" [(ngModel)]="data" max="99" min="0" (ngModelChange)="isDirty.emit(true)">
+  <span class="percent">{{ '%' }}</span>
+</div>

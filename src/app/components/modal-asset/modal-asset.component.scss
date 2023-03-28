@@ -1,0 +1,49 @@
+@import '../../../assets/styles/variables';
+
+.modal-asset {
+  position: relative;
+}
+
+.close {
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 16px;
+  z-index: 101;
+}
+
+::ng-deep .mat-tab-group.asset-tab-group {
+
+  .mat-tab-header {
+    border-bottom: 1px solid $color-basic-normal-grey;
+  }
+
+  .mat-tab-labels {
+    padding-left: 20px;
+  }
+
+  .mat-ink-bar {
+    height: 2px !important;
+    background-color: $color-basic-purple;
+  }
+
+  .mat-tab-label {
+    height: $dialog-header-height;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 22px;
+    opacity: 1;
+
+    &.mat-tab-disabled {
+      color: $color-basic-grey;
+    }
+
+    &-active {
+      color: $color-basic-purple;
+    }
+  }
+
+  .mat-tab-body-content {
+    padding: 22px 25px 30px;
+  }
+}

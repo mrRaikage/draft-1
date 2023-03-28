@@ -1,0 +1,35 @@
+<div
+  *ngIf="label"
+  class="form-field-label"
+  [class.text-right]="isTextRight"
+  [class.disabled]="isView"
+>
+  {{ label }} {{ !notRequired && !isView ? '*' : null }}
+  <span *ngIf="notRequired && !isView" class="optional">(optional)</span>
+</div>
+<mat-form-field
+  class="input-form-field input-amount"
+  appearance="fill"
+  [class.not-required]="notRequired"
+  [ngStyle]="{ 'width': inputWidth }"
+  [class.text-right]="isTextRight"
+  [class.border-only-on-focus]="borderOnlyOnFocus"
+  [class.space-for-hint]="hintError || hintSuccess"
+  [class.table-field]="isTableField"
+  [class.transparent-background]="transparentBackground"
+  [class.hidden-zero-value]="hiddenZeroValue && formControl.value === 0"
+>
+  <input
+    matInput
+    type="text"
+    currencyMask
+    [formControl]="formControl"
+    [placeholder]="placeholder"
+    (ngModelChange)="isDirty.emit(formControl.dirty)"
+  >
+
+  <mat-hint *ngIf="hintError || hintSuccess" class="validator-hint">
+    <span class="validator-hint--success">{{ hintSuccess }}</span>
+    <span class="validator-hint--error">{{ hintError }}</span>
+  </mat-hint>
+</mat-form-field>

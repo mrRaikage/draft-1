@@ -1,0 +1,69 @@
+<div class="menu-list" [class.toggle]="!isOpened">
+
+  <div class="list-item-wrapper">
+    <div class="logo-wrapper mobile-hidden">
+      <div class="logo"></div>
+    </div>
+    <div class="title mobile-hidden">Menu</div>
+
+    <!-- Side Bar List -->
+    <ng-container *ngFor="let item of menuList">
+
+      <!-- Not Expansion -->
+      <ng-container *ngIf="!item.expansion">
+        <div
+          class="list-item"
+          [routerLink]="item.route"
+          routerLinkActive="active-item"
+        >
+          <div class="icon-wrapper"><div [className]="'icon ' + item.icon"></div></div>
+          <div class="item-text mobile-hidden">{{item.name}}</div>
+        </div>
+      </ng-container>
+
+      <!-- Expansion -->
+      <ng-container *ngIf="item.expansion">
+        <mat-expansion-panel
+          class="expansion-item"
+          routerLinkActive="active-item"
+          [expanded]="isFinancialReports"
+          (opened)="isFinancialReports = true"
+          (closed)="isFinancialReports = false"
+          [hideToggle]="!isOpened"
+          [@.disabled]="!isOpened || !isFinancialReports"
+        >
+          <mat-expansion-panel-header>
+            <div class="icon-wrapper"><div [className]="'icon ' + item.icon"></div></div>
+            <div class="item-text">{{item.name}}</div>
+          </mat-expansion-panel-header>
+
+          <!-- Expansion List -->
+          <div [ngClass]="{active: isFinancialReports}" >
+            <div *ngIf="!isOpened" class="item-text item-text--expansion">{{item.name}}</div>
+            <ng-container *ngFor="let child of item.children" >
+              <div
+                class="child-text mobile-hidden"
+                routerLinkActive="active-item"
+                [routerLink]="child.route"
+              >
+                {{ child.name }}
+              </div>
+            </ng-container>
+          </div>
+        </mat-expansion-panel>
+      </ng-container>
+
+    </ng-container>
+  </div>
+
+  <div class="test">
+    <div
+      (click)="logout()"
+      class="list-item logout"
+    >
+      <div class="icon-wrapper"><div [className]="'icon logout'"></div></div>
+      <div class="item-text mobile-hidden">Logout</div>
+    </div>
+  </div>
+
+</div>

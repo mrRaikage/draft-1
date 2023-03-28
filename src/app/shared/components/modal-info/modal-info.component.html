@@ -1,0 +1,10 @@
+<mat-card class="modal-info">
+  <mat-card-header>
+    <mat-card-title>
+      {{ data.title }}
+    </mat-card-title>
+      <app-close-btn (btnClick)="dialogRef.close()"></app-close-btn>
+  </mat-card-header>
+  <mat-card-content [innerHTML]="data.text">
+  </mat-card-content>
+</mat-card>

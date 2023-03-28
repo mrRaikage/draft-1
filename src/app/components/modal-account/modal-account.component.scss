@@ -1,0 +1,158 @@
+@import '../../../assets/styles/variables';
+
+::ng-deep .modal-account.mat-card {
+  height: 100%;
+  padding: 0;
+
+  .ellipsis-text {
+    display: inline-block;
+    max-width: 250px;
+  }
+
+  .mat-card-header {
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 56px;
+    box-shadow: 0px 1px 0px rgba(132, 157, 179, 0.15);
+    padding: 0 20px 0 25px;
+
+    .mat-card-header-text {
+      margin: 0;
+    }
+
+    .mat-card-title {
+      margin: 0;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 24px;
+      color: $color-contrast-black;
+    }
+
+    .close {
+      cursor: pointer;
+    }
+  }
+
+  .mat-card-content {
+    margin: 0;
+    padding: 15px 25px;
+
+    .row + .row {
+      margin-top: 18px;
+    }
+
+    .row {
+
+      &.items-wrapper {
+        display: flex;
+        align-items: center;
+
+        .code {
+          max-width: 270px;
+          margin-right: 27px;
+        }
+
+        .tax {
+          width: 100%;
+          max-width: 138px;
+        }
+
+        .checkbox {
+          position: relative;
+          top: 12px;
+          margin-left: 43px;
+
+          .mat-checkbox-label {
+            color: $color-contrast-black !important;
+          }
+        }
+
+      }
+
+      .account-name--view-mode {
+        .label {
+          font-weight: 600;
+          font-size: 13px;
+          line-height: 18px;
+          color: $color-primary-variant;
+          margin-bottom: 1px;
+        }
+
+        app-chip {
+          margin-left: 12px;
+        }
+      }
+
+    }
+  }
+
+  .opening-balance {
+    display: flex;
+    align-items: flex-end;
+    background: $color-basic-light-grey;
+    max-width: 330px;
+    padding: 5px 18px 14px;
+    border-radius: 5px;
+    
+    & .icon-wrapper {
+      padding: 2px 16px;
+      min-height: 42px;
+      background-color: #fff;
+      display: flex;
+
+      & img {
+        cursor: pointer;
+      }
+    }
+
+    & app-input-amount  {
+
+    text-align: right;
+
+     & .mat-form-field-flex {
+       padding: 0px 5px;
+       min-height: 42px;
+       width: 100%;
+
+       border-bottom-left-radius: 3px;
+       border-top-left-radius: 3px;
+     }
+    }
+
+    & app-date-picker {
+      
+      & .mat-form-field-flex {
+        padding: 0px 5px;
+        min-height: 42px;
+        width: 100%;
+        border-bottom-right-radius: 3px;
+        border-top-right-radius: 3px;
+      }
+      
+      & .date-view {
+        margin-top: 4px;
+        padding: 0 5px;
+        min-height: 42px;
+        line-height: 42px;
+        width: 100%;
+        background-color: #fff;
+        border-bottom-left-radius: 3px;
+        border-top-left-radius: 3px;
+      }
+    }
+  }
+
+  .card-actions {
+    margin: 0;
+    padding: 10px 25px 25px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+
+    app-button + app-button {
+      margin-left: 12px;
+    }
+  }
+}

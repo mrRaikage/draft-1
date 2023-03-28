@@ -1,0 +1,238 @@
+@import '../../../../assets/styles/variables';
+
+.hidden {
+  display: none;
+}
+
+.table-container {
+  overflow-y: auto;
+
+  &::-webkit-scrollbar-track {
+    margin-top: 57px;
+    margin-bottom: 6px;
+  }
+}
+
+.mat-table {
+  width: 100%;
+  border-spacing: 0 6px;
+  background: $color-basic-light-grey;
+}
+
+tr.mat-header-row {
+  height: 35px;
+}
+
+tr.mat-row {
+  height: 42px;
+}
+
+::ng-deep {
+  & tr.mat-row.pointer,
+  & tr.mat-row.pointer .input-form-field.mat-form-field input {
+    cursor: pointer !important;
+  }
+}
+
+/** Table Header Styles */
+th.mat-header-cell {
+  z-index: 1000 !important;
+  border: none;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 19px;
+  color: $color-basic-dark-grey;
+  padding: 0 20px 0 10px;
+
+  &.disabled {
+    color: $color-basic-grey;
+  }
+
+  &:last-of-type {
+    padding: 0 20px 0 10px;
+  }
+}
+
+/** Table Rows Styles */
+td.mat-cell {
+  background: $color-basic-white;
+  border: none;
+  padding-right: 20px;
+  font-size: 13px;
+  line-height: 18px;
+
+  &.mat-column-details,
+  &.mat-column-unit {
+    max-width: 300px;
+  }
+
+  &.mat-column-unitsString,
+  &.mat-column-expenseCategory,
+  &.mat-column-account,
+  &.mat-column-revenueAccounts,
+  &.mat-column-reference,
+  &.mat-column-name,
+  &.mat-column-description {
+    max-width: 150px;
+  }
+
+  &.mat-column-debit,
+  &.mat-column-credit {
+    padding-right: 10px;
+  }
+
+  &:first-of-type {
+    border-radius: 3px 0 0 3px;
+    padding: 0 10px;
+  }
+
+  &:last-of-type {
+    border-radius: 0 3px 3px 0;
+  }
+}
+
+::ng-deep .cdk-overlay-pane {
+  &.mat-tooltip-panel {
+    .mat-tooltip.lock-tooltip {
+      color: $color-contrast-black;
+      background-color: white;
+      border-radius: 5px;
+      box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+      font-size: 14px;
+      padding: 10px;
+    }
+  }
+}
+
+/** Column Settings */
+.mat-column {
+
+  &-remove {
+    width: 40px;
+    .icon-wrapper {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      &.lock img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  &-select {
+    padding-left: 10px;
+  }
+
+  &-date {
+    min-width: 120px;
+  }
+
+  &-account {
+    min-width: 250px;
+  }
+
+  &-description {
+    &.mat-cell {
+      padding-right: 10px;
+    }
+  }
+
+  &-amount {
+    width: 140px;
+    text-align: right;
+
+    &.mat-cell {
+      padding-right: 10px;
+    }
+  }
+
+  &-debit {
+    width:  150px;
+    text-align: right;
+  }
+
+  &-credit {
+    width: 150px;
+    text-align: right;
+  }
+
+  &-invoiceAmount {
+    text-align: right;
+    color: $color-contrast-black;
+
+    .empty-value {
+      color: $color-basic-medium-grey;
+    }
+
+  }
+
+  &-taxRate {
+    min-width: 140px;
+  }
+
+  &-rate {
+    &.mat-header-cell {
+      text-align: right;
+    }
+
+    &.mat-cell {
+      padding-right: 10px;
+    }
+  }
+
+  &-unitsString {
+    min-width: 80px;
+  }
+
+  &-quantity {
+    min-width: 80px;
+    text-align: right;
+
+    &.mat-cell {
+      padding-right: 10px;
+    }
+  }
+
+  &-editableStatus {
+    min-width: 130px;
+  }
+
+  &-effectiveFrom {
+    min-width: 125px;
+  }
+
+  &-effectiveTo {
+    min-width: 125px;
+  }
+
+  &-startDate {
+    min-width: 120px;
+  }
+
+  &-endDate {
+    min-width: 120px;
+  }
+
+  &-unit {
+    min-width: 80px;
+  }
+
+  &-totalCharges {
+    &.mat-cell {
+      padding-right: 10px;
+    }
+  }
+
+}
+
+/** Price Book table styles */
+.mat-table.price-book-table {
+  .mat-column {
+    &-account {
+      min-width: 120px;
+    }
+  }
+}
+

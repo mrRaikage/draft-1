@@ -1,0 +1,99 @@
+<mat-card class="ledger-card-invoice">
+
+  <mat-card-content>
+    <div [class.table-wrapper]="!(invoiceLedgerItemsIsLoading$ | async)">
+      <div class="table-container">
+        <app-editable-table
+          #editableTable
+          [columns]="columns"
+          [requiredColumns]="columns"
+          [formGroupRows$]="tableFormGroupRows$"
+          [isLoading]="invoiceLedgerItemsIsLoading$ | async"
+          [groupedAccounts]="groupedAccounts"
+          [modalType]="modalMode"
+          [hasEmptyPageComponent]="true"
+          [skeletonColumnsCount]="4"
+          [emptyContentData]="emptyContentLedgerItem"
+          (addLine)="isEditable(); editableTable.addLedgerRow()"
+          (changedLines)="setAccountLines($event)"
+          [class]="'ledger-table'"
+          (isDirty)="isDirty = $event"
+        ></app-editable-table>
+
+        <ng-container *ngIf="!(invoiceLedgerItemsIsLoading$ | async)">
+          <div class="under-table-row">
+            <div class="button-field">
+              <app-button
+                *ngIf="modalMode !== 'View'"
+                label="Add"
+                buttonStyleType="add"
+                (btnClick)="editableTable.addLedgerRow()"
+              ></app-button>
+            </div>
+
+            <ng-container *ngIf="editableTable.formArrayRows.length || modalMode !== 'View'">
+              <div class="amount-field">
+                <div class="label">Total</div>
+                <div class="value-area">
+                  <div class="amount-area">
+                    <span class="debit-field"> ${{ debit | number: '0.2-2' }} </span>
+                    <span class="credit-field"> ${{ credit | number: '0.2-2' }} </span>
+                  </div>
+                  <div *ngIf="debit !== credit" class="hint-message">
+                    <img src="../../../assets/icons/info-red.svg" alt="info">
+                    <span>Debit should equal credits</span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+      </div>
+      <div class="warning-wrapper" *ngIf="modalMode === 'Edit'">
+        <app-warning [text]="warningText"></app-warning>
+      </div>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <ng-container *ngIf="!(invoiceLedgerItemsIsLoading$ | async)">
+      <ng-container *ngIf="editableTable.formArrayRows.length || modalMode !== 'View'">
+        <ng-container *ngIf="modalMode !== 'View'">
+          <app-button
+            class="button-right"
+            buttonStyleType="primary"
+            [label]="'Save'"
+            [disabled]="!isFormValid() || !isBalanceEqual()"
+            [spinner]="spinner$ | async"
+            (btnClick)="save()"
+          ></app-button>
+          <app-button
+            class="button-right"
+            buttonStyleType="black"
+            label="Cancel"
+            (btnClick)="cancel()"
+          ></app-button>
+        </ng-container>
+
+        <ng-container *ngIf="modalMode == 'View'">
+          <app-button
+            class="button-right"
+            buttonStyleType="primary"
+            [label]="'Edit'"
+            (btnClick)="isEditable()"
+          ></app-button>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="modalMode == 'View'">
+        <app-button
+          class="button-right"
+          buttonStyleType="black"
+          label="Close"
+          (btnClick)="cancel()"
+        ></app-button>
+      </ng-container>
+    </ng-container>
+  </mat-card-actions>
+</mat-card>
+

@@ -1,0 +1,143 @@
+<div class="table mobile-hidden">
+
+  <div class="table-header">
+
+    <ng-container *ngIf="!file">
+      <app-input-file
+        [label]="'Add File'"
+        [buttonStyleType]="'primary'"
+        (file)="file = $event"
+      ></app-input-file>
+      <app-dropzone-file
+        [label]="'Or drop .QIF file here'"
+        (file)="file = $event"
+      ></app-dropzone-file>
+    </ng-container>
+
+    <ng-container *ngIf="file">
+      <div class="imported">
+        <img class="imported-file" src="/src/assets/icons/file.svg" alt="File">
+        <div class="imported-name">{{ file.name }}</div>
+        <app-close-btn (btnClick)="file = null"></app-close-btn>
+      </div>
+    </ng-container>
+
+    <app-button
+      [label]="'Import'"
+      [buttonStyleType]="'primary'"
+      [disabled]="!file"
+      [spinner]="spinner$ | async"
+      (btnClick)="importFile()"
+    ></app-button>
+  </div>
+
+  <div class="table-content bank-feeds-table-wrapper">
+
+    <ng-container *ngIf="!dataLoaded">
+      <ngx-skeleton-loader [theme]="{height: '50px', borderRadius: '5px'}"></ngx-skeleton-loader>
+      <div class="skeleton-table-row" *ngFor="let item of [].constructor(9)">
+        <ngx-skeleton-loader [theme]="{height: '16px', width: '16px', borderRadius: '200px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{height: '16px', width: '76px', borderRadius: '200px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{height: '16px', width: '76px', borderRadius: '200px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{height: '16px', width: '76px', borderRadius: '200px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{height: '16px', width: '136px', borderRadius: '200px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{height: '16px', width: '160 px', borderRadius: '200px'}"></ngx-skeleton-loader>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="dataLoaded && dataSource.data.length">
+      <table mat-table matSort [dataSource]="dataSource">
+
+        <!--      Date Column       -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ 'Date' }}
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="td-container">
+              <p>
+                {{ row.date | date: 'd MMM, yyyy' }}
+              </p>
+            </div>
+          </td>
+        </ng-container>
+
+        <!--      Status Column       -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ 'Status' }}
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="td-container">
+              <app-chip [label]="row.status"></app-chip>
+            </div>
+          </td>
+        </ng-container>
+
+        <!--      Payee Column       -->
+        <ng-container matColumnDef="payee">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ 'Payee' }}
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="td-container">
+              <p>
+                {{ row.payee }}
+              </p>
+            </div>
+          </td>
+        </ng-container>
+
+        <!--      Memo Column       -->
+        <ng-container matColumnDef="memo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ 'Memo' }}
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="td-container">
+              <p>
+                {{ row.memo }}
+              </p>
+            </div>
+          </td>
+        </ng-container>
+
+        <!--      Num Column       -->
+        <ng-container matColumnDef="num">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ 'Num' }}
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="td-container">
+              <p>
+                {{ row.num }}
+              </p>
+            </div>
+          </td>
+        </ng-container>
+
+        <!--      Amount Column       -->
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ 'Amount' }}
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="td-container">
+              {{ row.amount }}
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns" [class.hidden]="!dataLoaded"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+
+      </table>
+
+      <mat-paginator
+        [class.hidden]="!dataSource || (dataSource && dataSource.data.length <= pageSize)"
+        [pageSize]="pageSize"
+      ></mat-paginator>
+    </ng-container>
+  </div>
+
+</div>

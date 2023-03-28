@@ -1,0 +1,33 @@
+<div class="page-wrapper">
+
+  <!--  Desktop-->
+  <div class="page-title mobile-hidden">
+    <div *ngIf="!(dataLoaded$ | async)" class="skeleton-loader">
+      <ngx-skeleton-loader animation="false"></ngx-skeleton-loader>
+    </div>
+    <ng-container *ngIf="dataLoaded$ | async">
+      Invoices
+    </ng-container>
+  </div>
+  <div class="page-content mobile-hidden">
+    <app-invoices-table
+      [invoices$]="invoices$"
+      [dataLoaded$]="dataLoaded$"
+      [accounts$]="accounts$"
+      [clients$]="clients$"
+      (createInvoice)="createInvoice()"
+      (handleAction)="handleAction($event)"
+    ></app-invoices-table>
+    <app-empty-content
+      *ngIf="(dataLoaded$ | async) && (invoices$ | async)?.length === 0"
+      [emptyContentData]="emptyContentInvoice"
+    ></app-empty-content>
+  </div>
+
+  <!--  Mobile-->
+  <app-mobile-transactions-list
+    class="transaction--content mobile-visible"
+    [transactions$]="invoices$"
+  ></app-mobile-transactions-list>
+
+</div>

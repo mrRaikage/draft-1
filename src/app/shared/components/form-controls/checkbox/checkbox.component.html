@@ -1,0 +1,11 @@
+<mat-checkbox
+  [labelPosition]="labelPosition"
+  [formControl]="formControl"
+  (change)="onChange($event)"
+  [checked]="checked"
+  [indeterminate]="indeterminate"
+  [class.black]="blackLabel"
+  [aria-label]="ariaLabel"
+>
+  {{ label }}
+</mat-checkbox>

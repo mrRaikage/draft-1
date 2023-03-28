@@ -1,0 +1,30 @@
+@import '../../../../assets/styles/variables';
+
+.input-search{
+  outline: none;
+  width: 100%;
+  background: url('/assets/icons/search.svg') no-repeat left 10px center;
+  font-size: 13px;
+  line-height: 18px;
+  color: $color-contrast-black;
+  height: 40px;
+  padding: 10px 10px 10px 45px;
+  border: 1px solid $color-basic-normal-grey;
+  border-radius: 4px;
+
+  &.position-right {
+    background: url('/assets/icons/search.svg') no-repeat right 10px center;
+    padding: 10px 45px 10px 10px;
+    text-align: right;
+  }
+
+  &.without-border {
+    border: none;
+  }
+
+  &::placeholder {
+    font-size: 13px;
+    line-height: 18px;
+    color: $color-basic-medium-grey;
+  }
+}

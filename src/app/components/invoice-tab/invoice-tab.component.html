@@ -1,0 +1,407 @@
+<mat-card class="invoice-tab">
+
+  <!--  Content  -->
+  <mat-card-content [formGroup]="form">
+    <div class="form-fields-area">
+      <div class="left-column">
+        <div class="form-field party">
+          <ng-container *ngIf="modalMode !== 'View'">
+            <ng-container *ngIf="invoiceType !== 'Invoice'">
+              <app-input
+                #formField
+                requiredValidator="true"
+                [formControl]="form.controls['party']"
+                [label]="'Other Party'"
+                [type]="'text'"
+                [placeholder]="'Other Party'"
+                [disableState]="modalMode === 'View'"
+              ></app-input>
+            </ng-container>
+
+            <ng-container *ngIf="invoiceType === 'Invoice'">
+              <app-select-opt-group-quick-add
+                #quickAddClientComp
+                [label]="'To'"
+                [formControl]="form.controls['client']"
+                [setList]="clientsSelectList"
+                [placeholder]="'Select client'"
+                [requiredValidator]="true"
+                [selectObjectValidator]="true"
+                (setError)="setError(form.controls['client'], $event)"
+                [disableState]="modalMode === 'View'"
+              >
+                <ng-template
+                  #quickAddForm
+                  let-panelOpened='panelOpened'
+                  let-autoGroup='autoGroup'
+                >
+                  <app-quick-add-client
+                    (quickAddClient)="quickAddClient($event)"
+                    [panelIsOpened]="panelOpened"
+                    [autoGroup]="autoGroup"
+                  ></app-quick-add-client>
+                </ng-template>
+              </app-select-opt-group-quick-add>
+            </ng-container>
+          </ng-container>
+
+          <ng-container *ngIf="modalMode === 'View'">
+            <div class="party-wrapper-is-view">
+              <div>
+                <ng-container *ngIf="invoiceType !== 'Invoice'">
+                  <div class="label"> Other Party </div>
+                  <p class="party-text" appEllipsisTooltip> {{ currentInvoice.party }} </p>
+                </ng-container>
+
+                <ng-container *ngIf="invoiceType === 'Invoice'">
+                  <div class="label"> To </div>
+                  <span
+                    [ngClass]="{'pointer view-mode': modalMode === 'View'}"
+                    (click)="openClient()"
+                    appEllipsisTooltip
+                  >
+                    {{ getClientNameById(currentInvoice.clientId, clients) }}
+                  </span>
+                </ng-container>
+              </div>
+              <app-chip [label]="currentInvoice.status"></app-chip>
+            </div>
+          </ng-container>
+        </div>
+
+        <ng-container *ngIf="invoiceType === 'Invoice'">
+          <div class="form-field">
+            <app-textarea
+              #formField
+              [style]="modalMode === 'View' ? null : {'height': '79px'}"
+              [formControl]="form.controls['billTo']"
+              [maxLength]="'240'"
+              [label]="'Bill to'"
+              [placeholder]="'Bill to'"
+              requiredValidator="true"
+              [disableState]="modalMode === 'View'"
+            ></app-textarea>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="modalMode !== 'View' || !(modalMode === 'View' && !form.controls['details'].value)">
+          <div class="form-field">
+            <app-textarea
+              #formField
+              [style]="modalMode === 'View' ? null : {'height': '79px'}"
+              [formControl]="form.controls['details']"
+              [maxLength]="'240'"
+              [label]="'Details'"
+              [placeholder]="'Details'"
+              [disableState]="modalMode === 'View'"
+            ></app-textarea>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="right-column">
+        <ng-container *ngIf="modalMode !== 'View' || !(modalMode === 'View' && !form.controls['invoiceNumber'].value)">
+          <div class="form-field">
+            <ng-container *ngIf="!(invoiceNumberLoading$ | async) || modalMode !== 'Add'">
+              <app-input
+                #formField
+                [formControl]="form.controls['invoiceNumber']"
+                [label]="invoiceType + ' No.'"
+                [type]="'text'"
+                [placeholder]="invoiceType + ' No.'"
+                [isTextRight]="modalMode === 'View'"
+                [disableState]="modalMode === 'View'"
+              ></app-input>
+            </ng-container>
+
+            <ng-container *ngIf="(invoiceNumberLoading$ | async) && modalMode === 'Add'">
+              <div class="form-field-label">
+                {{ invoiceType + ' No.' }}
+              </div>
+              <ngx-skeleton-loader [theme]="{ display: 'block', height: '40px', margin: 0 }"></ngx-skeleton-loader>
+            </ng-container>
+          </div>
+        </ng-container>
+
+        <div class="form-field">
+          <app-date-picker
+            #formField
+            [formControl]="form.controls['invoiceDate']"
+            [label]="'Date'"
+            requiredValidator="true"
+            [isTextRight]="modalMode === 'View'"
+            [disableState]="modalMode === 'View'"
+          ></app-date-picker>
+        </div>
+
+        <ng-container *ngIf="modalMode !== 'View' || !(modalMode === 'View' && !form.controls['dueDate'].value)">
+          <div class="form-field">
+            <app-date-picker
+              #formField
+              [formControl]="form.controls['dueDate']"
+              [label]="'Due Date'"
+              [isTextRight]="modalMode === 'View'"
+              [disableState]="modalMode === 'View'"
+              [requiredValidator]="true"
+            ></app-date-picker>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="modalMode !== 'View' || !(modalMode === 'View' && !form.controls['ref'].value)">
+          <div class="form-field">
+            <app-input
+              #formField
+              [formControl]="form.controls['ref']"
+              [label]="'Reference'"
+              [type]="'text'"
+              [placeholder]="'Reference'"
+              [isTextRight]="modalMode === 'View'"
+              [disableState]="modalMode === 'View'"
+            ></app-input>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="table-area">
+      <ng-container>
+        <div class="form-field amounts-are">
+          <app-select-opt
+            #formField
+            class="form-field"
+            label="Amounts are"
+            requiredValidator="true"
+            [matTooltip]="!taxRegistered ? 'This Organisation is not registered for tax.  You can change this in Organisation Settings.' : ''"
+            matTooltipClass="lock-tooltip"
+            [formControl]="form.controls['taxMode']"
+            [list]="taxModeList"
+            [disableState]="modalMode === 'View' || !taxRegistered"
+          ></app-select-opt>
+        </div>
+      </ng-container>
+
+      <div class="table-details-wrapper">
+        <div
+          class="table-wrapper"
+          [ngStyle]="{ marginBottom: markAsPaidOption && modalMode === 'View' ? '70px' : null }"
+        >
+          <app-editable-table
+            #editableTable
+            [columns]="tableColumns"
+            [requiredColumns]="tableColumns"
+            [groupedAccounts]="groupedAccounts$ | async"
+            [accounts]="accounts"
+            [groupedPriceBookItems]="groupedPriceBookItems$ | async"
+            [disableUnitsField]="form.get('client') && !form.get('client').value"
+            [class]="'line-table'"
+            [modalType]="modalMode"
+            [formGroupRows$]="tableFormGroupRows$"
+            [taxMode]="form.get('taxMode').value"
+            [taxRegistered]="taxRegistered"
+            (changedLines)="setInvoiceLines($event)"
+            (linesIsValid)="tableIsValid = $event"
+          ></app-editable-table>
+
+          <div class="under-table-row">
+            <div class="left-side-container">
+              <ng-container *ngIf="modalMode !== 'View'">
+                <app-button
+                  label="Add"
+                  buttonStyleType="add"
+                  [style]="{'height': '20px'}"
+                  (btnClick)="addRowEvent(editableTable)"
+                ></app-button>
+              </ng-container>
+              <ng-container *ngIf="currentInvoice.hasManualLedger">
+                <app-warning [text]="warningText"></app-warning>
+              </ng-container>
+            </div>
+
+            <div class="amount-column">
+              <ng-container *ngIf="taxRegistered && getCurrentTaxMode() == 'Exclusive'">
+                <div class="amount-field">
+                  <div class="label">Subtotal</div>
+                  <div class="value-area">${{ subtotal | number: '0.2-2' }}</div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="taxRegistered && getCurrentTaxMode() == 'Exclusive'">
+                <div class="amount-field">
+                  <div class="label">Tax</div>
+                  <div class="value-area">
+                    ${{ tax | number: '0.2-2' }}
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container>
+                <div class="amount-field amount-field--total">
+                  <div class="label">Total</div>
+                  <div class="value-area"> ${{ total | number: '0.2-2' }} </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="taxRegistered && getCurrentTaxMode() === 'Inclusive'">
+                <div class="amount-text">
+                  <span>Total includes tax of ${{ tax | number: '0.2-2' }}</span>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <ng-container *ngIf="markAsPaidOption || invoiceStatus === 'Paid'">
+          <div class="paid" [class.paid-absolute]="markAsPaidOption && modalMode === 'View'">
+            <div class="table-title">Payment Details</div>
+
+            <div class="paid-table">
+              <div class="paid-table--header">
+                <div
+                  class="header-cell date"
+                  [ngStyle]="{
+                    marginLeft: markAsPaidOption || modalMode !== 'View' ? '20px' : null,
+                    paddingLeft: modalMode === 'View' ? '0' : '10px'
+                  }"
+                >
+                  Date
+                </div>
+                <div class="header-cell account">Account</div>
+              </div>
+
+              <div class="paid-table--row">
+                <ng-container *ngIf="markAsPaidOption || modalMode !== 'View'">
+                  <div class="row-cell remove">
+                    <img src="../../../assets/icons/remove.svg" alt="remove" (click)="discardPaidButtonClick()">
+                  </div>
+                </ng-container>
+
+                <div class="row-cell date">
+                  <app-date-picker
+                    [formControl]="formMarkAsPaid.controls['date']"
+                    [placeholder]="'dd/mm/yyyy'"
+                    borderOnlyOnFocus="true"
+                    [disableState]="!(markAsPaidOption || modalMode !== 'View')"
+                  ></app-date-picker>
+                </div>
+
+                <div class="row-cell account">
+                  <app-select-opt-autocomplete
+                    [placeholder]="'Select cash account'"
+                    requiredValidator="true"
+                    selectObjectValidator="true"
+                    isTableField="true"
+                    [formControl]="formMarkAsPaid.controls['cashAccount']"
+                    [list]="cashAccountsSelectList"
+                    [disableState]="!(markAsPaidOption || modalMode !== 'View')"
+                  ></app-select-opt-autocomplete>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+  </mat-card-content>
+
+  <!--  Actions  -->
+  <mat-card-actions>
+    <div class="left-side">
+
+      <ng-container
+        *ngIf="invoiceStatus !== 'Draft' &&
+          invoiceStatus !== 'Paid'&&
+          !markAsPaidOption &&
+          modalMode !== 'Add'"
+      >
+        <app-button
+          [label]="'Mark as paid'"
+          [buttonStyleType]="'paid bg-white'"
+          (btnClick)="markAsPaidButtonClick()"
+        ></app-button>
+      </ng-container>
+
+      <ng-container *ngIf="modalMode === 'Edit'">
+        <app-button
+          [label]="'Delete'"
+          [buttonStyleType]="'delete bg-white'"
+          (btnClick)="deleteButtonClick()"
+        ></app-button>
+      </ng-container>
+
+      <ng-container
+        *ngIf="!markAsPaidOption &&
+          modalMode === 'View' &&
+          invoiceStatus === 'Draft'"
+      >
+        <app-button
+          [label]="'Approve'"
+          [buttonStyleType]="'primary'"
+          [style]="{'min-width': '160px'}"
+          [spinner]="spinner$ | async"
+          (btnClick)="approveButtonClick()"
+        ></app-button>
+      </ng-container>
+    </div>
+
+    <div
+      class="right-side"
+      [ngStyle]="{ marginLeft: markAsPaidOption && modalMode === 'View' ? '510px' : null }"
+    >
+      <ng-container *ngIf="modalMode === 'Add'">
+        <app-button
+          [label]="'Save'"
+          [buttonStyleType]="'primary'"
+          [spinner]="spinner$ | async"
+          [disabled]="!isFormValid()"
+          (btnClick)="saveNewInvoiceButtonClick()"
+        ></app-button>
+
+        <app-button
+          [label]="'Cancel'"
+          [buttonStyleType]="'black'"
+          (btnClick)="cancelButtonClick()"
+        ></app-button>
+      </ng-container>
+
+      <ng-container *ngIf="modalMode === 'Edit'">
+        <app-button
+          [label]="'Save'"
+          [buttonStyleType]="'primary'"
+          [spinner]="(spinner$ | async) && !(isDeleting$ | async)"
+          [disabled]="!isFormValid()"
+          (btnClick)="saveButtonClick()"
+        ></app-button>
+
+        <app-button
+          [label]="'Cancel'"
+          [buttonStyleType]="'black'"
+          (btnClick)="cancelButtonClick()"
+        ></app-button>
+      </ng-container>
+
+      <ng-container *ngIf="modalMode === 'View'">
+        <ng-container *ngIf="!markAsPaidOption">
+          <app-button
+            [label]="'Edit'"
+            [buttonStyleType]="'primary'"
+            (btnClick)="editButtonClick()"
+          ></app-button>
+        </ng-container>
+
+        <ng-container *ngIf="markAsPaidOption">
+          <app-button
+            [label]="'Save'"
+            [buttonStyleType]="'primary'"
+            [spinner]="spinner$ | async"
+            [disabled]="formMarkAsPaid.invalid"
+            (btnClick)="savePaidButtonClick()"
+          ></app-button>
+        </ng-container>
+
+        <app-button
+          [label]="'Close'"
+          [buttonStyleType]="'black'"
+          (btnClick)="cancelButtonClick()"
+        ></app-button>
+      </ng-container>
+    </div>
+  </mat-card-actions>
+</mat-card>

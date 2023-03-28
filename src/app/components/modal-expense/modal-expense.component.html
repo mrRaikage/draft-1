@@ -1,0 +1,24 @@
+<div class="modal-wrapper">
+  <app-close-btn class="close" (btnClick)="closeModal()"></app-close-btn>
+  <mat-tab-group class="modal-expense" animationDuration="0ms" disableRipple (selectedTabChange)="tabChanged($event)">
+    <mat-tab label="Expense" [disabled]="activeTab !== 0 && modalModeService.getModalMode() !== 'View'">
+      <ng-container *ngIf="data.accounts$ | async">
+        <app-expense-tab
+          [accounts]="data.accounts$ | async"
+          (closeModal)="closeModal()"
+        ></app-expense-tab>
+      </ng-container>
+    </mat-tab>
+
+    <mat-tab label="Ledger Entries" [disabled]="activeTab !== 1 && modalModeService.getModalMode() !== 'View'">
+      <ng-container *ngIf="activeTab === 1">
+        <app-trx-ledger-tab
+          *ngIf="(modalTransactionService.currentTransaction$ | async).ledgerItems"
+          [accounts]="data.accounts$ | async"
+          (closeModal)="closeModal()"
+        ></app-trx-ledger-tab>
+      </ng-container>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+

@@ -1,0 +1,73 @@
+@import '../../../assets/styles/variables';
+@import '../../../assets/styles/global';
+
+@media (min-width: $screen-sm){
+  .content-page {
+    display: flex;
+    height: 100%;
+  }
+
+  .side-bar {
+    height: 100%;
+  }
+
+  .content {
+    width: 100%;
+    max-height: 100%;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+
+    .body {
+      flex: 1 0 auto;
+    }
+
+    .header {
+      height: $header-height;
+    }
+
+    .footer {
+      flex-shrink: 0;
+      height: $footer-height;
+    }
+  }
+
+  .feedback {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    height: 120px;
+    width: 38px;
+    padding: 14px 10px 36px;
+    background: $color-basic-dark-grey url('/assets/icons/feedback.svg') no-repeat bottom 14px center;
+    box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 5px 0px 0px 5px;
+    z-index: 100;
+    margin-bottom: 140px;
+    cursor: pointer;
+
+    span {
+      font-weight: 500;
+      font-size: 13px;
+      line-height: 18px;
+      color: $color-basic-white;
+      writing-mode: vertical-lr;
+      transform: rotate(180deg);
+    }
+  }
+
+}
+
+@media (max-width: $screen-sm) {
+  .page {
+    margin-top: $mobile-header-height;
+    margin-left: $side-bar-closed-width;
+    transition: .3s;
+
+    &.mobile-toggle {
+      margin-left: 0;
+    }
+  }
+}
+
+

@@ -1,0 +1,26 @@
+@import '../../../assets/styles/variables';
+
+.mat-card.import-transaction {
+  position: relative;
+  box-shadow: none;
+  height: 100%;
+
+  .close {
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+  }
+
+  .mat-card-header {
+    height: $dialog-header-height;
+  }
+
+  .mat-card-content {
+    height: calc(100% - #{$dialog-header-height});
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+

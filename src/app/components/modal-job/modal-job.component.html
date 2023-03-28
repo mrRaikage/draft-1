@@ -1,0 +1,21 @@
+<div class="modal-job">
+  <app-close-btn class="close" (btnClick)="dialogRef.close()"></app-close-btn>
+
+  <mat-tab-group class="job-tab-group" animationDuration="0ms" disableRipple (selectedTabChange)="tabChanged($event)">
+    <mat-tab label="Job" [disabled]="activeTab !== 0 && modalModeService.getModalMode() !== 'View'">
+      <app-job-tab></app-job-tab>
+    </mat-tab>
+
+    <mat-tab label="Charges" [disabled]="activeTab !== 1 && modalModeService.getModalMode() !== 'View'">
+      <ng-container *ngIf="activeTab === 1">
+        <app-charges-tab></app-charges-tab>
+      </ng-container>
+    </mat-tab>
+
+    <mat-tab label="Invoices" [disabled]="activeTab !== 2 && modalModeService.getModalMode() !== 'View'">
+      <ng-container *ngIf="activeTab === 2">
+        <app-job-invoices-tab></app-job-invoices-tab>
+      </ng-container>
+    </mat-tab>
+  </mat-tab-group>
+</div>

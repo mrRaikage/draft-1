@@ -1,0 +1,95 @@
+<mat-card class="card-wrapper">
+  <ng-container *ngIf="!(organizationUsersLoading$ | async)">
+    <div class="title">
+      User Accounts
+    </div>
+  </ng-container>
+  <mat-card-content [formGroup]="form">
+
+    <ng-container *ngIf="organizationUsersLoading$ | async">
+      <ngx-skeleton-loader
+        count="1"
+        [theme]="{height: '15px', width: '100px' }"
+      ></ngx-skeleton-loader>
+      <div
+        *ngFor="let i of [].constructor(5)"
+        [ngStyle]="{ display: 'flex', gap: '10px', marginTop: '12px' }"
+      >
+        <ngx-skeleton-loader count="1" [theme]="{height: '30px', width: '500px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader count="1" [theme]="{height: '30px', width: '120px'}"></ngx-skeleton-loader>
+        <ngx-skeleton-loader count="1" [theme]="{height: '30px', width: '125px'}"></ngx-skeleton-loader>
+      </div>
+      <ngx-skeleton-loader count="1" [theme]="{height: '20px', width: '75px', marginTop: '20px'}"></ngx-skeleton-loader>
+    </ng-container>
+
+    <ng-container *ngIf="!(organizationUsersLoading$ | async)">
+      <div class="table-wrapper">
+        <table mat-table [dataSource]="dataSource" formArrayName="rows" class="edit-table">
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef> Email</th>
+            <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+              <app-input
+                formControlName="email"
+                [disableState]="row.value.isDisabled"
+                [type]="'email'"
+                emailValidator="true"
+              ></app-input>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef> Role</th>
+            <td mat-cell *matCellDef="let row; let index = index" [formGroupName]="index">
+              {{ row.value.role }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions</th>
+            <td mat-cell *matCellDef="let row; let index = index">
+              <div class="actions">
+                <app-button
+                  *ngIf="findAction(row.value.actions, 'delete')"
+                  [buttonStyleType]="'delete bg-white'"
+                  [label]="'Delete'"
+                  [disabled]="(removeSpinnerStarted$ | async) && currentIndex !== index"
+                  [spinner]="(removeSpinnerStarted$ | async) && currentIndex === index"
+                  spinnerColor="red"
+                  (btnClick)="removeButtonClick(row); currentIndex = index"
+                ></app-button>
+                <app-button
+                  *ngIf="findAction(row.value.actions, 'invite')"
+                  [buttonStyleType]="'primary'"
+                  label="Invite"
+                  [disabled]="formArrayRows.controls[index].invalid || ((spinnerStarted$ | async) && currentIndex !== index)"
+                  [spinner]="(spinnerStarted$ | async) && currentIndex === index"
+                  (btnClick)="inviteButtonClick(row); currentIndex = index"
+                ></app-button>
+                <app-button
+                  *ngIf="findAction(row.value.actions, 'cancel')"
+                  [buttonStyleType]="'black'"
+                  [label]="'Cancel'"
+                  (btnClick)="cancelButtonClick(index)"
+                ></app-button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; let i = index; columns: displayedColumns;"
+            [class.new-row]="!row.value.isDisabled"
+          ></tr>
+        </table>
+
+        <app-button
+          [buttonStyleType]="'add'"
+          label="Add"
+          (btnClick)="addRow()"
+        ></app-button>
+      </div>
+    </ng-container>
+
+  </mat-card-content>
+</mat-card>

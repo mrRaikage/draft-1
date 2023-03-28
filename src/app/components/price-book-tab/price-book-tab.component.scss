@@ -1,0 +1,48 @@
+@import '../../../assets/styles/variables';
+
+::ng-deep .price-book-tab.mat-card {
+
+  .table-wrapper {
+    background: $color-basic-light-grey;
+    border-radius: 5px;
+    padding: 0 15px 25px;
+  }
+
+  /** Modal Actions */
+  .mat-card-actions {
+    padding: 0;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+
+    .button-right {
+      margin-left: 12px;
+    }
+
+    app-button {
+      margin-top: 30px;
+    }
+  }
+}
+
+.mat-card.price-book-tab {
+  box-shadow: none;
+  padding: 0;
+
+  .price-book-tab-header {
+    display: flex;
+    justify-content: space-between;
+
+    .price-book-tab-title {
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 19px;
+      margin-right: auto;
+    }
+
+    .price-book-checkbox {
+      color: $color-contrast-black;
+    }
+  }
+}

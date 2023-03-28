@@ -1,0 +1,16 @@
+.feedback.mat-card {
+  height: 100%;
+  box-shadow: none;
+
+  .mat-card-header {
+    justify-content: flex-end;
+    .close {
+      cursor: pointer;
+    }
+  }
+
+  .mat-card-content {
+    display: flex;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,81 @@
+<mat-card class="jobs-tab">
+  <ng-container *ngIf="!(jobsIsLoading$ | async) && editableTable.formArrayRows.length">
+    <mat-card-header class="jobs-tab-header">
+      <div class="jobs-tab-title">
+        Jobs
+      </div>
+      <app-checkbox
+        label="Show completed"
+        labelPosition="before"
+        [formControl]="checkboxControl"
+        [disableState]="modalMode !== 'View'"
+        (ngModelChange)="setShowCompleted($event)"
+      ></app-checkbox>
+    </mat-card-header>
+  </ng-container>
+
+  <mat-card-content>
+
+    <div
+      [class.table-wrapper]="
+          !(jobsIsLoading$ | async) &&
+          (editableTable.formArrayRows.length || modalMode !== 'View')
+      "
+    >
+      <div class="table-container">
+        <app-editable-table
+          #editableTable
+          [columns]="columns"
+          [requiredColumns]="columns"
+          [formGroupRows$]="tableFormGroupRows$"
+          [isLoading]="jobsIsLoading$ | async"
+          [modalType]="modalMode"
+          [showHidden$]="showCompleted$"
+          [hiddenRowsParam]="{ key: 'status', value: 'Complete' }"
+          [hasEmptyPageComponent]="true"
+          [emptyContentData]="emptyContentJob"
+          [skeletonColumnsCount]="7"
+          [rowsIsClickable]="true"
+          (handleRowClick)="clickOnRow($event)"
+          (viewHiddenItemsClick)="checkboxControl.setValue(true)"
+        ></app-editable-table>
+
+        <ng-container *ngIf="!(jobsIsLoading$ | async) && editableTable.formArrayRows.length">
+          <div class="under-table-row">
+            <div class="left-side-container">
+              <ng-container *ngIf="modalMode !== 'View'">
+                <app-button
+                  label="Add"
+                  buttonStyleType="add"
+                  (btnClick)="editableTable.addChargeLineRow()"
+                ></app-button>
+              </ng-container>
+            </div>
+
+            <div class="amount-column">
+              <div class="amount-field amount-field--total">
+                <div class="label">Total</div>
+                <div class="value-area"> ${{ total | number: '0.2-2' }} </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+
+  </mat-card-content>
+
+  <ng-container *ngIf="!(jobsIsLoading$ | async)">
+    <mat-card-actions>
+      <app-button
+        class="button-right"
+        [label]="'Close'"
+        [buttonStyleType]="'black'"
+        (btnClick)="cancelButtonClick()"
+      ></app-button>
+    </mat-card-actions>
+  </ng-container>
+</mat-card>
+
+

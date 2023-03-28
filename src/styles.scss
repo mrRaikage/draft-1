@@ -1,0 +1,42 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~ngx-toastr/toastr';
+@import 'variables';
+@import 'fonts';
+//@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+  box-sizing: border-box;
+  font-family: 'Poppins', 'sans-serif' ;
+}
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background-color: $color-basic-light-grey;
+
+  .cdk-global-overlay-wrapper {
+    display: flex;
+    position: absolute;
+    z-index: 1000;
+    overflow: auto;
+    pointer-events: auto;
+  }
+
+  @media (min-width: $screen-sm) {
+    /* width */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: $color-basic-light-grey;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: $color-basic-medium-grey;
+      border-radius: 10px;
+    }
+  }
+}

@@ -1,0 +1,136 @@
+<mat-card class="card-wrapper">
+  <mat-card-content>
+
+    <div class="left-side">
+      <ng-container *ngIf="!(organizationsSettingsLoaded$ | async)">
+        <div>
+          <div class="form-field">
+            <ngx-skeleton-loader [theme]="{ display: 'block',width: '350px', height: '17.5px', marginBottom: '5px' }"></ngx-skeleton-loader>
+            <ngx-skeleton-loader [theme]="{ display: 'block',width: '350px', height: '40px', margin: '0' }"></ngx-skeleton-loader>
+          </div>
+
+          <div class="form-field">
+            <ngx-skeleton-loader [theme]="{ display: 'block',width: '180px', height: '17.5px', marginBottom: '5px' }"></ngx-skeleton-loader>
+            <ngx-skeleton-loader [theme]="{ display: 'block',width: '180px', height: '40px', margin: '0' }"></ngx-skeleton-loader>
+          </div>
+
+          <div class="form-field">
+            <ngx-skeleton-loader [theme]="{ display: 'block',width: '100%', height: '17.5px', marginBottom: '5px' }"></ngx-skeleton-loader>
+            <ngx-skeleton-loader [theme]="{ display: 'block',width: '100%', height: '100px', margin: '0' }"></ngx-skeleton-loader>
+          </div>
+
+          <div class="form-field">
+            <ngx-skeleton-loader [theme]="{ display: 'block',width: '100%', height: '17.5px', marginBottom: '5px' }"></ngx-skeleton-loader>
+            <ngx-skeleton-loader [theme]="{ display: 'block',width: '100%', height: '100px', margin: '0' }"></ngx-skeleton-loader>
+          </div>
+        </div>
+
+      </ng-container>
+
+      <form *ngIf="organizationsSettingsLoaded$ | async" [formGroup]="form">
+
+        <div class="form-field">
+          <app-select-opt
+            #formField
+            label="Payment Terms"
+            formControlName="paymentTerms"
+            requiredValidator="true"
+            [list]="paymentTermsList"
+          ></app-select-opt>
+        </div>
+
+        <div class="form-field">
+          <app-textarea
+            #formField
+            [maxLength]="textAreaLength.toString()"
+            formControlName="address"
+            [label]="'Address'"
+            [style]="{'height': '100px'}"
+          ></app-textarea>
+        </div>
+
+        <div class="form-field">
+          <app-textarea
+            #formField
+            [maxLength]="textAreaLength.toString()"
+            formControlName="invoiceFooter"
+            [label]="'Invoice Footer'"
+            [style]="{'height': '100px'}"
+          ></app-textarea>
+        </div>
+
+        <div class="form-field">
+          <app-checkbox
+            formControlName="groupChargesByDate"
+            label="Show Line Item Date on Invoices"
+            [blackLabel]="true"
+          ></app-checkbox>
+        </div>
+
+        <ng-container *ngIf="taxRegistered">
+          <div class="form-field">
+            <div class="form-field amounts-are">
+              <app-select-opt
+                #formField
+                class="form-field amounts-are"
+                label="Tax Default"
+                [formControl]="form.controls['invoiceDefaultTaxMode']"
+                [list]="taxModeList"
+              ></app-select-opt>
+            </div>
+          </div>
+        </ng-container>
+      </form>
+    </div>
+
+    <div class="right-side">
+      <ng-container *ngIf="!(organizationsSettingsLoaded$ | async)">
+        <ngx-skeleton-loader [theme]="{ display: 'block', width: '100%', height: '180px', margin: '0' }"></ngx-skeleton-loader>
+      </ng-container>
+
+      <ng-container *ngIf="organizationsSettingsLoaded$ | async">
+        <div class="image-area">
+          <ng-container *ngIf="!imageUrl">
+            <div class="text-wrapper">
+              <p>Upload your company logo here and it will display on your invoices.</p>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="imageUrl">
+            <img width="100%" *ngIf="imageUrl" [src]="imageUrl" class="image">
+          </ng-container>
+        </div>
+      </ng-container>
+
+      <div class="upload-button-wrapper">
+        <ng-container *ngIf="!(organizationsSettingsLoaded$ | async)">
+          <ngx-skeleton-loader [theme]="{ display: 'block', width: '120px', height: '40px', margin: '0' }"></ngx-skeleton-loader>
+        </ng-container>
+
+        <ng-container *ngIf="organizationsSettingsLoaded$ | async">
+          <app-input-file
+            [label]="'Upload Logo'"
+            [buttonStyleType]="'black'"
+            (imgUrl)="imageUrl = $event"
+            (file)="uploadFile($event)"
+          ></app-input-file>
+        </ng-container>
+      </div>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions class="actions">
+    <ngx-skeleton-loader
+      *ngIf="!(organizationsSettingsLoaded$ | async)"
+      [theme]="{ width: '126px', height: '40px', margin: '0' }"
+    ></ngx-skeleton-loader>
+    <app-button
+      *ngIf="organizationsSettingsLoaded$ | async"
+      [buttonStyleType]="'primary'"
+      [label]="'Save Changes'"
+      (btnClick)="saveChanges()"
+      [spinner]="spinnerStarted$ | async"
+      [disabled]="!form.dirty"
+    ></app-button>
+  </mat-card-actions>
+</mat-card>
+

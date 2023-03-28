@@ -1,0 +1,20 @@
+@import '../../../assets/styles/variables';
+
+.client-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 200px;
+  height: 250px;
+
+  .card-header {
+    font-size: 16px;
+    max-width: 100%;
+
+    span {
+      display: block;
+      max-width: 200px;
+    }
+  }
+}

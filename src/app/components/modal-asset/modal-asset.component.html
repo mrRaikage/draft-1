@@ -1,0 +1,11 @@
+<div class="modal-asset">
+  <app-close-btn (btnClick)="dialogRef.close()" class="close"></app-close-btn>
+  <mat-tab-group class="asset-tab-group" animationDuration="0ms" disableRipple>
+    <mat-tab
+      [label]="'Fixed Asset'"
+      [disabled]="activeTab !== 0 && modalModeService.getModalMode() !== 'View'"
+    >
+      <app-asset-tab></app-asset-tab>
+    </mat-tab>
+  </mat-tab-group>
+</div>

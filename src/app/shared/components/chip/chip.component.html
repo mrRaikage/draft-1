@@ -1,0 +1,8 @@
+<ng-container *ngIf="label">
+  <span [ngClass]="chipClass" class="chip-wrapper">
+    <ng-container *ngIf="icon">
+      <img src="../../../../assets/icons/lock.svg" alt="icon">
+    </ng-container>
+    <span>{{ label | titlecase}}</span>
+  </span>
+</ng-container>

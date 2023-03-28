@@ -1,0 +1,146 @@
+<div class="page-wrapper">
+
+  <!--  Desktop-->
+  <div class="page-header">
+    <div class="page-title mobile-hidden">
+      Reports / Profit and Loss Statement
+    </div>
+
+    <div class="header-actions" [formGroup]="form">
+      <div class="form-field-container">
+        <div class="form-field-wrap">
+          <div class="label">
+            Income Statement for the period from:
+          </div>
+          <div class="form-field">
+            <app-date-picker
+              [formControl]="form.controls['from']"
+            ></app-date-picker>
+          </div>
+        </div>
+
+        <div class="form-field-wrap">
+          <div class="label">
+            to:
+          </div>
+          <div class="form-field">
+            <app-date-picker
+              [formControl]="form.controls['to']"
+            ></app-date-picker>
+          </div>
+        </div>
+      </div>
+
+      <app-button
+        class="update-button"
+        [buttonStyleType]="'primary'"
+        [label]="'Update'"
+        [disabled]="(profitLossIsLoading$ | async) || this.form.invalid"
+        (btnClick)="updateButtonClick()"
+      ></app-button>
+
+      <ng-container *ngIf="profitLossIsLoading$ | async">
+        <ngx-skeleton-loader class="export-to-pdf" [theme]="{ width: '143px', height: '40px', marginBottom: '-7px' }"></ngx-skeleton-loader>
+      </ng-container>
+      <ng-container *ngIf="!(profitLossIsLoading$ | async)">
+        <app-button
+          class="export-to-pdf"
+          [buttonStyleType]="'pdf'"
+          [label]="'Export to PDF'"
+          (btnClick)="exportToPdf()"
+        ></app-button>
+      </ng-container>
+    </div>
+  </div>
+
+  <div #contentToConvert class="page-content">
+
+    <div class="header">
+      <ng-container *ngIf="profitLossIsLoading$ | async">
+        <ngx-skeleton-loader [theme]="{ width: '120px', height: '15px', margin: '0' }"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{ width: '150px', height: '15px', margin: '0' }"></ngx-skeleton-loader>
+        <ngx-skeleton-loader [theme]="{ width: '170px', height: '15px', margin: '0' }"></ngx-skeleton-loader>
+      </ng-container>
+      <ng-container *ngIf="!(profitLossIsLoading$ | async)">
+        <div class="title">{{ currentOrg }}</div>
+        <div class="subtitle">Profit and Loss Statement for the Period</div>
+        <div class="date">{{ fromDate | date }} to {{ toDate | date }}</div>
+      </ng-container>
+    </div>
+
+    <div class="body">
+      <ng-container *ngIf="profitLossIsLoading$ | async">
+        <ngx-skeleton-loader [theme]="{ width: '100%' }"></ngx-skeleton-loader>
+        <div style="margin-left: 20px">
+          <ngx-skeleton-loader count="7" [theme]="{ width: '100%' }"></ngx-skeleton-loader>
+        </div>
+
+        <ngx-skeleton-loader [theme]="{ width: '100%' }"></ngx-skeleton-loader>
+        <div style="margin-left: 20px">
+          <ngx-skeleton-loader count="7" [theme]="{ width: '100%' }"></ngx-skeleton-loader>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!(profitLossIsLoading$ | async)">
+        <ng-container *ngFor="let item of (data$ | async).children">
+          <ng-container *ngIf="item.name !== 'Net Profit'">
+            <div class="section">
+              <div class="section--title">
+                {{ item.name }}
+              </div>
+              <ng-container *ngFor="let subItem of item.children">
+                <div class="sub-item">
+                  <div class="sub-item--title">
+                    <div class="sub-item--title-name">
+                      {{ subItem.name }}
+                    </div>
+
+                  </div>
+                </div>
+                <ng-container *ngIf="subItem.children && subItem.children.length">
+                  <ng-container *ngFor="let chItem of subItem.children">
+                    <div class="child-container">
+                      <div class="child-title">
+                        <div class="child-name" appEllipsisTooltip>
+                          {{ chItem.name }}
+                        </div>
+                        <div class="child-amount">
+                          {{ chItem.amount | number: '0.2-2' }}
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </ng-container>
+                <div class="total-container">
+                  <div class="total-sub-name">
+                    {{ 'Total ' + subItem.name }}
+                  </div>
+                  <div class="total-sub-amount">
+                    {{ subItem.amount | number: '0.2-2' }}
+                  </div>
+                </div>
+              </ng-container>
+              <div class="full-total">
+                <div class="total-name">
+                  {{'Total ' + item.name | uppercase}}
+                </div>
+                <div class="total-amount">
+                  {{item.amount}}
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="item.name === 'Net Profit'">
+            <div class="net-profit-container">
+              <div class="item-name">
+                {{ item.name | uppercase}}
+              </div>
+              <div class="item-amount">
+                {{ item.amount}}
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+</div>

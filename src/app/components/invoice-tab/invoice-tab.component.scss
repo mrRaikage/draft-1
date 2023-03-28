@@ -1,0 +1,308 @@
+@import '../../../assets/styles/variables';
+
+.mat-card.invoice-tab {
+  box-shadow: none;
+  padding: 0;
+
+  .pointer {
+    cursor: pointer;
+  }
+
+  .view-mode {
+    display: block;
+    max-width: 595px;
+  }
+  /** Invoice Tab Content */
+  .mat-card-content {
+    margin: 0;
+    padding: 0;
+
+    .form-fields-area {
+      display: flex;
+      justify-content: space-between;
+
+      .left-column {
+        flex: auto;
+        max-width: 595px;
+      }
+
+      .right-column {
+        max-width: 180px;
+        text-align: right;
+      }
+
+      .form-field + .form-field {
+        margin-top: 15px;
+      }
+
+      .form-field.party {
+
+        .party-wrapper-is-view {
+          display: flex;
+          align-items: center;
+
+          .label {
+            font-weight: 600;
+            font-size: 13px;
+            line-height: 18px;
+            color: $color-contrast-black;
+            margin-bottom: 1px;
+          }
+
+          .party-text {
+            max-width: 595px;
+          }
+
+          app-chip {
+            margin-left: 30px;
+          }
+        }
+      }
+    }
+
+    .table-area {
+      margin-top: 30px;
+
+      .form-field {
+        margin-bottom: 15px;
+
+        &.amounts-are {
+          max-width: 180px;
+        }
+      }
+
+      .table-wrapper {
+        background: $color-basic-light-grey;
+        border-radius: 5px;
+        padding: 0 15px 25px;
+
+        .under-table-row {
+          display: flex;
+          justify-content: space-between;
+
+          .left-side-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            app-button {
+              max-width: 80px;
+            }
+          }
+        }
+
+        .amount-column {
+          flex: auto;
+          display: flex;
+          flex-direction: column;
+
+          .amount-text {
+            margin-top: 5px;
+            display: flex;
+            justify-content: flex-end;
+
+            span {
+              padding: 0px 20px;
+              font-weight: 600;
+              font-size: 14px;
+              font-style: italic;
+              line-height: 22px;
+              text-align: right;
+              color: $color-contrast-black;
+            }
+          }
+
+          .amount-field {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            font-size: 13px;
+            line-height: 18px;
+            color: $color-contrast-black;
+
+            &--total {
+              font-weight: 600;
+              font-size: 13px;
+              line-height: 19px;
+
+              .label {
+                color: $color-contrast-black;
+              }
+
+              .value-area {
+                color: $color-basic-purple;
+              }
+            }
+
+            &:not(:first-child) {
+              margin-top: 5px;
+            }
+
+            .label {
+              margin-right: 15px;
+
+            }
+
+            .value-area {
+              border-radius: 3px;
+              background-color: $color-basic-white;
+              width: 100%;
+              max-width: 180px;
+              height: 40px;
+              padding: 11px 20px;
+              text-align: right;
+              font-size: 13px;
+              line-height: 18px;
+            }
+          }
+        }
+      }
+
+      .paid-absolute {
+        position: absolute;
+        bottom: 0;
+
+        max-width: 600px;
+        width: 100%;
+      }
+
+      .table-title {
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 19px;
+        color: $color-contrast-black;
+        margin: 10px 0;
+      }
+
+      .paid-table {
+        background-color: $color-basic-light-grey;
+        border-radius: 5px;
+        max-width: 600px;
+        width: 100%;
+        padding: 0 20px 20px 20px;
+
+        &--header {
+          display: flex;
+          align-items: center;
+          height: 40px;
+          padding-left: 15px;
+
+          .header-cell {
+            padding: 0 10px;
+            font-weight: 600;
+            font-size: 13px;
+            line-height: 19px;
+            color: $color-basic-dark-grey;
+
+            &.date {
+              min-width: 150px;
+            }
+
+            &.account {
+              flex: 1;
+            }
+          }
+
+        }
+
+        &--row {
+          display: flex;
+          align-items: center;
+          height: 40px;
+          background-color: $color-basic-white;
+          padding-left: 15px;
+
+          .row-cell {
+
+            &.remove {
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              img {
+                cursor: pointer;
+              }
+            }
+
+            &.date {
+              width: 100%;
+              max-width: 150px;
+            }
+
+            &.account {
+              flex: 1;
+            }
+          }
+
+        }
+      }
+    }
+  }
+
+  /** Modal Actions */
+  .mat-card-actions {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    .left-side,
+    .right-side {
+      display: flex;
+
+      app-button + app-button {
+        margin-left: 12px;
+      }
+
+      app-button {
+        margin-top: 30px;
+      }
+    }
+
+    .left-side {
+      flex: auto;
+
+      .form-field + .form-field {
+        margin-left: 15px;
+      }
+
+      .form-field {
+        &.date {
+          max-width: 180px;
+        }
+
+        &.accounts {
+          max-width: 360px;
+        }
+      }
+    }
+  }
+
+}
+
+.quick-add {
+
+  padding-top: 10px;
+  margin-bottom: 20px;
+
+  border-top: 1px solid $color-basic-normal-grey;
+
+  & .label {
+    font: 500 14px/24px Roboto, "Helvetica Neue", sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 19px;
+    color: $color-contrast-black;
+    padding: 6px 15px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+  }
+
+  & .name-input {
+    padding: 0 25px;
+  }
+
+}

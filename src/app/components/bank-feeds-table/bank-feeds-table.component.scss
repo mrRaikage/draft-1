@@ -1,0 +1,138 @@
+@import "../../../assets/styles/variables";
+@import '../../../assets/styles/skeleton-loader';
+
+@mixin skeletonPath ($delay) {
+  ::ng-deep .loader.progress:before {
+    animation: 2s ease-in-out $delay infinite progress
+  }
+}
+
+/** Table styles */
+table {
+  width: 100%;
+}
+
+.table-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+
+  margin-bottom: 20px;
+
+  & .imported {
+    display: flex;
+    align-items: center;
+
+    max-width: 250px;
+    height: 40px;
+    color: $color-basic-white;
+    background: $color-basic-purple;
+    border-radius: 5px;
+    padding: 0 14px;
+
+    &-name {
+      font-size: 13px;
+    }
+
+    &-file {
+      filter: contrast(100);
+    }
+
+    &-delete {
+      cursor: pointer;
+      filter: contrast(100);
+    }
+
+  }
+
+}
+
+/* Disable Material styles */
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+  border-bottom: none;
+}
+
+/** Table header styles */
+tr.mat-header-row {
+  background-color: $color-basic-light-grey;
+  height: 48px;
+
+  &.hidden {
+    display: none;
+  }
+
+  th.mat-header-cell {
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 19px;
+    color: $color-basic-dark-grey;
+    padding-left: 30px;
+
+    &:first-child {
+      border-radius: 5px 0 0 5px;
+    }
+
+    &:last-child {
+      padding-right: 30px;
+      text-align: right;
+      border-radius: 0 5px 5px 0;
+    }
+
+  }
+
+}
+
+/** Table body styles */
+tr.mat-row {
+
+  td.mat-cell {
+    font-size: 13px;
+    line-height: 18px;
+    color: $color-contrast-black;
+    padding: 0;
+
+    .td-container {
+      margin-top: 10px;
+      padding-left: 30px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      border-top: 1px solid $color-basic-light-grey;
+      border-bottom: 1px solid $color-basic-light-grey;
+      cursor: pointer;
+
+      p {
+        max-width: 235px;
+      }
+    }
+
+    &:first-of-type {
+      .td-container {
+        border-left: 1px solid $color-basic-light-grey;
+        border-radius: 5px 0 0 5px;
+      }
+    }
+
+    &:last-of-type {
+      .td-container {
+        justify-content: flex-end;
+        padding-right: 30px;
+        border-right: 1px solid $color-basic-light-grey;
+        border-radius: 0 5px 5px 0;
+
+      }
+    }
+  }
+
+  td.mat-column-more {
+    width: 64px;
+    cursor: pointer;
+  }
+
+}
+
+/** Pagination styles */
+.mat-paginator.hidden {
+  visibility: hidden;
+}

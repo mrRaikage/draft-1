@@ -1,0 +1,118 @@
+<mat-card class="card-wrapper">
+  <mat-card-content>
+    <ng-container *ngIf="!(organizationsSettingsLoaded$ | async)">
+      <div>
+        <div class="form-field">
+          <ngx-skeleton-loader [theme]="{ display: 'block',width: '350px', height: '17.5px', marginBottom: '5px' }"></ngx-skeleton-loader>
+          <ngx-skeleton-loader [theme]="{ display: 'block',width: '350px', height: '40px', margin: '0' }"></ngx-skeleton-loader>
+        </div>
+
+        <div class="form-field">
+          <ngx-skeleton-loader [theme]="{ display: 'block',width: '180px', height: '17.5px', marginBottom: '5px' }"></ngx-skeleton-loader>
+          <ngx-skeleton-loader [theme]="{ display: 'block',width: '180px', height: '40px', margin: '0' }"></ngx-skeleton-loader>
+        </div>
+
+        <div class="form-field">
+          <ngx-skeleton-loader [theme]="{ display: 'block',width: '180px', height: '17.5px', marginBottom: '5px' }"></ngx-skeleton-loader>
+          <ngx-skeleton-loader [theme]="{ display: 'block',width: '180px', height: '40px', margin: '0' }"></ngx-skeleton-loader>
+        </div>
+
+        <div class="form-field" [style]="{'display': 'flex', 'align-items': 'center', 'height': '40px'}">
+          <ngx-skeleton-loader [theme]="{ width: '173px', height: '17.5px', margin: '0 15px 0 0' }"></ngx-skeleton-loader>
+          <ngx-skeleton-loader [theme]="{ width: '162px', height: '40px', margin: '0' }"></ngx-skeleton-loader>
+        </div>
+
+        <div class="form-field">
+          <ngx-skeleton-loader [theme]="{ display: 'block', width: '350px', height: '17.5px', marginBottom: '5px' }"></ngx-skeleton-loader>
+          <ngx-skeleton-loader [theme]="{ display: 'block', width: '350px', height: '40px' }"></ngx-skeleton-loader>
+        </div>
+
+        <div class="form-field">
+          <ngx-skeleton-loader [theme]="{ display: 'block', width: '67px', height: '17.5px', marginBottom: '5px' }"></ngx-skeleton-loader>
+          <ngx-skeleton-loader [theme]="{ display: 'block', width: '67px', height: '40px' }"></ngx-skeleton-loader>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="organizationsSettingsLoaded$ | async">
+      <form [formGroup]="form">
+        <div class="form-field">
+          <app-input
+            #formField
+            formControlName="orgName"
+            [label]="'Whats this organization called?'"
+            [type]="'text'"
+            [placeholder]="'Organization Name'"
+          ></app-input>
+        </div>
+
+        <div class="form-field">
+          <app-select-opt
+            #formField
+            label="Year End Month"
+            formControlName="yearEndMonth"
+            [list]="yearEndMonthList"
+            (ngModelChange)="handleMonthChange()"
+          ></app-select-opt>
+        </div>
+
+        <div class="form-field">
+          <app-select-opt
+            #formField
+            label="Year End Day"
+            formControlName="yearEndDay"
+            [list]="yearEndDayList"
+          ></app-select-opt>
+        </div>
+
+        <div class="form-field flex tax-registered">
+          <div class="label">
+            {{ 'Is ' + currentOrg.name + ' registered for Tax?' }}
+          </div>
+          <div class="select-wrapper">
+            <app-select-opt
+              #formField
+              formControlName="isRegisteredForTax"
+              [list]="registeredForTaxList"
+            ></app-select-opt>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <app-input
+            #formField
+            formControlName="taxNumber"
+            [label]="'Tax Number'"
+            [type]="'text'"
+            [placeholder]="'Tax Number'"
+          ></app-input>
+        </div>
+
+        <div class="form-field tax-rate">
+          <app-input-percent
+            [data]="orgSettings.taxRate * 100"
+            [label]="'Tax Rate'"
+            (valueChange)="taxRate = $event / 100"
+            (isDirty)="unsavedChanges = $event; form.markAsDirty()"
+          ></app-input-percent>
+        </div>
+      </form>
+    </ng-container>
+  </mat-card-content>
+
+  <mat-card-actions class="actions">
+    <ngx-skeleton-loader
+      *ngIf="!(organizationsSettingsLoaded$ | async)"
+      [theme]="{ width: '126px', height: '40px', margin: '0' }"
+    ></ngx-skeleton-loader>
+    <app-button
+      *ngIf="organizationsSettingsLoaded$ | async"
+      [buttonStyleType]="'primary'"
+      [label]="'Save Changes'"
+      [disabled]="!form.dirty"
+      [spinner]="spinnerStarted$ | async"
+      (btnClick)="saveChanges()"
+    ></app-button>
+  </mat-card-actions>
+</mat-card>
+

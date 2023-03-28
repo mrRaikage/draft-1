@@ -1,0 +1,19 @@
+@import '../../../assets/styles/variables';
+@import '../../../assets/styles/global';
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 50px;
+  font-size: 13px;
+  line-height: 18px;
+  background-color: $color-basic-white;
+  color: $color-basic-dark-grey;
+  position: relative;
+  z-index: 100;
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+}

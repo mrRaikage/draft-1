@@ -1,0 +1,42 @@
+<div class="header-wrapper">
+  <div class="trigger-wrapper">
+    <img
+      src="../../../../assets/icons/trigger.svg"
+      alt="trigger"
+      id="sidebar-trigger"
+      (click)="toggleSideBar.emit()"
+    >
+    <div class="org-name">
+      <span appEllipsisTooltip>{{ currentOrg.name }}</span>
+
+      <ng-container>
+        <mat-select
+          #select
+          class="org-trigger"
+          panelClass="org-panel"
+          [value]="currentOrg"
+          [compareWith]="compareObjects"
+          (closed)="panelOpened = false"
+          (opened)="panelOpened = true"
+        >
+          <ng-container *ngFor="let item of (orgList$ | async)">
+            <mat-option [value]="item" (click)="updateCurrentOrg(item)">
+              <p appEllipsisTooltip>{{ item.name }}</p>
+            </mat-option>
+          </ng-container>
+          <ng-container>
+            <div #content>
+              <app-quick-add-organization
+                (keydown.space)="$event.stopPropagation()"
+                [panelIsOpened]="panelOpened"
+                [autoGroup]="select"
+              ></app-quick-add-organization>
+            </div>
+          </ng-container>
+        </mat-select>
+      </ng-container>
+    </div>
+  </div>
+
+  <app-user-panel></app-user-panel>
+</div>

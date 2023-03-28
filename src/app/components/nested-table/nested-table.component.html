@@ -1,0 +1,66 @@
+<div class="nested-table-wrapper">
+  <div class="nested-table-container">
+    <table mat-table [dataSource]="transaction.lines" multiTemplateDataRows class="nested-table">
+
+      <ng-container  matColumnDef="{{ column }}" *ngFor="let column of columns">
+
+        <ng-container *ngIf="column === 'date'">
+          <th mat-header-cell *matHeaderCellDef> {{ getColumnName(column) }} </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="td-container">
+              {{ element[column] | date: 'd MMM, y' }}
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container *ngIf="column === 'account'">
+          <th mat-header-cell *matHeaderCellDef> {{ getColumnName(column) }} </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="td-container">
+              <ng-container *ngIf="element[column]">
+                <p appEllipsisTooltip>
+                  {{ element[column].name }}
+                </p>
+              </ng-container>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container *ngIf="column === 'description'">
+          <th mat-header-cell *matHeaderCellDef> {{ getColumnName(column) }} </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="td-container">
+              <ng-container *ngIf="element[column]">
+                <p appEllipsisTooltip>
+                  {{ element[column] }}
+                </p>
+              </ng-container>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container *ngIf="column === 'amount'">
+          <th mat-header-cell *matHeaderCellDef> {{ getColumnName(column) }} </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="td-container">
+              ${{ element[column] | number: '0.2-2' }}
+            </div>
+          </td>
+        </ng-container>
+
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+    </table>
+  </div>
+
+  <div class="details">
+    <app-button
+      [label]="getViewButtonName()"
+      buttonStyleType="view-transaction"
+      (btnClick)="view()"
+    ></app-button>
+  </div>
+
+</div>

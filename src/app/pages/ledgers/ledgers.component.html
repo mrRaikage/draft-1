@@ -1,0 +1,96 @@
+<div class="ledgers-container">
+  <div class="ledgers-header">
+    <div class="page-title ">
+      Ledgers
+    </div>
+  </div>
+
+  <div *ngIf="accounts$ | async" class="ledgers-body">
+    <div class="ledgers-body--form">
+      <form [formGroup]="formGroup" class="form">
+
+        <div class="form-items-container">
+          <div class="form-items-left-side">
+
+            <div class="form-item">
+              <app-date-picker
+                #controlComponent
+                validation="true"
+                placeholder="dd/mm/yyyy"
+                label="From"
+                [requiredValidator]="true"
+                [formControl]="formGroup.get('MinDate')"
+              ></app-date-picker>
+            </div>
+
+            <div class="form-item">
+              <app-date-picker
+                #controlComponent
+                validation="true"
+                placeholder="dd/mm/yyyy"
+                label="To"
+                [requiredValidator]="true"
+                [formControl]="formGroup.get('MaxDate')"
+              ></app-date-picker>
+            </div>
+          </div>
+
+          <div class="form-items-right-side">
+            <div class="form-item">
+              <app-select-multi-with-search
+                #controlComponent
+                *ngIf="accountTypesList"
+                [formControl]="formGroup.get('AccountIds')"
+                label="Accounts:"
+                placeholder="Accounts:"
+                [setList]="accountTypesList"
+                [requiredValidator]="true"
+              ></app-select-multi-with-search>
+              <ng-container *ngIf="maxAccounts">
+                <app-warning class="mt-gap" [text]="warningText"></app-warning>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <app-button
+          class="form-button"
+          buttonStyleType="primary"
+          [label]="'Apply'"
+          [disabled]="formGroup.invalid"
+          [spinner] ="spinner$ | async"
+          (btnClick)="onApply()"
+        ></app-button>
+      </form>
+    </div>
+
+    <div class="ledgers-body-table">
+      <ng-container *ngIf="(dataLoaded$ | async); else emptyData">
+        <ng-container *ngIf="(ledgers$ | async)">
+          <div class="page-content">
+            <app-ledgers-table
+              [setData]="ledgers$ | async"
+              [dataLoaded$]="dataLoaded$"
+            ></app-ledgers-table>
+
+            <app-paginator
+              [disableNextButton]="!nextPageLink"
+              [disablePrevButton]="!prevPageLink"
+              (next)="onNextPage()"
+              (prev)="onPrevPage()"
+            ></app-paginator>
+          </div>
+        </ng-container>
+      </ng-container>
+
+      <ng-template #emptyData>
+        <div class="page-content">
+          <app-empty-content
+            *ngIf="!(dataLoaded$ | async)"
+            [emptyContentData]="emptyContentLedgers"
+          ></app-empty-content>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

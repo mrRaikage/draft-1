@@ -1,0 +1,45 @@
+<div #el>
+  <ng-container *ngIf="!isAddState">
+    <mat-option
+      class="mat-option add"
+      (click)="quickAddButtonClick($event)"
+      [disabled]="true"
+    >
+      <div class="quick-add-button">
+        <img src="../../../../../../../assets/icons/add.svg" alt="+">
+        <p>Quick add</p>
+      </div>
+    </mat-option>
+  </ng-container>
+  <ng-container *ngIf="isAddState">
+    <div class="quick-add" (keydown.enter)="addButtonClick()">
+      <div class="content">
+        <div class="label">Quick Add a Client</div>
+        <div class="form">
+          <app-input
+            [(ngModel)]="addClientName"
+            [appAutoFocus]="true"
+            class="input"
+            placeholder="Enter name"
+            type="text"
+            requiredValidator="true"
+          ></app-input>
+        </div>
+      </div>
+      <div class="actions">
+        <app-button
+          label="Add"
+          buttonStyleType="primary full"
+          [spinner]="spinner$ | async"
+          [disabled]="!addClientName"
+          (mouseup)="addButtonClick()"
+        ></app-button>
+        <app-button
+          label="Cancel"
+          buttonStyleType="black"
+          (mouseup)="resetState()"
+        ></app-button>
+      </div>
+    </div>
+  </ng-container>
+</div>

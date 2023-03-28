@@ -1,0 +1,38 @@
+<div
+  *ngIf="label"
+  class="form-field-label"
+  [class.text-right]="isTextRight"
+  [class.disabled]="isView"
+>
+  {{ label }} {{ !notRequired && !isView ? '*' : null }}
+  <span *ngIf="notRequired && !isView" class="optional">(optional)</span>
+</div>
+
+<ng-container *ngIf="mode !== 'viewStatus'">
+  <mat-form-field
+    appearance="fill"
+    class="select-opt"
+    [class.not-required]="notRequired"
+    [class.table-field]="isTableField"
+    [class.text-right]="isTextRight"
+  >
+    <mat-select
+      disableOptionCentering
+      [placeholder]="placeholder"
+      [panelClass]="'select-opt ' + panelClass"
+      [formControl]="formControl"
+      (ngModelChange)="isDirty.emit(formControl.dirty)"
+    >
+      <ng-container *ngFor="let item of list">
+        <mat-option [value]="item.value">
+          {{ item.displayName }}
+        </mat-option>
+      </ng-container>
+    </mat-select>
+  </mat-form-field>
+</ng-container>
+
+<ng-container *ngIf="mode === 'viewStatus'">
+  <app-chip [label]="formControl.value"></app-chip>
+</ng-container>
+

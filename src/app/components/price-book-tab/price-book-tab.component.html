@@ -1,0 +1,106 @@
+<mat-card class="price-book-tab">
+  <ng-container *ngIf="!(priceBookIsLoading$ | async) && (editableTable.formArrayRows.length || modalMode !== 'View')">
+    <mat-card-header class="price-book-tab-header">
+      <div class="price-book-tab-title">
+        Price Book
+      </div>
+
+      <app-checkbox
+      label="Show Inactive Items"
+      labelPosition="before"
+      [formControl]="checkboxControl"
+      [disableState]="modalMode !== 'View'"
+      [blackLabel]="true"
+      (ngModelChange)="setShowInactive($event)"
+      ></app-checkbox>
+    </mat-card-header>
+  </ng-container>
+
+  <mat-card-content>
+
+      <div
+        [class.table-wrapper]="
+          !(priceBookIsLoading$ | async) &&
+          (editableTable.formArrayRows.length || modalMode !== 'View')
+        "
+      >
+        <div class="table-container">
+          <app-editable-table
+            #editableTable
+            [columns]="columns"
+            [requiredColumns]="columns"
+            [groupedAccounts]="groupedAccounts"
+            [formGroupRows$]="tableFormGroupRows$"
+            [isLoading]="priceBookIsLoading$ | async"
+            [modalType]="modalMode"
+            [tableClass]="'price-book-table'"
+            [showHidden$]="showInactive$"
+            [hiddenRowsParam]="{ key: 'editableStatus', value: 'Inactive' }"
+            [hasEmptyPageComponent]="true"
+            [emptyContentData]="emptyContentPriceBook"
+            [skeletonColumnsCount]="4"
+            (addLine)="editButtonClick(); editableTable.addPriceBookRow()"
+            (changedLines)="setPriceBookLines($event)"
+            (linesIsValid)="linesIsValid = $event"
+            (viewHiddenItemsClick)="checkboxControl.setValue(true)"
+          ></app-editable-table>
+
+          <ng-container *ngIf="!(priceBookIsLoading$ | async)">
+            <div class="under-table-row">
+              <div class="button-field">
+                <app-button
+                  *ngIf="modalMode !== 'View'"
+                  label="Add"
+                  buttonStyleType="add"
+                  (btnClick)="editableTable.addPriceBookRow()"
+                ></app-button>
+              </div>
+            </div>
+          </ng-container>
+
+        </div>
+      </div>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <ng-container *ngIf="!(priceBookIsLoading$ | async)">
+      <ng-container *ngIf="editableTable.formArrayRows.length || modalMode !== 'View'">
+        <ng-container *ngIf="modalMode !== 'View'">
+          <app-button
+            class="button-right"
+            buttonStyleType="primary"
+            [label]="'Save'"
+            (btnClick)="saveButtonClick()"
+            [disabled]="!isFormValid()"
+            [spinner]="spinner$ | async"
+          ></app-button>
+          <app-button
+            class="button-right"
+            buttonStyleType="black"
+            label="Cancel"
+            (btnClick)="cancelButtonClick()"
+          ></app-button>
+        </ng-container>
+
+        <ng-container *ngIf="modalMode === 'View'">
+          <app-button
+            class="button-right"
+            buttonStyleType="primary"
+            [label]="'Edit'"
+            (btnClick)="editButtonClick()"
+          ></app-button>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="modalMode === 'View'">
+        <app-button
+          class="button-right"
+          buttonStyleType="black"
+          label="Close"
+          (btnClick)="cancelButtonClick()"
+        ></app-button>
+      </ng-container>
+    </ng-container>
+  </mat-card-actions>
+</mat-card>
+

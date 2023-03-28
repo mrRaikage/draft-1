@@ -1,0 +1,74 @@
+<mat-card class="card-wrapper">
+  <ng-container *ngIf="!(priceBookIsLoading$ | async) && editableTable.formArrayRows.length">
+    <mat-card-header class="price-book-tab-header">
+      <div class="price-book-tab-title">
+        Price Book
+      </div>
+    </mat-card-header>
+  </ng-container>
+
+  <mat-card-content>
+
+    <app-editable-table
+      #editableTable
+      [columns]="columns"
+      [requiredColumns]="columns"
+      [groupedAccounts]="groupedAccounts"
+      [formGroupRows$]="tableFormGroupRows$"
+      [isLoading]="priceBookIsLoading$ | async"
+      [modalType]="'Edit'"
+      [tableClass]="'price-book-table'"
+      [hasEmptyPageComponent]="true"
+      [skeletonColumnsCount]="5"
+      [emptyContentData]="emptyContentPriceBook"
+      (addLine)="editableTable.addPriceBookRow()"
+      (changedLines)="setPriceBookLines($event)"
+      (linesIsValid)="linesIsValid = $event"
+      (isDirty)="setFormDirty($event)"
+    ></app-editable-table>
+
+    <ng-container *ngIf="
+      !(priceBookIsLoading$ | async) &&
+      !(tableFormGroupRows$ | async)?.length &&
+      !editableTable.formArrayRows.length
+    ">
+      <app-empty-content
+        [emptyContentData]="emptyContentPriceBook"
+        (addLineButtonClick)="editableTable.addPriceBookRow()"
+      ></app-empty-content>
+    </ng-container>
+
+    <ng-container *ngIf="
+      !(priceBookIsLoading$ | async) &&
+      editableTable.formArrayRows.length ||
+      (tableFormGroupRows$ | async)?.length
+    ">
+      <div class="under-table-row">
+        <div class="button-field">
+          <app-button
+            label="Add"
+            buttonStyleType="add"
+            (btnClick)="editableTable.addPriceBookRow()"
+          ></app-button>
+        </div>
+      </div>
+    </ng-container>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <ng-container *ngIf="
+      !(priceBookIsLoading$ | async) &&
+      editableTable.formArrayRows.length ||
+      (tableFormGroupRows$ | async)?.length
+    ">
+      <app-button
+        class="button-right"
+        buttonStyleType="primary"
+        [label]="'Save'"
+        [disabled]="!isFormValid() || !isFormDirty"
+        [spinner]="spinner$ | async"
+        (btnClick)="saveButtonClick()"
+      ></app-button>
+    </ng-container>
+  </mat-card-actions>
+</mat-card>
